@@ -1,3 +1,4 @@
+import { isJidGroup, isJidUser } from '@adiwajshing/baileys'
 import { join } from 'path'
 import { WAEvent } from '../Contracts/WaEvent'
 import { getMessageCaption, validatePattern } from '../utils'
@@ -39,7 +40,25 @@ export class WhatsappClient {
     this.conn?.onEvents('messages.upsert', (args) => {
       if (handler.type == 'all' || handler.type == args.props.type) {
         for (const message of args.props.messages) {
+          const jid = message.key.remoteJid || ''
           if (!message?.message) break
+
+
+          /**
+           * Memeriksa apakah jid dimasukkan adalah Jid grup atau Jid user berdasarkan
+           * pengaturan.
+           * Jika handler.chat adalah 'all' maka tidak perlu memeriksa.
+           * Jika handler.chat adalah 'group' maka memeriksa apakah jid adalah jid grup.
+           * Jika handler.chat adalah 'user' maka memeriksa apakah jid adalah jid user.
+           * 
+           */
+          if (handler.chat !== 'all') {
+            if (handler.chat === 'group') {
+              if (!isJidGroup(jid)) break
+            } else if (handler.chat === 'user') {
+              if (!isJidUser(jid)) break
+            }
+          }
 
           /**
            * Pengecekan apakah peserta ada dalam daftar peserta.

@@ -11,8 +11,9 @@ import { Pattern } from '../../../Contracts/Pattern'
  * message dan type WAMessage
  */
 export abstract class MessageUpsert extends MessageEvent implements Pattern {
-  patterns: false | (string | RegExp) | (string | RegExp)[]=false
+  patterns: false | (string | RegExp) | (string | RegExp)[] = false
   type: MessageUpsertType | 'all' = 'all'
+  chat: 'group' | 'user' | 'all' = 'all'
   abstract handler({}: HandlerArgs<{
     message: WAMessage
     type: MessageUpsertType
