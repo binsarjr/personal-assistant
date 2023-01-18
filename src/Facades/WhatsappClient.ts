@@ -37,12 +37,11 @@ export class WhatsappClient {
     this.conn.createConnection()
   }
   private resolveMessageUpsert(handler: MessageUpsert) {
-    this.conn?.onEvents('messages.upsert', (args) => {
+    this.conn?.onEvents('messages.upsert', async (args) => {
       if (handler.type == 'all' || handler.type == args.props.type) {
         for (const message of args.props.messages) {
           const jid = message.key.remoteJid || ''
           if (!message?.message) break
-
 
           /**
            * Memeriksa apakah jid dimasukkan adalah Jid grup atau Jid user berdasarkan
@@ -50,13 +49,46 @@ export class WhatsappClient {
            * Jika handler.chat adalah 'all' maka tidak perlu memeriksa.
            * Jika handler.chat adalah 'group' maka memeriksa apakah jid adalah jid grup.
            * Jika handler.chat adalah 'user' maka memeriksa apakah jid adalah jid user.
-           * 
+           *
            */
           if (handler.chat !== 'all') {
             if (handler.chat === 'group') {
               if (!isJidGroup(jid)) break
             } else if (handler.chat === 'user') {
               if (!isJidUser(jid)) break
+            }
+          }
+
+          /**
+           * Lakukan suatu proses apabila pesan yang masuk berasal dari grup
+           */
+          if (isJidGroup(jid)) {
+            /** 
+             * Periksa apakah partisipan dalam kelompok memiliki hak akses yang tepat.
+             * Jika handler.groupAccess bernilai 'all', maka tidak perlu melakukan
+             * pengecekan.
+             * Jika handler.groupAccess bernilai 'admin', maka partisipan harus memiliki
+             * admin == true.
+             * Jika handler.groupAccess bernilai 'member', maka partisipan harus memiliki
+             * admin == false.
+             */
+            if (handler.groupAccess !== 'all') {
+              const participant = message.key.participant || ''
+              const participants = (await args.socket.groupMetadata(jid))
+                .participants
+              if (handler.groupAccess === 'admin') {
+                if (
+                  !participants.find((p) => p.id == participant && !!p.admin)
+                ) {
+                  break
+                }
+              } else if (handler.groupAccess === 'member') {
+                if (
+                  !participants.find((p) => p.id == participant && !p.admin)
+                ) {
+                  break
+                }
+              }
             }
           }
 

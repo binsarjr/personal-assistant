@@ -5,6 +5,7 @@ import Queue from '../Facades/Queue'
 
 export class KickAllMember extends MessageUpsert {
   patterns: string | false | RegExp | (string | RegExp)[] = ['.kickmember']
+  groupAccess: 'all' | 'admin' | 'member' = 'admin'
   chat: 'all' | 'group' | 'user' = 'group'
   async handler({
     socket,

@@ -13,7 +13,21 @@ import { Pattern } from '../../../Contracts/Pattern'
 export abstract class MessageUpsert extends MessageEvent implements Pattern {
   patterns: false | (string | RegExp) | (string | RegExp)[] = false
   type: MessageUpsertType | 'all' = 'all'
+  /**
+   * Memberikan settingan bahwa message akan dihandler untuk
+   * all - semua
+   * user - chat personal user saja
+   * group - group chat
+   */
   chat: 'group' | 'user' | 'all' = 'all'
+  /**
+   * Untuk mengecek ketika chat adalah sebuah grup.
+   * lanjutkan proses sesuai dengan setttingan grup access
+   * all untuk semua
+   * admin untuk admin saja member tidak bisa mengakses ini
+   * member hanya untuk member saja admin tidak bisa
+   */
+  groupAccess: 'admin' | 'member' | 'all' = 'all'
   abstract handler({}: HandlerArgs<{
     message: WAMessage
     type: MessageUpsertType
