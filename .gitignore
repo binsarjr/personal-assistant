@@ -1,0 +1,4 @@
+lib
+.env
+.auths
+node_modules
