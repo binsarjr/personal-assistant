@@ -9,6 +9,7 @@ import makeWASocket, {
 } from '@adiwajshing/baileys'
 import tempLogger from '@adiwajshing/baileys/lib/Utils/logger'
 import { IEventListener } from '../Contracts/IEventListener'
+import { ValidateError } from '../Exceptions'
 import { Auth } from './Auth'
 
 export class WhastappConnection {
@@ -157,9 +158,17 @@ export class WhastappConnection {
 
         for (const { event, listener } of this.events) {
           if (events[event])
-            listener({
-              props: events[event],
-              socket: this.socket!,
+            Promise.resolve(
+              listener({
+                props: events[event],
+                socket: this.socket!,
+              }),
+            ).catch((error) => {
+              if (error instanceof ValidateError) {
+                console.log(error.message)
+              } else {
+                throw error
+              }
             })
         }
       },

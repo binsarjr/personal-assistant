@@ -6,7 +6,6 @@ import { KickAllMember } from './Handler/KickAllMember'
 import { checkStore } from './utils'
 dotenv.config()
 // import { HaloHandler } from './Handler/Halo'
-
 checkStore()
 
 const client = new WhatsappClient({

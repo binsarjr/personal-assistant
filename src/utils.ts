@@ -67,7 +67,7 @@ export const sendMessageWTyping = async (
 export const toInCaseSensitive = (text: string) =>
   new RegExp('\\b' + text + '\\b', 'i')
 
-export const dataStorePath = path.join(__dirname, '../../.data_store')
+export const dataStorePath = path.join(__dirname, '../.data_store')
 export const checkStore = () => {
   !existsSync(dataStorePath) && mkdirSync(dataStorePath, { recursive: true })
 }
