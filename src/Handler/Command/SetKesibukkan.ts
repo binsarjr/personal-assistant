@@ -24,7 +24,7 @@ export class SetKesibukkan extends MessageUpsert {
     Queue(() =>
       sendMessageWTyping(
         {
-          text: 'Kesibukkan anda telah disimpan (*' + sibuk + '*)',
+          text: 'Kesibukkan anda telah disimpan ( *' + sibuk + '* )',
         },
         jid,
         socket,

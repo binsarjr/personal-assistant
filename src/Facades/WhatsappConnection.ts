@@ -11,6 +11,7 @@ import tempLogger from '@adiwajshing/baileys/lib/Utils/logger'
 import { IEventListener } from '../Contracts/IEventListener'
 import { ValidateError } from '../Exceptions'
 import { Auth } from './Auth'
+import { MemoryDataStore } from './Store/MemoryDataStore'
 
 export class WhastappConnection {
   socket: WASocket | undefined
@@ -19,7 +20,7 @@ export class WhastappConnection {
     event: keyof BaileysEventMap
     listener: (arg: { props: any; socket: WASocket }) => any
   }[] = []
-  constructor(private auth: Auth) {}
+  constructor(private auth: Auth, private store: MemoryDataStore) {}
 
   onEvents<T extends keyof BaileysEventMap>(
     event: T,
@@ -30,6 +31,7 @@ export class WhastappConnection {
       listener,
     })
   }
+
   async createConnection() {
     const [{ version, isLatest }, state] = await Promise.all([
       fetchLatestBaileysVersion(),
@@ -50,6 +52,7 @@ export class WhastappConnection {
         isJidBroadcast(jid) || isJidStatusBroadcast(jid),
       generateHighQualityLinkPreview: true,
     })
+    this.store.store.bind(this.socket.ev)
 
     this.socket.ev.process(
       // events is a map for event name => event data

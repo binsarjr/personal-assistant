@@ -4,6 +4,7 @@ import { WAEvent } from '../Contracts/WaEvent'
 import { getMessageCaption } from '../utils'
 import { Auth } from './Auth'
 import { MessageUpsert } from './Events/Message/MessageUpsert'
+import { MemoryDataStore } from './Store/MemoryDataStore'
 import { ValidateChatAccess } from './Validation/ValidateChatAccess'
 import { ValidateGroupAccess } from './Validation/ValidateGroupAccess'
 import { ValidateParticipantsAllowed } from './Validation/ValidateParticipantsAllowed'
@@ -14,6 +15,7 @@ export class WhatsappClient {
   private auth: Auth
   private conn: WhastappConnection | undefined
   private handlers: WAEvent[] = []
+  private store: MemoryDataStore
   constructor({
     name,
     folderAuth = join(__dirname, '../../.auths'),
@@ -22,6 +24,8 @@ export class WhatsappClient {
     folderAuth?: string
   }) {
     this.auth = new Auth(folderAuth, name)
+    const storepath = join(folderAuth, name + '_store.json')
+    this.store = new MemoryDataStore(storepath)
   }
 
   addHandler(event: WAEvent) {
@@ -29,7 +33,7 @@ export class WhatsappClient {
   }
 
   async start() {
-    this.conn = new WhastappConnection(this.auth)
+    this.conn = new WhastappConnection(this.auth, this.store)
     this.handlers.map((handler) => {
       if (handler instanceof MessageUpsert) {
         this.resolveMessageUpsert(handler)
