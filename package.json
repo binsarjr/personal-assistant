@@ -1,6 +1,7 @@
 {
 	"scripts": {
-		"dev": "ts-node src/index.ts"
+		"dev": "ts-node src/index.ts",
+		"build": "tsc"
 	},
 	"devDependencies": {
 		"@adiwajshing/baileys": "^5.0.0",

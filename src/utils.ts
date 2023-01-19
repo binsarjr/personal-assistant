@@ -55,9 +55,12 @@ export const sendMessageWTyping = async (
   await delay(randomInteger(200, 500))
 
   await sock.sendPresenceUpdate('composing', jid)
-  await delay(randomInteger(1500, 3000))
+  await delay(randomInteger(1000, 2000))
 
   await sock.sendPresenceUpdate('paused', jid)
 
   await sock.sendMessage(jid, msg)
 }
+
+export const toInCaseSensitive = (text: string) =>
+  new RegExp('\\b' + text + '\\b', 'i')
