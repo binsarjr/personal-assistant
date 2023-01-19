@@ -79,17 +79,22 @@ export class WhatsappClient {
             ValidateParticipantsAllowed(participant, participants)
           }
 
+          
           /**
-           * Periksa apakah pesan datang dari diri sendiri.
-           * Jika pesan datang dari diri sendiri, hentikan proses.
-           * kecuali jika handler mengijinkan pesan datang dari diri sendiri.
+           * Memeriksa apakah pesan diteruskan atau tidak.
+           * Jika onlyMe adalah true, pesan hanya akan diteruskan jika fromMe adalah true.
+           * Jika fromMe adalah false, pesan hanya akan diteruskan jika fromMe bukanlah
+           * true.
+           * 
+           * @param handler - mengandung informasi untuk menentukan apakah pesan
+           * diteruskan atau tidak.
+           * @param message - mengandung informasi tentang pesan.
            */
-          if (!handler.fromMe) if (message.key.fromMe) break
-          /**
-           * Jika hanya mengizinkan pesan dari pengirim, maka hentikan proses jika pesan
-           * tidak dari pengirim.
-           */
-          if (handler.onlyMe && !message.key.fromMe) break
+          if (handler.onlyMe) {
+            if (!message.key.fromMe) break
+          } 
+          else if (!handler.fromMe) if (message.key.fromMe) break
+          
 
           console.log(JSON.stringify(message, null, 2))
 

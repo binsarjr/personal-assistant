@@ -1,5 +1,7 @@
 import dotenv from 'dotenv'
 import { WhatsappClient } from './Facades/WhatsappClient'
+import { LagiDiChatHandler } from './Handler/Command/LagiDiChatHandler'
+import { LagiFree } from './Handler/Command/LagiFree'
 import { SetKesibukkan } from './Handler/Command/SetKesibukkan'
 import { Halo } from './Handler/HaloHandler'
 import { KickAllMember } from './Handler/KickAllMember'
@@ -21,4 +23,6 @@ kickmember.participants = [process.env?.JID_DEV || '']
 client.addHandler(halo1)
 client.addHandler(kickmember)
 client.addHandler(new SetKesibukkan())
+client.addHandler(new LagiFree())
+client.addHandler(new LagiDiChatHandler())
 client.start()

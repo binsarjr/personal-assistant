@@ -168,7 +168,7 @@ export class WhastappConnection {
               }),
             ).catch((error) => {
               if (error instanceof ValidateError) {
-                console.log(error.message)
+                console.log(error)
               } else {
                 throw error
               }
