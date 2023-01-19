@@ -81,6 +81,11 @@ export class WhatsappClient {
            * kecuali jika handler mengijinkan pesan datang dari diri sendiri.
            */
           if (!handler.fromMe) if (message.key.fromMe) break
+          /**
+           * Jika hanya mengizinkan pesan dari pengirim, maka hentikan proses jika pesan
+           * tidak dari pengirim.
+           */
+          if (handler.onlyMe && !message.key.fromMe) break
 
           console.log(JSON.stringify(message, null, 2))
 

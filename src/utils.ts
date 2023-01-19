@@ -1,13 +1,31 @@
-import { AnyMessageContent, WASocket, delay, proto } from '@adiwajshing/baileys'
+import {
+  AnyMessageContent,
+  WASocket,
+  delay,
+  getContentType,
+  proto,
+} from '@adiwajshing/baileys'
 import { existsSync, mkdirSync } from 'fs'
 import path from 'path'
 
-export const getMessageCaption = (message: proto.IMessage) =>
-  message.conversation ||
-  message.ephemeralMessage?.message?.extendedTextMessage?.text ||
-  message.extendedTextMessage?.text ||
-  ''
+export const getMessageCaption = (message: proto.IMessage) => {
+  const type = getContentType(message)!
+  const msg =
+    type == 'viewOnceMessage'
+      ? message[type]!.message![getContentType(message[type]!.message!)!]
+      : message[type]
 
+  return (
+    message.conversation ||
+    (msg as proto.Message.IVideoMessage).caption ||
+    (msg as proto.Message.IExtendedTextMessage).text ||
+    message.ephemeralMessage?.message?.extendedTextMessage?.text ||
+    message.extendedTextMessage?.text ||
+    (type == 'viewOnceMessage' &&
+      (msg as proto.Message.IVideoMessage).caption) ||
+    ''
+  )
+}
 /**
  * Memvalidasi apakah pola atau subjek cocok.
  * Fungsi ini menggunakan ekspresi reguler atau pencocokan string standar untuk
