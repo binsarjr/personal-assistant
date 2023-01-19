@@ -1,4 +1,6 @@
 import { AnyMessageContent, WASocket, delay, proto } from '@adiwajshing/baileys'
+import { existsSync, mkdirSync } from 'fs'
+import path from 'path'
 
 export const getMessageCaption = (message: proto.IMessage) =>
   message.conversation ||
@@ -64,3 +66,8 @@ export const sendMessageWTyping = async (
 
 export const toInCaseSensitive = (text: string) =>
   new RegExp('\\b' + text + '\\b', 'i')
+
+export const dataStorePath = path.join(__dirname, '../../.data_store')
+export const checkStore = () => {
+  !existsSync(dataStorePath) && mkdirSync(dataStorePath, { recursive: true })
+}

@@ -1,4 +1,5 @@
 lib
 .env
 .auths
+.data_store
 node_modules

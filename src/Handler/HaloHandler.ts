@@ -6,6 +6,7 @@ import { sendMessageWTyping, toInCaseSensitive } from '../utils'
 
 export class Halo extends MessageUpsert {
   participants: string[] = []
+  chat: 'all' | 'group' | 'user' = 'user'
   patterns = [toInCaseSensitive('hai'), toInCaseSensitive('halo')]
   handler({
     socket,
