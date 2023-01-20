@@ -1,13 +1,13 @@
 import { MessageUpsertType, proto } from '@adiwajshing/baileys'
-import { HandlerArgs } from '../../Contracts/IEventListener'
-import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
-import Queue from '../../Facades/Queue'
+import { HandlerArgs } from '../Contracts/IEventListener'
+import { MessageUpsert } from '../Facades/Events/Message/MessageUpsert'
+import Queue from '../Facades/Queue'
 import {
   getSibuk,
   hasSudahDikasihTahu,
   setSudahDikasihTahu,
-} from '../../Lib/Kesibukkan'
-import { sendMessageWTyping } from '../../utils'
+} from '../Lib/Kesibukkan'
+import { sendMessageWTyping } from '../utils'
 
 export class LagiDiChatHandler extends MessageUpsert {
   chat: 'all' | 'group' | 'user' = 'user'

@@ -2,12 +2,11 @@ import { MessageUpsertType, proto } from '@adiwajshing/baileys'
 import { HandlerArgs } from '../Contracts/IEventListener'
 import { MessageUpsert } from '../Facades/Events/Message/MessageUpsert'
 import Queue from '../Facades/Queue'
-import { sendMessageWTyping, toInCaseSensitive } from '../utils'
+import { sendMessageWTyping } from '../utils'
 
 export class Halo extends MessageUpsert {
-  participants: string[] = []
   chat: 'all' | 'group' | 'user' = 'user'
-  patterns = [toInCaseSensitive('hai'), toInCaseSensitive('halo')]
+  patterns = ['hai', 'halo']
   handler({
     socket,
     props: upsert,
@@ -19,7 +18,45 @@ export class Halo extends MessageUpsert {
     Queue(() =>
       sendMessageWTyping(
         {
-          text: 'Halo saya Binsar Dwi Jasuma ada yang bisa saya bantu?',
+          text: 'Halo! saya Binsar Dwi Jasuma ada yang bisa saya bantu?',
+          footer: 'Ketuk salah satu dibawah ini',
+          templateButtons: [
+            {
+              index: 1,
+              urlButton: {
+                displayText: 'Github',
+                url: 'https://github.com/binsarjr',
+              },
+            },
+            {
+              index: 2,
+              urlButton: {
+                displayText: 'LinkedIn',
+                url: 'https://www.linkedin.com/in/binsarjr/',
+              },
+            },
+            {
+              index: 3,
+              quickReplyButton: {
+                displayText: 'Lihat Profil',
+                id: 'lihat-profil',
+              },
+            },
+            // {
+            //   index: 2,
+            //   callButton: {
+            //     displayText: 'Call me!',
+            //     phoneNumber: '+1 (234) 5678-901',
+            //   },
+            // },
+            // {
+            //   index: 3,
+            //   quickReplyButton: {
+            //     displayText: 'This is a reply, just like normal buttons!',
+            //     id: 'id-like-buttons-message',
+            //   },
+            // },
+          ],
         },
         jid,
         socket,

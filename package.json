@@ -5,7 +5,7 @@
 		"build": "rm -rf lib && tsc"
 	},
 	"devDependencies": {
-		"@adiwajshing/baileys": "^5.0.0",
+		"@adiwajshing/baileys": "github:adiwajshing/baileys",
 		"@adiwajshing/keyed-db": "^0.2.4",
 		"@types/node": "^18.11.18",
 		"link-preview-js": "^3.0.4",
