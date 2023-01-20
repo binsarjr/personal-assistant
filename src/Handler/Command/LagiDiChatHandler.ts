@@ -26,7 +26,7 @@ export class LagiDiChatHandler extends MessageUpsert {
       Queue(() =>
         sendMessageWTyping(
           {
-            text: `Maaf, Saat ini saya sedang sibuk *${sibuk}* .tuliskan keperluan mu apa.Biar nanti begitu waktu luang akan saya cek.`,
+            text: `Maaf, saat ini saya sedang tidak dapat dihubungi karena sedang ${sibuk}. Silakan menuliskan keperluan Anda, dan saya akan memeriksanya saat saya sudah luang.`,
           },
           jid,
           socket,
