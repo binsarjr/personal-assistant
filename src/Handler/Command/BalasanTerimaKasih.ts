@@ -2,35 +2,35 @@ import { MessageUpsertType, proto } from '@adiwajshing/baileys'
 import { HandlerArgs } from '../../Contracts/IEventListener'
 import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
 import Queue from '../../Facades/Queue'
-import { sendMessageWTyping } from '../../utils'
 
-export class JanganManggilDoang extends MessageUpsert {
+export class BalasanTerimaKasih extends MessageUpsert {
   chat: 'all' | 'group' | 'user' = 'user'
   patterns: string | false | RegExp | (string | RegExp)[] = [
-    'mas bin',
-    'mas',
-    'ngab',
-    'bin',
-    'sar',
-    'p',
+    /ma?ka?si?h/i,
+    /thanks/i,
+    /thank you/i,
+    /thank u/i,
+    /terima kasih/i,
+    'thanks',
+    'thank you',
+    'thank u',
+    'terima kasih',
   ]
   handler({
-    props,
     socket,
+    props,
   }: HandlerArgs<{
     message: proto.IWebMessageInfo
     type: MessageUpsertType
   }>): void | Promise<void> {
     const jid = props.message.key.remoteJid || ''
     Queue(() =>
-      sendMessageWTyping(
-        {
-          text:
-            'Maaf, saat ini Binsar sedang tidak dapat dihubungi. Silakan tuliskan permintaan Anda dan akan kami sampaikan kepada Binsar untuk ditindaklanjuti setelah dia kembali online.',
+      socket.sendMessage(jid, {
+        react: {
+          text: '👍',
+          key: props.message.key,
         },
-        jid,
-        socket,
-      ),
+      }),
     )
   }
 }
