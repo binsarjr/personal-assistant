@@ -40,7 +40,7 @@ export const validatePattern = (pattern: string | RegExp, subject: string) => {
   if (pattern instanceof RegExp) {
     return pattern.test(subject)
   } else {
-    return pattern == subject
+    return new RegExp(`^${pattern}$`, 'i').test(subject)
   }
 }
 
