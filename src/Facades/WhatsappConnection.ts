@@ -1,5 +1,6 @@
 import makeWASocket, {
   BaileysEventMap,
+  Browsers,
   DisconnectReason,
   WASocket,
   fetchLatestBaileysVersion,
@@ -51,6 +52,33 @@ export class WhastappConnection {
       shouldIgnoreJid: (jid) =>
         isJidBroadcast(jid) || isJidStatusBroadcast(jid),
       generateHighQualityLinkPreview: true,
+      // can use Windows, Ubuntu here too
+      browser: Browsers.macOS('Desktop'),
+      syncFullHistory: true,
+      // solusi bug button dan semacamnya tidak tampil
+      // https://github.com/adiwajshing/Baileys/issues/2328#issuecomment-1316161411
+      patchMessageBeforeSending: (message) => {
+        const requiresPatch = !!(
+          message.buttonsMessage ||
+          message.templateMessage ||
+          message.listMessage
+        )
+        if (requiresPatch) {
+          message = {
+            viewOnceMessage: {
+              message: {
+                messageContextInfo: {
+                  deviceListMetadataVersion: 2,
+                  deviceListMetadata: {},
+                },
+                ...message,
+              },
+            },
+          }
+        }
+
+        return message
+      },
     })
     this.store.store.bind(this.socket.ev)
 
