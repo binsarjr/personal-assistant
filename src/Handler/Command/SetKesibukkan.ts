@@ -5,7 +5,7 @@ import Queue from '../../Facades/Queue'
 import { setSibuk } from '../../Lib/Kesibukkan'
 import { getMessageCaption, sendMessageWTyping } from '../../utils'
 
-const regex = /^\.setsibuk (.*)/i
+const regex = /^\.sibuk (.*)/i
 
 export class SetKesibukkan extends MessageUpsert {
   patterns: string | false | RegExp | (string | RegExp)[] = [regex]
