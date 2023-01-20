@@ -54,7 +54,6 @@ export class WhastappConnection {
       generateHighQualityLinkPreview: true,
       // can use Windows, Ubuntu here too
       browser: Browsers.macOS('Desktop'),
-      syncFullHistory: true,
       // solusi bug button dan semacamnya tidak tampil
       // https://github.com/adiwajshing/Baileys/issues/2328#issuecomment-1316161411
       patchMessageBeforeSending: (message) => {

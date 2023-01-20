@@ -1,9 +1,11 @@
 import { isJidGroup } from '@adiwajshing/baileys'
 import { join } from 'path'
 import { WAEvent } from '../Contracts/WaEvent'
+import { ValidateError } from '../Exceptions'
 import { getMessageCaption } from '../utils'
 import { Auth } from './Auth'
 import { MessageUpsert } from './Events/Message/MessageUpsert'
+import { MessageUpsertTemplateButton } from './Events/Message/MessageUpsertTemplateButton'
 import { MemoryDataStore } from './Store/MemoryDataStore'
 import { ValidateChatAccess } from './Validation/ValidateChatAccess'
 import { ValidateGroupAccess } from './Validation/ValidateGroupAccess'
@@ -35,23 +37,43 @@ export class WhatsappClient {
   async start() {
     this.conn = new WhastappConnection(this.auth, this.store)
     this.handlers.map((handler) => {
-      if (handler instanceof MessageUpsert) {
+      if (
+        handler instanceof MessageUpsert ||
+        handler instanceof MessageUpsertTemplateButton
+      ) {
         this.resolveMessageUpsert(handler)
       }
-      // else if
     })
 
     this.conn.createConnection()
   }
-  private resolveMessageUpsert(handler: MessageUpsert) {
+  private resolveMessageUpsert(
+    handler: MessageUpsert | MessageUpsertTemplateButton,
+  ) {
     this.conn?.onEvents('messages.upsert', async (args) => {
       if (handler.type == 'all' || handler.type == args.props.type) {
         for (const message of args.props.messages) {
           const jid = message.key.remoteJid || ''
           if (!message?.message) break
 
-          const text = getMessageCaption(message.message)
-          if (handler.patterns) validatePatternMatch(text, handler.patterns)
+          /**
+           * Memvalidasi message yang dikirim.
+           * 
+           * @param handler - Mengandung informasi tentang pesan yang diterima.
+           * @param message - Pesan yang diterima.
+           * @returns void 
+           */
+          if (handler instanceof MessageUpsert) {
+            const text = getMessageCaption(message.message)
+            if (handler.patterns) validatePatternMatch(text, handler.patterns)
+          } else if (handler instanceof MessageUpsertTemplateButton) {
+            const selectedId =
+              message.message.templateButtonReplyMessage?.selectedId
+            if (handler.selectedId != selectedId)
+              throw new ValidateError(
+                'Selected id tidak sesuai dengan proses saat ini',
+              )
+          }
 
           ValidateChatAccess(jid, handler.chat)
 
@@ -79,22 +101,19 @@ export class WhatsappClient {
             ValidateParticipantsAllowed(participant, participants)
           }
 
-          
           /**
            * Memeriksa apakah pesan diteruskan atau tidak.
            * Jika onlyMe adalah true, pesan hanya akan diteruskan jika fromMe adalah true.
            * Jika fromMe adalah false, pesan hanya akan diteruskan jika fromMe bukanlah
            * true.
-           * 
+           *
            * @param handler - mengandung informasi untuk menentukan apakah pesan
            * diteruskan atau tidak.
            * @param message - mengandung informasi tentang pesan.
            */
           if (handler.onlyMe) {
             if (!message.key.fromMe) break
-          } 
-          else if (!handler.fromMe) if (message.key.fromMe) break
-          
+          } else if (!handler.fromMe) if (message.key.fromMe) break
 
           console.log(JSON.stringify(message, null, 2))
 
