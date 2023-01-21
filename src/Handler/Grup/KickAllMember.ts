@@ -1,10 +1,15 @@
 import { MessageUpsertType, proto } from '@adiwajshing/baileys'
-import { HandlerArgs } from '../Contracts/IEventListener'
-import { MessageUpsert } from '../Facades/Events/Message/MessageUpsert'
-import Queue from '../Facades/Queue'
+import { HandlerArgs } from '../../Contracts/IEventListener'
+import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
+import Queue from '../../Facades/Queue'
+import { throwIfIamNotAdmin } from '../../Facades/Validation/Throw/throwIfIamNotAdmin'
 
 export class KickAllMember extends MessageUpsert {
-  patterns: string | false | RegExp | (string | RegExp)[] = ['.kickmember']
+  patterns: string | false | RegExp | (string | RegExp)[] = [
+    '.kic?kall',
+    '.kic?kmember',
+  ]
+  fromMe: boolean = true
   groupAccess: 'all' | 'admin' | 'member' = 'admin'
   chat: 'all' | 'group' | 'user' = 'group'
   async handler({
@@ -16,6 +21,7 @@ export class KickAllMember extends MessageUpsert {
   }>): Promise<void> {
     const jid = upsert.message.key.remoteJid || ''
     const participants = (await socket.groupMetadata(jid)).participants
+    throwIfIamNotAdmin(socket, jid, participants)
     const members = participants.filter((p) => !p.admin).map((p) => p.id)
     // const admins = participants.filter(p => !!p.admin).map(p => p.id)
     try {

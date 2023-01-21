@@ -30,8 +30,8 @@ export class WhatsappClient {
     this.store = new MemoryDataStore(storepath)
   }
 
-  addHandler(event: WAEvent) {
-    this.handlers.push(event)
+  addHandler(...events: WAEvent[]) {
+    events.map((event) => this.handlers.push(event))
   }
 
   async start() {
@@ -58,10 +58,10 @@ export class WhatsappClient {
 
           /**
            * Memvalidasi message yang dikirim.
-           * 
+           *
            * @param handler - Mengandung informasi tentang pesan yang diterima.
            * @param message - Pesan yang diterima.
-           * @returns void 
+           * @returns void
            */
           if (handler instanceof MessageUpsert) {
             const text = getMessageCaption(message.message)
