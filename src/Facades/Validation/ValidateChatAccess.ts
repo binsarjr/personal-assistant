@@ -1,4 +1,11 @@
-import { isJidGroup, isJidUser } from '@adiwajshing/baileys'
+import {
+  getContentType,
+  isJidGroup,
+  isJidUser,
+  jidNormalizedUser,
+  proto,
+} from '@adiwajshing/baileys'
+import { ChatType } from '../../Contracts/ChatType'
 import { ValidateError } from '../../Exceptions'
 
 /**
@@ -11,8 +18,11 @@ import { ValidateError } from '../../Exceptions'
  */
 export const ValidateChatAccess = (
   jid: string,
-  chat: 'group' | 'user' | 'all',
+  chat: ChatType,
+  message: proto.IMessage,
+  participantId: string,
 ) => {
+  participantId = jidNormalizedUser(participantId)
   if (chat !== 'all') {
     if (chat === 'group') {
       if (!isJidGroup(jid))
@@ -22,6 +32,27 @@ export const ValidateChatAccess = (
         throw new ValidateError(
           'Proses hanya bisa digunakan oleh chat user/personal',
         )
+    } else if (chat == 'mention') {
+      // skip if is in private chat.because mention it mean work on personal chat
+      // and group mentioned
+      if (isJidUser(jid)) return
+      const type = getContentType(message)!
+      const msg =
+        type == 'viewOnceMessage'
+          ? message[type]!.message![getContentType(message[type]!.message!)!]
+          : message[type]
+      const mentions =
+        message?.extendedTextMessage?.contextInfo?.mentionedJid ||
+        (msg as proto.IMessage)?.extendedTextMessage?.contextInfo
+          ?.mentionedJid ||
+        (msg as proto.Message.IExtendedTextMessage)?.contextInfo
+          ?.mentionedJid ||
+        []
+      if (!mentions.includes(participantId)) {
+        throw new ValidateError(
+          'Proses hanya bisa digunakan oleh chat pada saat di mention',
+        )
+      }
     }
   }
 }

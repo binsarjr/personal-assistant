@@ -1,11 +1,12 @@
 import { MessageUpsertType, proto } from '@adiwajshing/baileys'
+import { ChatType } from '../../Contracts/ChatType'
 import { HandlerArgs } from '../../Contracts/IEventListener'
 import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
 import Queue from '../../Facades/Queue'
 import { sendMessageWTyping } from '../../utils'
 
 export class JanganManggilDoang extends MessageUpsert {
-  chat: 'all' | 'group' | 'user' = 'user'
+  chat: ChatType = 'mention'
   patterns: string | false | RegExp | (string | RegExp)[] = [
     '^mas bin',
     '^mas binsar',

@@ -1,4 +1,5 @@
 import { MessageUpsertType, WAMessage } from '@adiwajshing/baileys'
+import { ChatType } from '../../../Contracts/ChatType'
 import { MessageEvent } from '../../../Contracts/Events/MessageEvent'
 import { HandlerArgs } from '../../../Contracts/IEventListener'
 import { Pattern } from '../../../Contracts/Pattern'
@@ -19,7 +20,7 @@ export abstract class MessageUpsert extends MessageEvent implements Pattern {
    * user - chat personal user saja
    * group - group chat
    */
-  chat: 'group' | 'user' | 'all' = 'all'
+  chat: ChatType = 'all'
   /**
    * Untuk mengecek ketika chat adalah sebuah grup.
    * lanjutkan proses sesuai dengan setttingan grup access

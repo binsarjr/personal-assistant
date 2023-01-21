@@ -112,7 +112,12 @@ export class WhatsappClient {
               )
           }
 
-          ValidateChatAccess(jid, handler.chat)
+          ValidateChatAccess(
+            jid,
+            handler.chat,
+            message.message!,
+            args.socket.user!.id,
+          )
 
           /**
            * Lakukan suatu proses apabila pesan yang masuk berasal dari grup
