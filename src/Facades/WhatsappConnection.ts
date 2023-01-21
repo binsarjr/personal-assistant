@@ -194,6 +194,13 @@ export class WhastappConnection {
                 socket: this.socket!,
               }),
             ).catch((error) => {
+              /**
+               * Memeriksa apakah error adalah instance dari ValidateError.
+               * Jika iya, error akan dilog di console.
+               * Jika tidak, error akan dibuang.
+               * 
+               * @param error - error yang akan diproses.
+               */
               if (error instanceof ValidateError) {
                 console.log(error)
               } else {

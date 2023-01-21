@@ -1,7 +1,16 @@
 import { ValidateError } from '../../Exceptions'
 import { validatePattern } from '../../utils'
+
 /**
- * Mendapatkan potongan pesan dan melakukan validasi pola yang diberikan.
+ * Memeriksa apakah inputan string cocok dengan satu dari pola-pola yang
+ * disediakan.
+ * Fungsi ini menggunakan loop untuk memeriksa satu per satu pola yang
+ * disediakan dan menghasilkan true jika salah satu cocok.
+ * 
+ * @param text - inputan string yang akan dicek.
+ * @param patterns - daftar pola atau reguler expression yang digunakan untuk
+ * memeriksa.
+ * @throws ValidateError jika tidak ada pola yang cocok dengan inputan.
  */
 export const validatePatternMatch = (
   text: string,

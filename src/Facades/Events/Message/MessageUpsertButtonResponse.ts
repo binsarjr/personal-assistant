@@ -3,12 +3,17 @@ import { ChatType } from '../../../Contracts/ChatType'
 import { MessageEvent } from '../../../Contracts/Events/MessageEvent'
 import { HandlerArgs } from '../../../Contracts/IEventListener'
 
+
 /**
- * Kelas abstrak MessageUpsert exteds MessageEvent  dan implements Pattern
- * patterns: menentukan jenis ekspresi reguler atau string.
- * type: tipe MessageUpsert dapat berupa "all".
- * handler() : menerima parameter berupa objek HandlerArgs dan berisi atribut
- * message dan type WAMessage
+ * Kelas untuk memberikan respons dari button upsert.
+ * 
+ * @prop selectedId - id yang dipilih.
+ * @prop type - tipe message, 'all' untuk semua message.
+ * @prop chat - tipe chat, 'all' untuk semua chat.
+ * @prop groupAccess - jika tipe chat adalah sebuah grup, maka ini adalah access
+ * yang diperbolehkan 'admin' hanya untuk admin saja, 'member' untuk member saja dan
+ * 'all' untuk semua.
+ * @method handler - method untuk handle button response.
  */
 export abstract class MessageUpsertButtonResponse extends MessageEvent {
   abstract selectedId: string
