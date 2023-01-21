@@ -2,7 +2,6 @@ import { MessageUpsertType, isJidUser, proto } from '@adiwajshing/baileys'
 import { HandlerArgs } from '../../Contracts/IEventListener'
 import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
 import Queue from '../../Facades/Queue'
-import { throwIfIamNotAdmin } from '../../Facades/Validation/Throw/throwIfIamNotAdmin'
 import { getMessageCaption } from '../../utils'
 
 const regex = /.add (.*)/i
@@ -19,8 +18,6 @@ export class AddMember extends MessageUpsert {
     type: MessageUpsertType
   }>) {
     const jid = props.message.key.remoteJid || ''
-    const participantsCheck = (await socket.groupMetadata(jid)).participants
-    throwIfIamNotAdmin(socket, jid, participantsCheck)
 
     const text = getMessageCaption(props.message.message!)
     const participants: string[] = []
@@ -48,6 +45,12 @@ export class AddMember extends MessageUpsert {
       })
     }
 
-    Queue(() => socket.groupParticipantsUpdate(jid, participants, 'add'))
+    try {
+      await Queue(() =>
+        socket.groupParticipantsUpdate(jid, participants, 'add'),
+      )
+    } catch (error) {
+      console.log('Bukan admin add member')
+    }
   }
 }

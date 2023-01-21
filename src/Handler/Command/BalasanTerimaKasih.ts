@@ -11,10 +11,10 @@ export class BalasanTerimaKasih extends MessageUpsert {
     /thank you/i,
     /thank u/i,
     /terima kasih/i,
-    'thanks',
-    'thank you',
-    'thank u',
-    'terima kasih',
+    'thanks?',
+    'tha?nk ?y?o?u',
+    'tha?nk ?u',
+    'te?ri?ma ?ka?si?h',
   ]
   handler({
     socket,
@@ -27,7 +27,7 @@ export class BalasanTerimaKasih extends MessageUpsert {
     Queue(() =>
       socket.sendMessage(jid, {
         react: {
-          text: '👍',
+          text: '👌',
           key: props.message.key,
         },
       }),
