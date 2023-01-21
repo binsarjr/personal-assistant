@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import { WhatsappClient } from './Facades/WhatsappClient'
+import { CobaButton } from './Handler/CobaButton'
 import { BalasanTerimaKasih } from './Handler/Command/BalasanTerimaKasih'
 import { JanganManggilDoang } from './Handler/Command/JanganManggilDoang'
 import { LagiFree } from './Handler/Command/LagiFree'
@@ -30,4 +31,6 @@ client.addHandler(new SetKesibukkan(), new LagiFree(), new LagiDiChatHandler())
 client.addHandler(new JanganManggilDoang())
 client.addHandler(new BalasanTerimaKasih())
 client.addHandler(new AddMember(), new KickAllMember())
+
+client.addHandler(new CobaButton())
 client.start()

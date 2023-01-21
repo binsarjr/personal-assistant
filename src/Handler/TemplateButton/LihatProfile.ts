@@ -1,10 +1,10 @@
 import { MessageUpsertType, proto } from '@adiwajshing/baileys'
 import { HandlerArgs } from '../../Contracts/IEventListener'
 import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
-import { MessageUpsertTemplateButton } from '../../Facades/Events/Message/MessageUpsertTemplateButton'
+import { MessageUpsertButtonResponse } from '../../Facades/Events/Message/MessageUpsertButtonResponse'
 import { sendProfile } from '../../Lib/sendProfile'
 
-export class LihatProfileTemplateButton extends MessageUpsertTemplateButton {
+export class LihatProfileTemplateButton extends MessageUpsertButtonResponse {
   selectedId: string = 'lihat-profil'
   handler({
     socket,

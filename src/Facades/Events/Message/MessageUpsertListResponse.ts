@@ -9,7 +9,7 @@ import { HandlerArgs } from '../../../Contracts/IEventListener'
  * handler() : menerima parameter berupa objek HandlerArgs dan berisi atribut
  * message dan type WAMessage
  */
-export abstract class MessageUpsertTemplateButton extends MessageEvent {
+export abstract class MessageUpsertListResponse extends MessageEvent {
   abstract selectedId: string
   type: MessageUpsertType | 'all' = 'all'
   /**

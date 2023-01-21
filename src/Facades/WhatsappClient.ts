@@ -5,7 +5,8 @@ import { ValidateError } from '../Exceptions'
 import { getMessageCaption } from '../utils'
 import { Auth } from './Auth'
 import { MessageUpsert } from './Events/Message/MessageUpsert'
-import { MessageUpsertTemplateButton } from './Events/Message/MessageUpsertTemplateButton'
+import { MessageUpsertButtonResponse } from './Events/Message/MessageUpsertButtonResponse'
+import { MessageUpsertListResponse } from './Events/Message/MessageUpsertListResponse'
 import { MemoryDataStore } from './Store/MemoryDataStore'
 import { ValidateChatAccess } from './Validation/ValidateChatAccess'
 import { ValidateGroupAccess } from './Validation/ValidateGroupAccess'
@@ -39,7 +40,7 @@ export class WhatsappClient {
     this.handlers.map((handler) => {
       if (
         handler instanceof MessageUpsert ||
-        handler instanceof MessageUpsertTemplateButton
+        handler instanceof MessageUpsertButtonResponse
       ) {
         this.resolveMessageUpsert(handler)
       }
@@ -48,7 +49,10 @@ export class WhatsappClient {
     this.conn.createConnection()
   }
   private resolveMessageUpsert(
-    handler: MessageUpsert | MessageUpsertTemplateButton,
+    handler:
+      | MessageUpsert
+      | MessageUpsertButtonResponse
+      | MessageUpsertListResponse,
   ) {
     this.conn?.onEvents('messages.upsert', async (args) => {
       if (handler.type == 'all' || handler.type == args.props.type) {
@@ -64,12 +68,45 @@ export class WhatsappClient {
            * @returns void
            */
           if (handler instanceof MessageUpsert) {
+            /**
+             * Mendapatkan keterangan pesan dan memvalidasi pola cocok.
+             *
+             * @param message - pesan yang dikirim.
+             * @param handler - pemegang data pola yang valid.
+             */
             const text = getMessageCaption(message.message)
             if (handler.patterns) validatePatternMatch(text, handler.patterns)
-          } else if (handler instanceof MessageUpsertTemplateButton) {
+          } else if (handler instanceof MessageUpsertButtonResponse) {
+            /**
+             * Memastikan bahwa 'selectedId' yang dipilih cocok dengan proses saat ini.
+             *
+             * @param message - berisi informasi yang dibutuhkan untuk melakukan validasi.
+             * @param handler - data yang dibutuhkan untuk melakukan validasi.
+             * @throws ValidateError - jika 'selectedId' yang dipilih tidak cocok dengan
+             * proses saat ini.
+             */
             const selectedId =
-              message.message.templateButtonReplyMessage?.selectedId
+              message.message?.templateButtonReplyMessage?.selectedId ||
+              message.message?.buttonsResponseMessage?.selectedButtonId
             if (handler.selectedId != selectedId)
+              throw new ValidateError(
+                'Selected id tidak sesuai dengan proses saat ini',
+              )
+          } else if (handler instanceof MessageUpsertListResponse) {
+            /**
+             * Memvalidasi apakah id yang terpilih sesuai dengan handler.selectedId.
+             * Jika tidak sesuai, fungsi akan melemparkan sebuah error bernama ValidateError
+             * dengan pesan 'Selected id tidak sesuai dengan proses saat ini'.
+             *
+             * @param message - informasi yang diperlukan untuk memvalidasi id yang
+             * terpilih.
+             * @param handler - informasi mengenai proses saat ini.
+             * @returns void.
+             */
+            const selectedRowId =
+              message.message?.listResponseMessage?.singleSelectReply
+                ?.selectedRowId
+            if (handler.selectedId != selectedRowId)
               throw new ValidateError(
                 'Selected id tidak sesuai dengan proses saat ini',
               )
