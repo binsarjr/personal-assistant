@@ -8,14 +8,14 @@ import { sendMessageWTyping } from '../../utils'
 export class JanganManggilDoang extends MessageUpsert {
   chat: ChatType = 'mention'
   patterns: string | false | RegExp | (string | RegExp)[] = [
-    '^mas bin',
-    '^mas binsar',
-    '^mas',
-    '^ngab',
-    '^bin',
-    '^pak bin',
-    '^sar',
-    '^p',
+    'mas bin',
+    'mas binsar',
+    'mas',
+    'ngab',
+    'bin',
+    'pak bin',
+    'sar',
+    'p',
   ]
   handler({
     props,

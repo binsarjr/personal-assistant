@@ -11,10 +11,10 @@ export class BalasanTerimaKasih extends MessageUpsert {
     /thank you/i,
     /thank u/i,
     /terima kasih/i,
-    'thanks?',
-    'tha?nk ?y?o?u',
-    'tha?nk ?u',
-    'te?ri?ma ?ka?si?h',
+    new RegExp('thanks?', 'i'),
+    new RegExp('tha?nk ?y?o?u', 'i'),
+    new RegExp('tha?nk ?u', 'i'),
+    new RegExp('te?ri?ma ?ka?si?h', 'i'),
   ]
   handler({
     socket,
