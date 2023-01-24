@@ -13,6 +13,7 @@ export class JanganManggilDoang extends MessageUpsert {
     'mas',
     'ngab',
     'bin',
+    'bro',
     'pak bin',
     'sar',
     'p',
@@ -25,6 +26,7 @@ export class JanganManggilDoang extends MessageUpsert {
     type: MessageUpsertType
   }>): void | Promise<void> {
     const jid = props.message.key.remoteJid || ''
+    const message=  props.message.message 
     Queue(() =>
       sendMessageWTyping(
         {
