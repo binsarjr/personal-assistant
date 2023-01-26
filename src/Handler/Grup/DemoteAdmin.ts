@@ -1,19 +1,10 @@
-import {
-  MessageUpsertType,
-  getContentType,
-  isJidUser,
-  proto,
-} from '@adiwajshing/baileys'
+import { MessageUpsertType, getContentType, proto } from '@adiwajshing/baileys'
 import { HandlerArgs } from '../../Contracts/IEventListener'
 import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
 import Queue from '../../Facades/Queue'
-import { getMessageCaption, getMessageQutoedCaption } from '../../utils'
 
-export class AddMember extends MessageUpsert {
-  patterns: string | false | RegExp | (string | RegExp)[] = ['/add', /\/add .*/i,
-  new RegExp('touch .*','i'),
-]
-  onlyMe: boolean = true
+export class DemoteAdmin extends MessageUpsert {
+  patterns: string | false | RegExp | (string | RegExp)[] = [/\/demote .*/i]
   fromMe: boolean = true
   groupAccess: 'all' | 'admin' | 'member' = 'admin'
   chat: 'all' | 'group' | 'user' = 'group'
@@ -25,10 +16,6 @@ export class AddMember extends MessageUpsert {
     type: MessageUpsertType
   }>) {
     const jid = props.message.key.remoteJid || ''
-
-    const text = getMessageCaption(props.message.message!)
-    const quotedText = getMessageQutoedCaption(props.message.message!)
-    const raw = text + ' ' + quotedText
 
     let participants: string[] = []
     // mentioned jid
@@ -49,31 +36,9 @@ export class AddMember extends MessageUpsert {
     mentions = mentions.filter(Boolean)
     participants = [...participants, ...mentions]
 
-    // cek apabila ternyata add nya ad spasi dan kemungkinan add by nomor
-    raw.split(/\s+/).map((w) => {
-      if (!w.includes('@') && /^\d+$/.test(w)) w += '@s.whatsapp.net'
-      if (isJidUser(w)) participants.push(w)
-    })
-
-    const quotedMessage =
-      props.message.message?.extendedTextMessage?.contextInfo?.quotedMessage
-    const contacts =
-      quotedMessage?.contactsArrayMessage?.contacts || [
-        quotedMessage?.contactMessage,
-      ] ||
-      []
-    if (contacts.length) {
-      contacts.filter(Boolean).map((contact) => {
-        const vcard = contact?.vcard || ''
-        let jid = /waid=(\d+)/i.exec(vcard)![1] || ''
-        jid += '@s.whatsapp.net'
-        if (isJidUser(jid)) participants.push(jid)
-      })
-    }
-
     try {
       await Queue(() =>
-        socket.groupParticipantsUpdate(jid, participants, 'add'),
+        socket.groupParticipantsUpdate(jid, participants, 'demote'),
       )
     } catch (error) {
       console.log('Bukan admin add member')

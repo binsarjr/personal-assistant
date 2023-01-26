@@ -7,13 +7,18 @@ import {
 import { HandlerArgs } from '../../Contracts/IEventListener'
 import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
 import Queue from '../../Facades/Queue'
-import { getMessageCaption, getMessageQutoedCaption } from '../../utils'
+import {
+  getMessageCaption,
+  getMessageQutoedCaption,
+  sendMessageWTyping,
+} from '../../utils'
 
-export class AddMember extends MessageUpsert {
-  patterns: string | false | RegExp | (string | RegExp)[] = ['/add', /\/add .*/i,
-  new RegExp('touch .*','i'),
-]
-  onlyMe: boolean = true
+export class KickMember extends MessageUpsert {
+  patterns: string | false | RegExp | (string | RegExp)[] = [
+    '/rm',
+    /rm .*/i,
+    /sudo rm .*/i,
+  ]
   fromMe: boolean = true
   groupAccess: 'all' | 'admin' | 'member' = 'admin'
   chat: 'all' | 'group' | 'user' = 'group'
@@ -27,6 +32,21 @@ export class AddMember extends MessageUpsert {
     const jid = props.message.key.remoteJid || ''
 
     const text = getMessageCaption(props.message.message!)
+    if (text.startsWith('rm ') && !props.message.key.fromMe) {
+      Queue(() =>
+        sendMessageWTyping(
+          {
+            text: 'Permission Danied',
+          },
+          jid,
+          socket,
+          {
+            quoted: props.message,
+          },
+        ),
+      )
+      return
+    }
     const quotedText = getMessageQutoedCaption(props.message.message!)
     const raw = text + ' ' + quotedText
 
@@ -40,11 +60,9 @@ export class AddMember extends MessageUpsert {
         : message[type]
 
     let mentions =
-      message.extendedTextMessage?.contextInfo?.quotedMessage
-        ?.extendedTextMessage?.contextInfo?.mentionedJid ||
+      message.extendedTextMessage?.contextInfo?.mentionedJid ||
       (msg as proto.Message.IVideoMessage).contextInfo?.mentionedJid ||
-      (msg as proto.IMessage).extendedTextMessage?.contextInfo?.quotedMessage
-        ?.extendedTextMessage?.contextInfo?.mentionedJid ||
+      (msg as proto.IMessage).extendedTextMessage?.contextInfo?.mentionedJid ||
       []
     mentions = mentions.filter(Boolean)
     participants = [...participants, ...mentions]
@@ -62,6 +80,7 @@ export class AddMember extends MessageUpsert {
         quotedMessage?.contactMessage,
       ] ||
       []
+
     if (contacts.length) {
       contacts.filter(Boolean).map((contact) => {
         const vcard = contact?.vcard || ''
@@ -71,9 +90,10 @@ export class AddMember extends MessageUpsert {
       })
     }
 
+    console.log(participants, 'oka')
     try {
       await Queue(() =>
-        socket.groupParticipantsUpdate(jid, participants, 'add'),
+        socket.groupParticipantsUpdate(jid, participants, 'remove'),
       )
     } catch (error) {
       console.log('Bukan admin add member')

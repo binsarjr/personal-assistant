@@ -1,5 +1,6 @@
 import {
   AnyMessageContent,
+  MiscMessageGenerationOptions,
   WASocket,
   delay,
   getContentType,
@@ -23,6 +24,22 @@ export const getMessageCaption = (message: proto.IMessage) => {
     message.extendedTextMessage?.text ||
     (type == 'viewOnceMessage' &&
       (msg as proto.Message.IVideoMessage).caption) ||
+    ''
+  )
+}
+export const getMessageQutoedCaption = (message: proto.IMessage) => {
+  const type = getContentType(message)!
+  const msg =
+    type == 'viewOnceMessage'
+      ? message[type]!.message![getContentType(message[type]!.message!)!]
+      : message[type]
+
+  return (
+    message?.ephemeralMessage?.message?.extendedTextMessage?.contextInfo
+      ?.quotedMessage?.conversation ||
+    message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation ||
+    (msg as proto.Message.IVideoMessage)?.contextInfo?.quotedMessage
+      ?.conversation ||
     ''
   )
 }
@@ -70,6 +87,7 @@ export const sendMessageWTyping = async (
   msg: AnyMessageContent,
   jid: string,
   sock: WASocket,
+  options?: MiscMessageGenerationOptions,
 ) => {
   await sock.presenceSubscribe(jid)
   await delay(randomInteger(200, 500))
@@ -79,7 +97,7 @@ export const sendMessageWTyping = async (
 
   await sock.sendPresenceUpdate('paused', jid)
 
-  await sock.sendMessage(jid, msg)
+  await sock.sendMessage(jid, msg, options)
 }
 
 export const toInCaseSensitive = (text: string) =>

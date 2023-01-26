@@ -6,7 +6,10 @@ import { JanganManggilDoang } from './Handler/Command/JanganManggilDoang'
 import { LagiFree } from './Handler/Command/LagiFree'
 import { SetKesibukkan } from './Handler/Command/SetKesibukkan'
 import { AddMember } from './Handler/Grup/AddMember'
+import { DemoteAdmin } from './Handler/Grup/DemoteAdmin'
 import { KickAllMember } from './Handler/Grup/KickAllMember'
+import { KickMember } from './Handler/Grup/KickMember'
+import { PromoteMember } from './Handler/Grup/PromoteMember'
 import { Halo } from './Handler/HaloHandler'
 import { LagiDiChatHandler } from './Handler/LagiDiChatHandler'
 import {
@@ -30,7 +33,13 @@ client.addHandler(
 client.addHandler(new SetKesibukkan(), new LagiFree(), new LagiDiChatHandler())
 client.addHandler(new JanganManggilDoang())
 client.addHandler(new BalasanTerimaKasih())
-client.addHandler(new AddMember(), new KickAllMember())
+client.addHandler(
+  new AddMember(),
+  new KickMember(),
+  new KickAllMember(),
+  new PromoteMember(),
+  new DemoteAdmin(),
+)
 
 client.addHandler(new CobaButton())
 client.start()

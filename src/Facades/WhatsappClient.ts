@@ -1,4 +1,4 @@
-import { isJidGroup } from '@adiwajshing/baileys'
+import { isJidGroup, jidNormalizedUser } from '@adiwajshing/baileys'
 import { join } from 'path'
 import { WAEvent } from '../Contracts/WaEvent'
 import { ValidateError } from '../Exceptions'
@@ -136,6 +136,7 @@ export class WhatsappClient {
           }
 
           if (handler.participants) {
+            if(handler.fromMe) handler.participants.push(jidNormalizedUser(args.socket.user?.id))
             const participant =
               message.key.participant || message.key.remoteJid || ''
             const participants = handler.getParticipants()
