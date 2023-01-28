@@ -1,4 +1,9 @@
-import { MessageUpsertType, getContentType, proto } from '@adiwajshing/baileys'
+import {
+  MessageUpsertType,
+  getContentType,
+  jidNormalizedUser,
+  proto,
+} from '@adiwajshing/baileys'
 import { HandlerArgs } from '../../Contracts/IEventListener'
 import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
 import Queue from '../../Facades/Queue'
@@ -35,7 +40,9 @@ export class DemoteAdmin extends MessageUpsert {
       []
     mentions = mentions.filter(Boolean)
     participants = [...participants, ...mentions]
-
+    participants = participants.filter(
+      (p) => p != jidNormalizedUser(socket.user?.id),
+    )
     try {
       await Queue(() =>
         socket.groupParticipantsUpdate(jid, participants, 'demote'),

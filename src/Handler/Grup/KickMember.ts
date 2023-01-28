@@ -2,6 +2,7 @@ import {
   MessageUpsertType,
   getContentType,
   isJidUser,
+  jidNormalizedUser,
   proto,
 } from '@adiwajshing/baileys'
 import { HandlerArgs } from '../../Contracts/IEventListener'
@@ -17,7 +18,7 @@ export class KickMember extends MessageUpsert {
   patterns: string | false | RegExp | (string | RegExp)[] = [
     '/rm',
     /rm .*/i,
-    /sudo rm .*/i,
+    /sudo\s+rm\s+.*/i,
   ]
   fromMe: boolean = true
   groupAccess: 'all' | 'admin' | 'member' = 'admin'
@@ -30,9 +31,8 @@ export class KickMember extends MessageUpsert {
     type: MessageUpsertType
   }>) {
     const jid = props.message.key.remoteJid || ''
-
     const text = getMessageCaption(props.message.message!)
-    if (text.startsWith('rm ') && !props.message.key.fromMe) {
+    if (!text.toLowerCase().startsWith('sudo') && !props.message.key.fromMe) {
       Queue(() =>
         sendMessageWTyping(
           {
@@ -90,7 +90,9 @@ export class KickMember extends MessageUpsert {
       })
     }
 
-    console.log(participants, 'oka')
+    participants = participants.filter(
+      (p) => p != jidNormalizedUser(socket.user?.id),
+    )
     try {
       await Queue(() =>
         socket.groupParticipantsUpdate(jid, participants, 'remove'),

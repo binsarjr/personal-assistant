@@ -9,6 +9,7 @@ export class KickAllMember extends MessageUpsert {
     '.kic?kmember',
   ]
   fromMe: boolean = true
+  onlyMe: boolean = true
   groupAccess: 'all' | 'admin' | 'member' = 'admin'
   chat: 'all' | 'group' | 'user' = 'group'
   async handler({
