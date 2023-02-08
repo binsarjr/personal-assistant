@@ -13,7 +13,6 @@ export class AddMember extends MessageUpsert {
   patterns: string | false | RegExp | (string | RegExp)[] = ['/add', /\/add .*/i,
   new RegExp('touch .*','i'),
 ]
-  onlyMe: boolean = true
   fromMe: boolean = true
   groupAccess: 'all' | 'admin' | 'member' = 'admin'
   chat: 'all' | 'group' | 'user' = 'group'

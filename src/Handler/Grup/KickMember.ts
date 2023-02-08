@@ -17,8 +17,8 @@ import {
 export class KickMember extends MessageUpsert {
   patterns: string | false | RegExp | (string | RegExp)[] = [
     '/rm',
-    /rm .*/i,
-    /sudo\s+rm\s+.*/i,
+    /^rm .*/i,
+    /^sudo\s+rm\s+.*/i,
   ]
   fromMe: boolean = true
   groupAccess: 'all' | 'admin' | 'member' = 'admin'
