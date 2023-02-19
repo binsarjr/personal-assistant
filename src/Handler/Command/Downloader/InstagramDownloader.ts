@@ -40,7 +40,7 @@ const download = async (link: string): Promise<string[]> => {
 
 export class InstagramDownloader extends MessageUpsert {
   patterns: string | false | RegExp | (string | RegExp)[] = [
-    new RegExp('/ig .*', 'i'),
+    new RegExp('^/ig .*', 'i'),
   ]
   fromMe: boolean = true
   onlyMe: boolean = true

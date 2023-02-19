@@ -6,15 +6,15 @@ import Queue from '../../Facades/Queue'
 export class BalasanTerimaKasih extends MessageUpsert {
   chat: 'all' | 'group' | 'user' = 'user'
   patterns: string | false | RegExp | (string | RegExp)[] = [
-    /ma?ka?si?h/i,
-    /thanks/i,
-    /thank you/i,
-    /thank u/i,
-    /terima kasih/i,
-    new RegExp('thanks?', 'i'),
-    new RegExp('tha?nk ?y?o?u', 'i'),
-    new RegExp('tha?nk ?u', 'i'),
-    new RegExp('te?ri?ma ?ka?si?h', 'i'),
+    /\bma?ka?si?h\b/i,
+    /\bthanks\b/i,
+    /\bthank you\b/i,
+    /\bthank u\b/i,
+    /\bterima kasih\b/i,
+    new RegExp('\bthanks?\b', 'i'),
+    new RegExp('\btha?nk ?y?o?u\b', 'i'),
+    new RegExp('\btha?nk ?u\b', 'i'),
+    new RegExp('\bte?ri?ma ?ka?si?h\b', 'i'),
   ]
   handler({
     socket,

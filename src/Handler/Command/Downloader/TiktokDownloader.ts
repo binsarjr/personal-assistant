@@ -33,8 +33,8 @@ const download = async (link: string): Promise<string> => {
 
 export class TiktokDownloader extends MessageUpsert {
   patterns: string | false | RegExp | (string | RegExp)[] = [
-    new RegExp('/tt .*', 'i'),
-    new RegExp('/vt .*', 'i'),
+    new RegExp('^(/|\\.)tt .*', 'i'),
+    new RegExp('^(/|\\.)vt .*', 'i'),
   ]
   fromMe: boolean = true
   onlyMe: boolean = true

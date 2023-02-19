@@ -8,15 +8,14 @@ import { sendMessageWTyping } from '../../utils'
 export class JanganManggilDoang extends MessageUpsert {
   chat: ChatType = 'mention'
   patterns: string | false | RegExp | (string | RegExp)[] = [
-    'mas bin',
-    'mas binsar',
-    'mas',
-    'ngab',
-    'bin',
-    'bro',
-    'pak bin',
-    'sar',
-    'p',
+    new RegExp('^[s]+[a]+[r]+$', 'i'),
+    new RegExp('^[b]+[i]+[n]+$', 'i'),
+    new RegExp('^[b]+[i]+[n]+[s]+[a]+[r]+$', 'i'),
+    new RegExp('^mas\\s+[b]+[i]+[n]+$', 'i'),
+    new RegExp('^mas\\s+[b]+[i]+[n]+[s]+[a]+[r]+$', 'i'),
+    new RegExp('^(mas|ngab|bro)$', 'i'),
+    new RegExp('^pak\\s+[b]+[i]+[n]+$', 'i'),
+    new RegExp('^p$', 'i'),
   ]
   handler({
     props,
@@ -26,15 +25,16 @@ export class JanganManggilDoang extends MessageUpsert {
     type: MessageUpsertType
   }>): void | Promise<void> {
     const jid = props.message.key.remoteJid || ''
-    const message=  props.message.message 
+    const message = props.message
     Queue(() =>
       sendMessageWTyping(
         {
           text:
-            'Maaf, saat ini Binsar sedang tidak dapat dihubungi. Silakan tuliskan permintaan Anda dan akan kami sampaikan kepada Binsar untuk ditindaklanjuti setelah dia kembali online.',
+            'Maaf, saat ini Binsar sedang tidak dapat dihubungi. Silakan tuliskan permintaan Anda dan akan kami sampaikan kepada Binsar untuk ditindaklanjuti setelah dia kembali online.\n\n_pesan otomatis_',
         },
         jid,
         socket,
+        { quoted: message },
       ),
     )
   }

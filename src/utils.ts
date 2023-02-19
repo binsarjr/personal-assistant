@@ -89,11 +89,15 @@ export const sendMessageWTyping = async (
   sock: WASocket,
   options?: MiscMessageGenerationOptions,
 ) => {
-  await sock.presenceSubscribe(jid)
-  await delay(randomInteger(200, 500))
+  await Promise.all([
+    sock.presenceSubscribe(jid),
+    delay(randomInteger(200, 500)),
+  ])
 
-  await sock.sendPresenceUpdate('composing', jid)
-  await delay(randomInteger(1000, 2000))
+  await Promise.all([
+    sock.sendPresenceUpdate('composing', jid),
+    delay(randomInteger(500, 1500)),
+  ])
 
   await sock.sendPresenceUpdate('paused', jid)
 
