@@ -34,9 +34,58 @@ jobs:
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
-        source: lib package.json ecosystem.config.js database dataset asset
+        source: lib
         target: ${{ secrets.SERVER_CWD }}
 
+    - name: Upload folder database to Server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        source: database
+        target: ${{ secrets.SERVER_CWD }}
+
+    - name: Upload folder dataset to Server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        source: dataset
+        target: ${{ secrets.SERVER_CWD }}
+
+    - name: Upload folder asset to Server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        source: asset
+        target: ${{ secrets.SERVER_CWD }}
+
+    - name: Upload package.json to Server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        source: package.json 
+        target: ${{ secrets.SERVER_CWD }}
+
+    - name: Upload ecosystem.config.js to Server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        source: ecosystem.config.js
+        target: ${{ secrets.SERVER_CWD }}
     # - run: rm -rf lib
     # - name: Remove Cached Lib folder
     #   uses:  actions/cache@v2
