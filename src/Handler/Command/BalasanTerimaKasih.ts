@@ -15,6 +15,22 @@ export class BalasanTerimaKasih extends MessageUpsert {
     new RegExp('\btha?nk ?y?o?u\b', 'i'),
     new RegExp('\btha?nk ?u\b', 'i'),
     new RegExp('\bte?ri?ma ?ka?si?h\b', 'i'),
+    // dari chatgpt
+    /terima kasih/i,
+    /terimakasih/i,
+    /terima\s+kasih/i,
+    /terimakasih/i,
+    /terima kasih banyak/i,
+    /terimakasih banyak/i,
+    /terima\s+kasih\s+banyak/i,
+    /terimakasih\s+banyak/i,
+    /makasih/i,
+    /mks/i,
+    /ma\s*kasih/i,
+    /thanks/i,
+    /thx/i,
+    /thks/i,
+    /thank\s+you/i,
   ]
   handler({
     socket,
