@@ -102,6 +102,8 @@ jobs:
         KEY: ${{ secrets.SSHKEY }}
         script: |
           cd ${{ secrets.SERVER_CWD }}
-          git pull
           npm i --only-prod
+          pm2 delete ecosystem.config.js
+          pm2 start ecosystem.config.js
+          pm2 save
 
