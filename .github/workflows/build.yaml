@@ -8,6 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Clear Cache
+      uses: borales/actions-cache@v2
+      with:
+        path: lib
+        key: Build Cache
     - name: Use Node.js 17.x
       uses: actions/setup-node@v2
       with:
@@ -16,6 +21,7 @@ jobs:
       run: npm install
     - name: Build TypeScript
       run: npm run build
+
     
 
     - name: Cache Lib folder
