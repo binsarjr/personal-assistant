@@ -40,6 +40,7 @@ jobs:
           ecosystem.config.js
           database
           dataset
+          asset
         target: ${{ secrets.SERVER_CWD }}
 
     # - run: rm -rf lib
