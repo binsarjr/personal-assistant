@@ -9,19 +9,11 @@ on:
     branches:
       - main
 
-
 jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy
-        env:
-          BUILD_ARTIFACT: ${{ needs.build.outputs.build-artifact }}
-        run: |
-          echo "Deploying the application..."
-          # add deployment commands here
-
       - name: Checkout code
         uses: actions/checkout@v2
 
