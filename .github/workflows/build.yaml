@@ -13,12 +13,7 @@ jobs:
       with:
         node-version: 17.x
     
-    - name: Delete Cache
-      uses: decanus/clear-cache@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        path: lib
-        key: Build Cache
+    
     - name: Install dependencies
       run: npm install
     - name: Build TypeScript
@@ -30,5 +25,7 @@ jobs:
       uses:  actions/cache@v2
       with:
         path: lib
-        key: Build Cache
+        key: primes-${{ runner.os }}-${{ github.run_id }} # Can use time based key as well
+        restore-keys: |
+          primes-${{ runner.os }}
         

@@ -21,7 +21,7 @@ jobs:
       uses:  actions/cache@v2
       with:
         path: lib
-        key: Build Cache
+        key: primes-${{ runner.os }}
 
 
     - name: Upload folder build to Server
