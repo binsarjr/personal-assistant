@@ -10,7 +10,10 @@ on:
   #     - completed
 
 jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
   deploy:
+    needs: build 
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -24,7 +27,6 @@ jobs:
     # - name: Extract Deployment Lib folder
     #   run: tar -czf lib.tar.gz * --directory lib
 
-    - uses: ./.github/workflows/build.yaml
     - name: Upload folder build to Server
       uses: appleboy/scp-action@master
       with:
