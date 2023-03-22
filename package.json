@@ -3,7 +3,7 @@
 		"dev": "ts-node src/index.ts",
 		"train": "ts-node src/train.ts",
 		"test": "mocha  --require ts-node/register --recursive ./test/**/*.spec.ts",
-		"build": "rm -rf lib && tsc"
+		"build": "tsc"
 	},
 	"devDependencies": {
 		"@types/fuzzyset": "^1.0.4",
