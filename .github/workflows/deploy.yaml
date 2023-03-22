@@ -34,7 +34,12 @@ jobs:
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
-        source: lib
+        source: |
+          lib
+          package.json
+          ecosystem.config.js
+          database
+          dataset
         target: ${{ secrets.SERVER_CWD }}
 
     # - run: rm -rf lib
