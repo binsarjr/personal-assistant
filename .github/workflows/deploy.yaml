@@ -10,9 +10,9 @@ on:
       - "main"
 
 
-
 jobs:
-  deployment:
+
+  deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -20,8 +20,7 @@ jobs:
       env:
         BUILD_ARTIFACT: ${{ needs.build.outputs.build-artifact }}
       run: echo "Deploying the application..."
-    - name: Checkout code
-      uses: actions/checkout@v2
+    
     - name: Add SSH key to agent
       uses: appleboy/ssh-action@master
       with:
