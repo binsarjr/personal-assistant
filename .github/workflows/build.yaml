@@ -14,10 +14,11 @@ jobs:
         node-version: 17.x
     
     - name: Delete Cache
-      uses: distributhor/delete-workflow-cache@v1.1
+      uses: decanus/clear-cache@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        cache-name: Build Cache
+        path: lib
+        key: Build Cache
     - name: Install dependencies
       run: npm install
     - name: Build TypeScript
