@@ -12,9 +12,9 @@
 //   })
 // })
 
-import FuzzySet from 'fuzzyset'
-const fuzz = FuzzySet(['terima kasih', 'makasih'])
+// import FuzzySet from 'fuzzyset'
+// const fuzz = FuzzySet(['terima kasih', 'makasih'])
 
-const text = 'Terima kasih'
+// const text = 'Terima kasih'
 
-console.log(fuzz.get(text, 0.8))
+// console.log(fuzz.get(text, 0.8))

@@ -17,10 +17,8 @@ import {
   LihatProfile,
   LihatProfileTemplateButton,
 } from './Handler/TemplateButton/LihatProfile'
-import { checkStore } from './utils'
 dotenv.config()
 // import { HaloHandler } from './Handler/Halo'
-checkStore()
 
 const client = new WhatsappClient({
   name: 'testing',

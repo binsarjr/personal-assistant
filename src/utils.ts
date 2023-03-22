@@ -6,9 +6,8 @@ import {
   getContentType,
   proto,
 } from '@adiwajshing/baileys'
-import { existsSync, mkdirSync } from 'fs'
 import FuzzySet from 'fuzzyset'
-import path from 'path'
+import { join } from 'path'
 
 export const getMessageCaption = (message: proto.IMessage) => {
   const type = getContentType(message)!
@@ -102,16 +101,20 @@ export const sendMessageWTyping = async (
 
   await sock.sendPresenceUpdate('paused', jid)
 
-  await sock.sendMessage(jid, msg, options)
+  const sendedMsg = await sock.sendMessage(jid, msg, options)
+  await delay(randomInteger(200, 500))
+  await sock.sendMessage(jid, {
+    react: {
+      text: '🤖',
+    },
+  })
+  return sendedMsg
 }
 
 export const toInCaseSensitive = (text: string) =>
   new RegExp('\\b' + text + '\\b', 'i')
 
-export const dataStorePath = path.join(__dirname, '../.data_store')
-export const checkStore = () => {
-  !existsSync(dataStorePath) && mkdirSync(dataStorePath, { recursive: true })
-}
+export const rootPath = (path: string) => join(__dirname, '../', path)
 
 export function convertTextToRegex(text: string, threshold = 0.9) {
   // Memisahkan kata dalam teks menjadi array

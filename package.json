@@ -1,6 +1,7 @@
 {
 	"scripts": {
 		"dev": "ts-node src/index.ts",
+		"train": "ts-node src/train.ts",
 		"test": "mocha  --require ts-node/register --recursive ./test/**/*.spec.ts",
 		"build": "rm -rf lib && tsc"
 	},
@@ -14,14 +15,16 @@
 	"dependencies": {
 		"@adiwajshing/baileys": "^5.0.0",
 		"@adiwajshing/keyed-db": "^0.2.4",
-		"qrcode-terminal": "^0.12.0",
-		"jimp": "^0.16.2",
-		"link-preview-js": "^3.0.4",
 		"@bochilteam/scraper": "4.0.22-alpha.0",
+		"csv-parser": "^3.0.0",
 		"dotenv": "^16.0.3",
 		"fuzzyset": "^1.0.7",
 		"got": "^11.*",
+		"jimp": "^0.16.2",
+		"link-preview-js": "^3.0.4",
+		"natural": "^6.2.0",
 		"node-json-db": "^2.1.5",
-		"p-limit": "^3.*"
+		"p-limit": "^3.*",
+		"qrcode-terminal": "^0.12.0"
 	}
 }
