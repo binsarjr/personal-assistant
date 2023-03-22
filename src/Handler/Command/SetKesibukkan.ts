@@ -20,7 +20,7 @@ export class SetKesibukkan extends MessageUpsert {
     const jid = upsert.message.key.remoteJid || ''
     const text = getMessageCaption(upsert.message.message!)
     const sibuk = regex.exec(text)![1]
-    setSibuk(sibuk)
+    Queue(() => setSibuk(sibuk))
     Queue(() =>
       sendMessageWTyping(
         {

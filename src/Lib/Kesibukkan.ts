@@ -2,12 +2,10 @@ import { DB } from '../Database'
 
 export const setSibuk = async (sibuk: string) => {
   await DB.push(
-    '/',
+    '/kesibukkan',
     {
-      kesibukkan: {
-        sibuk,
-        sudahDiKasihTahu: [],
-      },
+      sibuk,
+      sudahDiKasihTahu: [],
     },
     false,
   )
@@ -21,7 +19,7 @@ export const getSibuk = async () => {
 }
 
 export const setSudahDikasihTahu = async (jid: string) => {
-  await DB.push('/kesibukkan/sudahDiKasihTahu', [jid], false)
+  await DB.push('/kesibukkan/sudahDiKasihTahu[]', jid, true)
 }
 
 export const hasSudahDikasihTahu = async (jid: string) => {

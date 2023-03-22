@@ -7,6 +7,7 @@ import {
   proto,
 } from '@adiwajshing/baileys'
 import { existsSync, mkdirSync } from 'fs'
+import FuzzySet from 'fuzzyset'
 import path from 'path'
 
 export const getMessageCaption = (message: proto.IMessage) => {
@@ -110,4 +111,32 @@ export const toInCaseSensitive = (text: string) =>
 export const dataStorePath = path.join(__dirname, '../.data_store')
 export const checkStore = () => {
   !existsSync(dataStorePath) && mkdirSync(dataStorePath, { recursive: true })
+}
+
+export function convertTextToRegex(text: string, threshold = 0.9) {
+  // Memisahkan kata dalam teks menjadi array
+  const words = text.split(' ')
+
+  // Membangun fuzzy set dari array kata
+  const fuzzySet = FuzzySet(words)
+
+  // Mencari kata yang cocok dengan setiap kata dalam teks
+  const regexWords = words.map((word) => {
+    const matches = fuzzySet.get(word, threshold)
+    // @ts-ignore
+    if (matches && matches?.length > 0) {
+      // Mengambil kata dengan skor tertinggi
+      // @ts-ignore
+      const match = matches[0][1]
+      // Mengubah kata menjadi pola regex
+      return `(${match})`
+    }
+    // Jika tidak ada kata yang cocok, mengembalikan kata asli
+    return word
+  })
+
+  // Menggabungkan kata-kata menjadi pola regex
+  const regex = regexWords.join('\\s+')
+
+  return new RegExp(regex, 'gi')
 }

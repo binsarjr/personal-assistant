@@ -1,7 +1,6 @@
 import dotenv from 'dotenv'
 import { WhatsappClient } from './Facades/WhatsappClient'
 import { CobaButton } from './Handler/CobaButton'
-import { BalasanTerimaKasih } from './Handler/Command/BalasanTerimaKasih'
 import { InstagramDownloader } from './Handler/Command/Downloader/InstagramDownloader'
 import { TiktokDownloader } from './Handler/Command/Downloader/TiktokDownloader'
 import { JanganManggilDoang } from './Handler/Command/JanganManggilDoang'
@@ -34,7 +33,7 @@ client.addHandler(
 )
 client.addHandler(new SetKesibukkan(), new LagiFree(), new LagiDiChatHandler())
 client.addHandler(new JanganManggilDoang())
-client.addHandler(new BalasanTerimaKasih())
+// client.addHandler(new BalasanTerimaKasih())
 client.addHandler(
   new AddMember(),
   new KickMember(),
