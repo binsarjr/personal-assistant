@@ -7,10 +7,8 @@ on:
       - completed
 
 jobs:
-  no_dependencies:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "yeay"
+  build:
+    uses: ./.github/workflows/build.yaml
   deploy:
     runs-on: ubuntu-latest
     needs: build
