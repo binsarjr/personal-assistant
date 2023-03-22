@@ -10,7 +10,7 @@ on:
   #     - completed
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -24,16 +24,7 @@ jobs:
       run: npm install
     - name: Build TypeScript
       run: npm run build
-  deploy:
-    needs: build 
-    runs-on: ubuntu-latest
-    steps:
-
-    # - name: Get Cached Lib folder
-    #   uses:  actions/cache@v2
-    #   with:
-    #     path: lib
-    #     key: primes-${{ runner.os }}
+    
 
 
     - name: Upload folder build to Server
