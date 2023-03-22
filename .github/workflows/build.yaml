@@ -17,6 +17,11 @@ jobs:
       run: npm install
     - name: Build TypeScript
       run: npm run build
+    - name: Cache Lib folder
+      uses:  actions/cache@v2
+      with:
+        path: lib
+        key: ${{ runner.os }}-node-${{ hashFiles('**/pnpm-lock.json') }}
     #   env:
     #     BUILD_DIR: lib
 
@@ -25,5 +30,5 @@ jobs:
     #   with:
     #     name: build-artifacts
     #     path: lib.tar.gz
-    outputs:
-      build-artifact: ${{ steps.archive.outputs.artifact-path }}
+    # outputs:
+    #   build-artifact: ${{ steps.archive.outputs.artifact-path }}
