@@ -25,3 +25,5 @@ jobs:
     #   with:
     #     name: build-artifacts
     #     path: lib.tar.gz
+    outputs:
+      build-artifact: ${{ steps.archive.outputs.artifact-path }}

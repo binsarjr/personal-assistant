@@ -24,8 +24,8 @@ jobs:
     # - uses: actions/download-artifact@v3
     #   with:
     #     name: build-artifacts
-    # - name: Extract Deployment Lib folder
-    #   run: tar -czf lib.tar.gz * --directory lib
+    - name: Extract Deployment Lib folder
+      run: tar -czf ${{ needs.build.outputs.build-artifact }} --directory lib
 
     - name: Upload folder build to Server
       uses: appleboy/scp-action@master
