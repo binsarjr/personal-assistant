@@ -17,14 +17,6 @@ jobs:
     - name: Build TypeScript
       run: npm run build
     
-    - name: Clear Cache
-      uses: actions/cache@v2
-      with:
-        path: lib
-        key: Build Cache
-        restore-keys: |
-          ${{ runner.os }}-node-
-          ${{ runner.os }}-
 
     - name: Cache Lib folder
       uses:  actions/cache@v2
