@@ -1,0 +1,38 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows:
+      - "Build"
+    types:
+      - "completed"
+    branches:
+      - main
+
+
+jobs:
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        env:
+          BUILD_ARTIFACT: ${{ needs.build.outputs.build-artifact }}
+        run: |
+          echo "Deploying the application..."
+          # add deployment commands here
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Add SSH key to agent
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSHKEY }}
+          script: |
+            cd ${{ secrets.SERVER_CWD }}
+            git pull
+            npm i --only-prod
