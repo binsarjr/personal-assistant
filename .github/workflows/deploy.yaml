@@ -46,12 +46,12 @@ jobs:
         source: lib
         target: ${{ secrets.SERVER_CWD }}
 
-    - run: rm -rf lib
-    - name: Remove Cached Lib folder
-      uses:  actions/cache@v2
-      with:
-        path: lib
-        key: Build Cache
+    # - run: rm -rf lib
+    # - name: Remove Cached Lib folder
+    #   uses:  actions/cache@v2
+    #   with:
+    #     path: lib
+    #     key: Build Cache
 
     - name: Add SSH key to agent
       uses: appleboy/ssh-action@master
