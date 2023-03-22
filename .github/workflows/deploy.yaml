@@ -1,18 +1,19 @@
 name: Deploy
 on:
-  workflow_run:
-    workflows: [Build]
-    branches: [main]
-    types:
-      - completed
+  push:
+    branches:
+      - "main"
+  # workflow_run:
+  #   workflows: [Build]
+  #   branches: [main]
+  #   types:
+  #     - completed
 
 jobs:
-  build:
-    uses: ./.github/workflows/build.yaml
   deploy:
-    needs: build
     runs-on: ubuntu-latest
     steps:
+    - uses: ./.github/workflows/build.yaml
     - name: Use Node.js 17.x
       uses: actions/setup-node@v2
       with:

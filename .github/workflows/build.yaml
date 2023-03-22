@@ -16,11 +16,11 @@ jobs:
       run: npm install
     - name: Build TypeScript
       run: npm run build
-      env:
-        BUILD_DIR: lib
+    #   env:
+    #     BUILD_DIR: lib
 
-    - name: Save artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-artifacts
-        path: lib.tar.gz
+    # - name: Save artifacts
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: build-artifacts
+    #     path: lib.tar.gz
