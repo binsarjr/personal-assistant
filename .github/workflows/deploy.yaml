@@ -21,7 +21,7 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         command: |
-          scp -r ./build/* ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.SERVER_CWD }}
+          scp -r ./lib ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.SERVER_CWD }}
         host: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
