@@ -7,6 +7,7 @@ on:
       - completed
     branches:
       - main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,3 +17,15 @@ jobs:
       env:
         BUILD_ARTIFACT: ${{ needs.build.outputs.build-artifact }}
       run: echo "Deploying the application..."
+    - name: Add SSH key to agent
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          cd ${{ secrets.SERVER_CWD }}
+          git pull
+          npm i --only-prod
+
