@@ -17,11 +17,18 @@ jobs:
       env:
         BUILD_ARTIFACT: ${{ needs.build.outputs.build-artifact }}
       run: echo "Deploying the application..."
+    - name: Upload folder build to Server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        souce: "lib"
+        target: ${{ secrets.SERVER_CWD }}/lib
     - name: Add SSH key to agent
       uses: appleboy/ssh-action@master
       with:
-        command: |
-          scp -r ./lib ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.SERVER_CWD }}
         host: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
