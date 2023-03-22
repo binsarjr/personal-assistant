@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@adiwajshing/baileys': github:adiwajshing/baileys
+  '@adiwajshing/baileys': ^5.0.0
   '@adiwajshing/keyed-db': ^0.2.4
   '@bochilteam/scraper': 4.0.22-alpha.0
   '@types/node': ^18.11.18
@@ -9,6 +9,7 @@ specifiers:
   got: ^11.*
   jimp: ^0.16.2
   link-preview-js: ^3.0.4
+  node-json-db: ^2.1.5
   p-limit: ^3.*
   qrcode-terminal: ^0.12.0
   ts-node: ^10.9.1
@@ -18,10 +19,11 @@ dependencies:
   '@bochilteam/scraper': 4.0.22-alpha.0
   dotenv: 16.0.3
   got: 11.8.6
+  node-json-db: 2.1.5
   p-limit: 3.1.0
 
 devDependencies:
-  '@adiwajshing/baileys': github.com/adiwajshing/baileys/b2c1cfbf9c0c665db1c708b159a9be9b9d9aa5cd_z63m3o4kkd4an3n7fyuufceiyq
+  '@adiwajshing/baileys': 5.0.0_z63m3o4kkd4an3n7fyuufceiyq
   '@adiwajshing/keyed-db': 0.2.4
   '@types/node': 18.11.18
   jimp: 0.16.2
@@ -31,6 +33,47 @@ devDependencies:
   typescript: 4.9.4
 
 packages:
+
+  /@adiwajshing/baileys/5.0.0_z63m3o4kkd4an3n7fyuufceiyq:
+    resolution: {integrity: sha512-AeNyYLfw1nhCwc7hDlMajU9Zr5DK4zmEO8rdrmxUR1qUbmhSKOL6IzwZpyvPjsXyHvl+oPMbp5k8+PX2p6RlJg==}
+    requiresBuild: true
+    peerDependencies:
+      '@adiwajshing/keyed-db': ^0.2.4
+      jimp: ^0.16.1
+      link-preview-js: ^3.0.0
+      qrcode-terminal: ^0.12.0
+      sharp: ^0.30.5
+    peerDependenciesMeta:
+      '@adiwajshing/keyed-db':
+        optional: true
+      jimp:
+        optional: true
+      link-preview-js:
+        optional: true
+      qrcode-terminal:
+        optional: true
+      sharp:
+        optional: true
+    dependencies:
+      '@adiwajshing/keyed-db': 0.2.4
+      '@hapi/boom': 9.1.4
+      axios: 0.24.0
+      futoin-hkdf: 1.5.1
+      jimp: 0.16.2
+      libsignal: github.com/adiwajshing/libsignal-node/11dbd962ea108187c79a7c46fe4d6f790e23da97
+      link-preview-js: 3.0.4
+      music-metadata: 7.13.3
+      node-cache: 5.1.2
+      pino: 7.11.0
+      protobufjs: 6.11.3
+      qrcode-terminal: 0.12.0
+      ws: 8.12.0
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - supports-color
+      - utf-8-validate
+    dev: true
 
   /@adiwajshing/keyed-db/0.2.4:
     resolution: {integrity: sha512-yprSnAtj80/VKuDqRcFFLDYltoNV8tChNwFfIgcf6PGD4sjzWIBgs08pRuTqGH5mk5wgL6PBRSsMCZqtZwzFEw==}
@@ -55,7 +98,7 @@ packages:
       similarity: 1.2.1
       zod: 3.20.3
     optionalDependencies:
-      ws: 8.12.0
+      ws: 8.13.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -1169,6 +1212,12 @@ packages:
       whatwg-url: 5.0.0
     dev: true
 
+  /node-json-db/2.1.5:
+    resolution: {integrity: sha512-LnzD9SPOVjtiMOgUB8oJfbj3927/2S/tWMjMen8QybZ3MBcgIFi9fKGpk6H3A4rMjnpuHX2J19JEvzqwB2p+/g==}
+    dependencies:
+      rwlock: 5.0.0
+    dev: false
+
   /normalize-url/6.1.0:
     resolution: {integrity: sha512-DlL+XwOy3NxAQ8xuC0okPgK46iuVNAK01YN7RueYBqqFeGsBjV9XmCAzAdgt+667bCl5kPh9EqKKDwnaPG1I7A==}
     engines: {node: '>=10'}
@@ -1414,6 +1463,10 @@ packages:
       glob: 7.2.3
     dev: false
 
+  /rwlock/5.0.0:
+    resolution: {integrity: sha512-XgzRqLMfCcm9QfZuPav9cV3Xin5TRcIlp4X/SH3CvB+x5D2AakdlEepfJKDd8ByncvfpcxNWdRZVUl38PS6ZJg==}
+    dev: false
+
   /safe-buffer/5.2.1:
     resolution: {integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==}
     dev: true
@@ -1576,6 +1629,22 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
+    dev: true
+
+  /ws/8.13.0:
+    resolution: {integrity: sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==}
+    engines: {node: '>=10.0.0'}
+    requiresBuild: true
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dev: false
+    optional: true
 
   /xhr/2.6.0:
     resolution: {integrity: sha512-/eCGLb5rxjx5e3mF1A7s+pLlR6CGyqWN91fv1JgER5mVWg1MZmlhBvy9kjcsOdRk8RrIujotWyJamfyrp+WIcA==}
@@ -1621,51 +1690,6 @@ packages:
   /zod/3.20.3:
     resolution: {integrity: sha512-+MLeeUcLTlnzVo5xDn9+LVN9oX4esvgZ7qfZczBN+YVUvZBafIrPPVyG2WdjMWU2Qkb2ZAh2M8lpqf1wIoGqJQ==}
     dev: false
-
-  github.com/adiwajshing/baileys/b2c1cfbf9c0c665db1c708b159a9be9b9d9aa5cd_z63m3o4kkd4an3n7fyuufceiyq:
-    resolution: {tarball: https://codeload.github.com/adiwajshing/baileys/tar.gz/b2c1cfbf9c0c665db1c708b159a9be9b9d9aa5cd}
-    id: github.com/adiwajshing/baileys/b2c1cfbf9c0c665db1c708b159a9be9b9d9aa5cd
-    name: '@adiwajshing/baileys'
-    version: 5.0.0
-    prepare: true
-    requiresBuild: true
-    peerDependencies:
-      '@adiwajshing/keyed-db': ^0.2.4
-      jimp: ^0.16.1
-      link-preview-js: ^3.0.0
-      qrcode-terminal: ^0.12.0
-      sharp: ^0.30.5
-    peerDependenciesMeta:
-      '@adiwajshing/keyed-db':
-        optional: true
-      jimp:
-        optional: true
-      link-preview-js:
-        optional: true
-      qrcode-terminal:
-        optional: true
-      sharp:
-        optional: true
-    dependencies:
-      '@adiwajshing/keyed-db': 0.2.4
-      '@hapi/boom': 9.1.4
-      axios: 0.24.0
-      futoin-hkdf: 1.5.1
-      jimp: 0.16.2
-      libsignal: github.com/adiwajshing/libsignal-node/11dbd962ea108187c79a7c46fe4d6f790e23da97
-      link-preview-js: 3.0.4
-      music-metadata: 7.13.3
-      node-cache: 5.1.2
-      pino: 7.11.0
-      protobufjs: 6.11.3
-      qrcode-terminal: 0.12.0
-      ws: 8.12.0
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - supports-color
-      - utf-8-validate
-    dev: true
 
   github.com/adiwajshing/libsignal-node/11dbd962ea108187c79a7c46fe4d6f790e23da97:
     resolution: {tarball: https://codeload.github.com/adiwajshing/libsignal-node/tar.gz/11dbd962ea108187c79a7c46fe4d6f790e23da97}

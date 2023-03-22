@@ -11,17 +11,17 @@ import { sendMessageWTyping } from '../utils'
 
 export class LagiDiChatHandler extends MessageUpsert {
   chat: 'all' | 'group' | 'user' = 'user'
-  handler({
+  async handler({
     socket,
     props,
   }: HandlerArgs<{
     message: proto.IWebMessageInfo
     type: MessageUpsertType
-  }>): void | Promise<void> {
+  }>): Promise<void> {
     const jid = props.message.key.remoteJid || ''
-    const sibuk = getSibuk()
+    const sibuk = await getSibuk()
 
-    if (!!sibuk && !hasSudahDikasihTahu(jid)) {
+    if (!!sibuk && !(await hasSudahDikasihTahu(jid))) {
       setSudahDikasihTahu(jid)
       Queue(() =>
         sendMessageWTyping(

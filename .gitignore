@@ -3,3 +3,4 @@ lib
 .auths
 .data_store
 node_modules
+database.json

@@ -1,28 +1,30 @@
-import { appendFileSync, readFileSync, writeFileSync } from 'fs'
-import { join } from 'path'
-import { dataStorePath } from '../utils'
+import { DB } from '../Database'
 
-const filepath = join(dataStorePath, 'sibuk.txt')
-const filepathSudahDiKasihTahu = join(
-  dataStorePath,
-  'sibuk_sudahdikasihtahu.txt',
-)
-writeFileSync(filepathSudahDiKasihTahu, '')
-export const setSibuk = (sibuk: string) => {
-  writeFileSync(filepathSudahDiKasihTahu, '')
-  writeFileSync(filepath, sibuk)
+export const setSibuk = async (sibuk: string) => {
+  await DB.push(
+    '/',
+    {
+      kesibukkan: {
+        sibuk,
+        sudahDiKasihTahu: [],
+      },
+    },
+    false,
+  )
 }
-export const getSibuk = () => {
+export const getSibuk = async () => {
   try {
-    return readFileSync(filepath).toString().trim()
+    return (await DB.getData('/kesibukkan/sibuk')).trim() as string
   } catch (error) {
     return null
   }
 }
 
-export const setSudahDikasihTahu = (jid: string) => {
-  appendFileSync(filepathSudahDiKasihTahu, jid + '\n')
+export const setSudahDikasihTahu = async (jid: string) => {
+  await DB.push('/kesibukkan/sudahDiKasihTahu', [jid], false)
 }
 
-export const hasSudahDikasihTahu = (jid: string) =>
-  readFileSync(filepathSudahDiKasihTahu).toString().includes(jid)
+export const hasSudahDikasihTahu = async (jid: string) => {
+  const sudahTahu = await DB.getObject<string[]>('/kesibukkan/sudahDiKasihTahu')
+  return sudahTahu.includes(jid)
+}
