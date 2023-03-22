@@ -13,12 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-    - name: Deploy
-      env:
-        BUILD_ARTIFACT: ${{ needs.build.outputs.build-artifact }}
-      run: echo "Deploying the application..."
     - name: Upload folder build to Server
       uses: appleboy/scp-action@master
+      env:
+        BUILD_ARTIFACT: ${{ needs.build.outputs.build-artifact }}
       with:
         host: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
