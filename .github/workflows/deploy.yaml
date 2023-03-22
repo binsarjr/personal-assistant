@@ -21,7 +21,7 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
         source: "${{ needs.build.outputs.build-artifact }}/lib"
-        target: ${{ secrets.SERVER_CWD }}/lib
+        target: ${{ secrets.SERVER_CWD }}
     - name: Add SSH key to agent
       uses: appleboy/ssh-action@master
       with:
