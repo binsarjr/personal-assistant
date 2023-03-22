@@ -7,12 +7,12 @@ on:
       - completed
 
 jobs:
-  build:
-    uses: ./.github/workflows/build.yaml
   deploy:
     runs-on: ubuntu-latest
-    needs: build
     steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: build-artifacts
     - name: Upload folder build to Server
       uses: appleboy/scp-action@master
       with:
@@ -20,7 +20,7 @@ jobs:
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
-        source: "${{ needs.build.outputs.build-artifact }}/lib"
+        source: ${{ env.ARTIFACTS_DIR }}
         target: ${{ secrets.SERVER_CWD }}
     - name: Add SSH key to agent
       uses: appleboy/ssh-action@master
