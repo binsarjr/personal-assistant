@@ -13,6 +13,7 @@ import { KickMember } from './Handler/Grup/KickMember'
 import { PromoteMember } from './Handler/Grup/PromoteMember'
 import { Halo } from './Handler/HaloHandler'
 import { LagiDiChatHandler } from './Handler/LagiDiChatHandler'
+import { Ping } from './Handler/Ping'
 import {
   LihatProfile,
   LihatProfileTemplateButton,
@@ -42,5 +43,5 @@ client.addHandler(
 
 client.addHandler(new TiktokDownloader(), new InstagramDownloader())
 
-client.addHandler(new CobaButton())
+client.addHandler(new CobaButton(),new Ping())
 client.start()

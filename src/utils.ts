@@ -102,12 +102,15 @@ export const sendMessageWTyping = async (
   await sock.sendPresenceUpdate('paused', jid)
 
   const sendedMsg = await sock.sendMessage(jid, msg, options)
-  await delay(randomInteger(200, 500))
-  await sock.sendMessage(jid, {
-    react: {
-      text: '🤖',
-    },
-  })
+  if (sendedMsg) {
+    await delay(randomInteger(200, 500))
+    await sock.sendMessage(jid, {
+      react: {
+        text: '🤖',
+        key: sendedMsg.key,
+      },
+    })
+  }
   return sendedMsg
 }
 

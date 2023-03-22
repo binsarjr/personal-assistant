@@ -30,7 +30,7 @@ export class JanganManggilDoang extends MessageUpsert {
       sendMessageWTyping(
         {
           text:
-            'Maaf, saat ini Binsar sedang tidak dapat dihubungi. Silakan tuliskan permintaan Anda dan akan kami sampaikan kepada Binsar untuk ditindaklanjuti setelah dia kembali online.\n\n_pesan otomatis_',
+            'Maaf, saat ini Binsar sedang tidak dapat dihubungi. Silakan tuliskan permintaan Anda dan akan kami sampaikan kepada Binsar untuk ditindaklanjuti setelah dia kembali online.',
         },
         jid,
         socket,
