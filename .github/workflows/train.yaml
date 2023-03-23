@@ -1,0 +1,38 @@
+name: Train Classifier NLP
+
+on: [workflow_call]
+
+env:
+  EMAIL: binsarjr121@gmail.com
+  USERNAME: binsarjr
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 17.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: 17.x
+    
+    
+    - name: Install dependencies
+      run: npm install
+    - name: Training Model
+      run: npm run train
+    
+    - name: git config
+        run: |
+          git config --global user.email "$EMAIL"
+          git config --global user.name "$USERNAME"
+          git config --global init.defaultBranch main
+    
+    - name: Git Changes
+        run: |
+          git add -A
+          git commit -m "train model"
+    - name: Github Push
+        uses: ad-m/github-push-action@master
+        with:
+          directory: "."
