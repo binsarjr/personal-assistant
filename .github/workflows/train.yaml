@@ -28,12 +28,19 @@ jobs:
         git config --global user.name "$USERNAME"
         git config --global init.defaultBranch main
     
+    - name: Check if there are any changes
+        id: verify_diff
+        run: |
+          git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+
     - name: Git Changes
+      if: steps.verify_diff.outputs.changed == 'true'
       run: |
         rm package-lock.json
         git add -A
         git commit -m "train model"
     - name: Github Push
+      if: steps.verify_diff.outputs.changed == 'true'
       uses: ad-m/github-push-action@master
       with:
         directory: "."
