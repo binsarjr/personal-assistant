@@ -16,7 +16,10 @@ jobs:
     needs: train
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Pull commit
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: Use Node.js 17.x
       uses: actions/setup-node@v2
       with:
