@@ -29,9 +29,9 @@ jobs:
         git config --global init.defaultBranch main
     
     - name: Check if there are any changes
-        id: verify_diff
-        run: |
-          git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+      id: verify_diff
+      run: |
+        git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
 
     - name: Git Changes
       if: steps.verify_diff.outputs.changed == 'true'
