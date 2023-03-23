@@ -3,7 +3,6 @@ import { gracefulShutdown, scheduleJob } from 'node-schedule'
 import { WhatsappClient } from './Facades/WhatsappClient'
 import { ClearDataStore } from './Handler/ClearDataStore'
 import { CobaButton } from './Handler/CobaButton'
-import { BalasanTerimaKasih } from './Handler/Command/BalasanTerimaKasih'
 import { InstagramDownloader } from './Handler/Command/Downloader/InstagramDownloader'
 import { TiktokDownloader } from './Handler/Command/Downloader/TiktokDownloader'
 import { JanganManggilDoang } from './Handler/Command/JanganManggilDoang'
@@ -24,8 +23,8 @@ import {
 import UcapanTerimaKasihClassifier from './NLP_Area/Sentimen/UcapanTerimaKasihClassifier'
 dotenv.config()
 // import { HaloHandler } from './Handler/Halo'
-Promise.all([UcapanTerimaKasihClassifier.waitUntilLoaded()]).then((_) => {
-  const client = new WhatsappClient({
+Promise.all([UcapanTerimaKasihClassifier.waitUntilLoaded()])
+const client = new WhatsappClient({
     name: 'testing',
   })
 
@@ -47,7 +46,7 @@ Promise.all([UcapanTerimaKasihClassifier.waitUntilLoaded()]).then((_) => {
     new LagiDiChatHandler(),
   )
   client.addHandler(new JanganManggilDoang())
-  client.addHandler(new BalasanTerimaKasih())
+  // client.addHandler(new BalasanTerimaKasih())
   client.addHandler(
     new AddMember(),
     new KickMember(),
@@ -60,8 +59,6 @@ Promise.all([UcapanTerimaKasihClassifier.waitUntilLoaded()]).then((_) => {
 
   client.addHandler(new CobaButton(), new Ping())
   client.start()
-})
-
 process.on('SIGINT', function () {
   gracefulShutdown().then(() => process.exit(0))
 })
