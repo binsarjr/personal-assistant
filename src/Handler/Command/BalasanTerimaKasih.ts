@@ -16,6 +16,7 @@ export class BalasanTerimaKasih extends MessageUpsert {
   }>): Promise<void> {
     const message = getMessageCaption(props.message.message!)
     const jid = props.message.key.remoteJid || ''
+    const response = await nlpProcess(message)
     const {
       answer,
       score,
@@ -24,7 +25,9 @@ export class BalasanTerimaKasih extends MessageUpsert {
       answer: string
       score: number
       intent: 'ungkapan.terima-kasih'
-    } = await nlpProcess(message)
+    } = response
+    console.log(response)
+
     if (score > 0.9 && intent == 'ungkapan.terima-kasih') {
       Queue(() =>
         sendMessageWTyping(

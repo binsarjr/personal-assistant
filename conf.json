@@ -1,15 +1,18 @@
 {
     "settings": {
-        "languages": [
-            "en",
-            "id"
-        ],
-        "forceNER": true,
         "nlp": {
+            "forceNER": true,
+            "languages": [
+                "en",
+                "id"
+            ],
             "corpora": [
                 "./nlpdata/corpus/id/terima-kasih.json",
+                "./nlpdata/corpus/id/manggildoang.json",
                 "./nlpdata/corpus/id/None.json"
-            ]
+            ],
+            "autoSave": true,
+            "modelFileName": "./model.nlp"
         },
         "nlu": {
             "log": false,

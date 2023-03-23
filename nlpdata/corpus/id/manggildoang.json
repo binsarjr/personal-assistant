@@ -1,0 +1,21 @@
+{
+    "name": "Ketika ada orang yang cuman manggil doang",
+    "locale": "id",
+    "data": [
+        {
+            "intent": "manggildoang",
+            "utterances": [
+                "sar",
+                "binsar",
+                "bin",
+                "mas bin",
+                "Mas binsar",
+                "Ngab"
+            ],
+            "answers": [
+                "Maaf, saat ini Binsar sedang tidak dapat dihubungi. Silakan tuliskan permintaan Anda dan akan kami sampaikan kepada Binsar untuk ditindaklanjuti setelah dia kembali online.",
+                "Halo, ada yang bisa dibantu? Silakan tuliskan keperluanmu"
+            ]
+        }
+    ]
+}

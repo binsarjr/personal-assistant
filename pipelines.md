@@ -1,4 +1,4 @@
 # default
 
 ## main
-nlp.train
+nlp.loadOrTrain
