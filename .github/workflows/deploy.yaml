@@ -40,7 +40,7 @@ jobs:
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
-        source: "lib,database,dataset,asset,package.json,ecosystem.config.js"
+        source: "lib,database,dataset,asset,package.json,ecosystem.config.js,conf.json,pipelines.md,nlpdata"
         target: ${{ secrets.SERVER_CWD }}
 
   

@@ -103,7 +103,7 @@ export const sendMessageWTyping = async (
 
   const sendedMsg = await sock.sendMessage(jid, msg, options)
   if (sendedMsg) {
-    await delay(randomInteger(200, 500))
+    await delay(randomInteger(10, 200))
     await sock.sendMessage(jid, {
       react: {
         text: '🤖',

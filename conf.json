@@ -1,0 +1,27 @@
+{
+    "settings": {
+        "languages": [
+            "en",
+            "id"
+        ],
+        "forceNER": true,
+        "nlp": {
+            "corpora": [
+                "./nlpdata/corpus/id/terima-kasih.json",
+                "./nlpdata/corpus/id/None.json"
+            ]
+        },
+        "nlu": {
+            "log": false,
+            "spellCheck": true,
+            "useNoneFeature": true,
+            "trainByDomain": false
+        },
+        "ner": {
+            "threshold": 1
+        }
+    },
+    "use": [
+        "Basic"
+    ]
+}

@@ -1,0 +1,37 @@
+{
+    "name": "Ucapan Terima Kasih",
+    "locale": "id",
+    "data": [
+        {
+            "intent": "ungkapan.terima-kasih",
+            "utterances": [
+                "Terima Kasih",
+                "Terima kasih banyak atas bantuan Anda",
+                "Terima kasih banyak bang",
+                "Sudah benar, terima kasih",
+                "makasih, ya",
+                "makasih, mas",
+                "makasih, kak",
+                "Terima kasih atas bantuanmu",
+                "Terima kasih banyak",
+                "Saya Sangat terima kasih"
+            ],
+            "answers": [
+                "Sama Sama",
+                "Siap,sama sama"
+            ]
+        },
+        {
+            "intent": "ungkapan.bukan-terima-kasih",
+            "utterances": [
+                "Tidak perlu terima kasih",
+                "untuk apa berterima kasih",
+                "gak usah terima kasih santai saja",
+                "Tidak terima kasih atas perilaku burukmu",
+                "Saya tidak berterima kasih atas apa yang kamu lakukan",
+                "Saya kecewa dengan tindakanmu"
+            ],
+            "answers": []
+        }
+    ]
+}

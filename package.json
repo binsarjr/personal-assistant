@@ -17,6 +17,7 @@
 		"@adiwajshing/baileys": "^5.0.0",
 		"@adiwajshing/keyed-db": "^0.2.4",
 		"@bochilteam/scraper": "4.0.22-alpha.0",
+		"@nlpjs/basic": "^4.26.1",
 		"csv-parser": "^3.0.0",
 		"dotenv": "^16.0.3",
 		"fuzzyset": "^1.0.7",
