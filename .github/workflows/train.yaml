@@ -33,6 +33,6 @@ jobs:
         git add -A
         git commit -m "train model"
     - name: Github Push
-        uses: ad-m/github-push-action@master
-        with:
-          directory: "."
+      uses: ad-m/github-push-action@master
+      with:
+        directory: "."
