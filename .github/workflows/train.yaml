@@ -30,6 +30,7 @@ jobs:
     
     - name: Git Changes
       run: |
+        rm package-lock.json
         git add -A
         git commit -m "train model"
     - name: Github Push
