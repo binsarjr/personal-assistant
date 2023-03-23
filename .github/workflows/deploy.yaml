@@ -27,65 +27,17 @@ jobs:
     
 
 
-    - name: Upload folder build to Server
+    - name: Upload to Server
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
-        source: lib
+        source: "lib,database,dataset,asset,package.json,ecosystem.config.js"
         target: ${{ secrets.SERVER_CWD }}
 
-    - name: Upload folder database to Server
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
-        source: database
-        target: ${{ secrets.SERVER_CWD }}
-
-    - name: Upload folder dataset to Server
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
-        source: dataset
-        target: ${{ secrets.SERVER_CWD }}
-
-    - name: Upload folder asset to Server
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
-        source: asset
-        target: ${{ secrets.SERVER_CWD }}
-
-    - name: Upload package.json to Server
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
-        source: package.json 
-        target: ${{ secrets.SERVER_CWD }}
-
-    - name: Upload ecosystem.config.js to Server
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
-        source: ecosystem.config.js
-        target: ${{ secrets.SERVER_CWD }}
+  
     # - run: rm -rf lib
     # - name: Remove Cached Lib folder
     #   uses:  actions/cache@v2
