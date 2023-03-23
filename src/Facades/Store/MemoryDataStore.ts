@@ -5,7 +5,10 @@ export class MemoryDataStore {
   constructor(private filepath: string) {
     this.store.readFromFile(filepath)
     setInterval(() => {
-      this.store.writeToFile(filepath)
+      this.writeToFile()
     }, 10_000)
+  }
+  writeToFile() {
+    this.store.writeToFile(this.filepath)
   }
 }

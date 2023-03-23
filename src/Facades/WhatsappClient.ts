@@ -34,6 +34,14 @@ export class WhatsappClient {
   addHandler(...events: WAEvent[]) {
     events.map((event) => this.handlers.push(event))
   }
+  async clearDataStore() {
+    Object.keys(this.store.store.messages).map(key => {
+      const messeges = this.store.store.messages[key]
+      messeges.clear()
+    })
+    this.store.store.chats.clear()
+    this.store.writeToFile()
+  }
 
   async start() {
     this.conn = new WhastappConnection(this.auth, this.store)
@@ -136,7 +144,8 @@ export class WhatsappClient {
           }
 
           if (handler.participants) {
-            if(handler.fromMe) handler.participants.push(jidNormalizedUser(args.socket.user?.id))
+            if (handler.fromMe)
+              handler.participants.push(jidNormalizedUser(args.socket.user?.id))
             const participant =
               message.key.participant || message.key.remoteJid || ''
             const participants = handler.getParticipants()
