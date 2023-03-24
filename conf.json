@@ -7,9 +7,9 @@
                 "id"
             ],
             "corpora": [
-                "./nlpdata/corpus/id/terima-kasih.json",
-                "./nlpdata/corpus/id/manggildoang.json",
-                "./nlpdata/corpus/id/None.json"
+                "./dataset/corpus/id/terima-kasih.json",
+                "./dataset/corpus/id/manggildoang.json",
+                "./dataset/corpus/id/None.json"
             ],
             "autoSave": true,
             "modelFileName": "./model.nlp"

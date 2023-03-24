@@ -21,10 +21,10 @@ import {
   LihatProfile,
   LihatProfileTemplateButton,
 } from './Handler/TemplateButton/LihatProfile'
-import UcapanTerimaKasihClassifier from './NLP_Area/Sentimen/UcapanTerimaKasihClassifier'
 dotenv.config()
 // import { HaloHandler } from './Handler/Halo'
-Promise.all([UcapanTerimaKasihClassifier.waitUntilLoaded()])
+
+
 const client = new WhatsappClient({
     name: 'testing',
   })

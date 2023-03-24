@@ -24,7 +24,6 @@
 		"got": "^11.*",
 		"jimp": "^0.16.2",
 		"link-preview-js": "^3.0.4",
-		"natural": "^6.2.0",
 		"node-json-db": "^2.1.5",
 		"node-schedule": "^2.1.1",
 		"p-limit": "^3.*",
