@@ -6,7 +6,7 @@ import { sendMessageWTyping } from '../../utils'
 
 export class BalasanTerimaKasih extends MessageUpsertWithNlp {
   expectIntent: string = 'ungkapan.terima-kasih'
-  expectMinScore: number = 0.9
+  expectMinScore: number = 1
   chat: 'all' | 'group' | 'user' = 'user'
   async handler({
     socket,
