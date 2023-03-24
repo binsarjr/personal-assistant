@@ -4,7 +4,7 @@ import { dockStart } from '@nlpjs/basic'
 let dock
 let nlp
 dockStart().then((d) => {
-    nlp=d.get('nlp')
+  nlp = d.get('nlp')
   dock = d
 })
 
@@ -18,6 +18,12 @@ const waitUntilDockReady = () =>
       }
     }, 1000)
   })
+
+export interface NlpResponse {
+  answer: string
+  score: number
+  intent: string
+}
 
 export const nlpProcess = async (text: string) => {
   await waitUntilDockReady()

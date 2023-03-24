@@ -1,11 +1,12 @@
 import { MessageUpsertType, proto } from '@adiwajshing/baileys'
 import { HandlerArgs } from '../../Contracts/IEventListener'
-import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
+import { MessageUpsertWithNlp } from '../../Facades/Events/Message/MessageUpsertWithNlp'
 import Queue from '../../Facades/Queue'
-import { nlpProcess } from '../../nlp/nlpProcess'
-import { getMessageCaption, sendMessageWTyping } from '../../utils'
+import { sendMessageWTyping } from '../../utils'
 
-export class BalasanTerimaKasih extends MessageUpsert {
+export class BalasanTerimaKasih extends MessageUpsertWithNlp {
+  expectIntent: string = 'ungkapan.terima-kasih'
+  expectMinScore: number = 0.9
   chat: 'all' | 'group' | 'user' = 'user'
   async handler({
     socket,
@@ -14,31 +15,16 @@ export class BalasanTerimaKasih extends MessageUpsert {
     message: proto.IWebMessageInfo
     type: MessageUpsertType
   }>): Promise<void> {
-    const message = getMessageCaption(props.message.message!)
     const jid = props.message.key.remoteJid || ''
-    const response = await nlpProcess(message)
-    const {
-      answer,
-      score,
-      intent,
-    }: {
-      answer: string
-      score: number
-      intent: 'ungkapan.terima-kasih'
-    } = response
-    console.log(response)
-
-    if (score > 0.9 && intent == 'ungkapan.terima-kasih') {
-      Queue(() =>
-        sendMessageWTyping(
-          {
-            text: answer,
-          },
-          jid,
-          socket,
-          { quoted: props.message! },
-        ),
-      )
-    }
+    Queue(() =>
+      sendMessageWTyping(
+        {
+          text: this.data.answer,
+        },
+        jid,
+        socket,
+        { quoted: props.message! },
+      ),
+    )
   }
 }

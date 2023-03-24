@@ -2,11 +2,13 @@ import { isJidGroup, jidNormalizedUser } from '@adiwajshing/baileys'
 import { join } from 'path'
 import { WAEvent } from '../Contracts/WaEvent'
 import { ValidateError } from '../Exceptions'
+import { NlpResponse, nlpProcess } from '../nlp/nlpProcess'
 import { getMessageCaption } from '../utils'
 import { Auth } from './Auth'
 import { MessageUpsert } from './Events/Message/MessageUpsert'
 import { MessageUpsertButtonResponse } from './Events/Message/MessageUpsertButtonResponse'
 import { MessageUpsertListResponse } from './Events/Message/MessageUpsertListResponse'
+import { MessageUpsertWithNlp } from './Events/Message/MessageUpsertWithNlp'
 import { MemoryDataStore } from './Store/MemoryDataStore'
 import { ValidateChatAccess } from './Validation/ValidateChatAccess'
 import { ValidateGroupAccess } from './Validation/ValidateGroupAccess'
@@ -35,7 +37,7 @@ export class WhatsappClient {
     events.map((event) => this.handlers.push(event))
   }
   async clearDataStore() {
-    Object.keys(this.store.store.messages).map(key => {
+    Object.keys(this.store.store.messages).map((key) => {
       const messeges = this.store.store.messages[key]
       messeges.clear()
     })
@@ -84,6 +86,30 @@ export class WhatsappClient {
              */
             const text = getMessageCaption(message.message)
             if (handler.patterns) validatePatternMatch(text, handler.patterns)
+
+            
+            /**
+             * Memvalidasi handler MessageUpsertWithNlp dan mendapatkan data dengan
+             * memproses NlpResponse dari teks yang diberikan.
+             * Score dan intent dari NlpResponse harus sesuai dengan expectMinScore dan
+             * expectIntent dari handler.
+             * Jika nilai score dan intent tidak sesuai, maka akan menghasilkan error
+             * ValidateError.
+             * 
+             * @param handler - handler untuk memvalidasi.
+             * @param text - teks untuk di proses.
+             */
+            if (handler instanceof MessageUpsertWithNlp) {
+              const response: NlpResponse = await nlpProcess(text)
+              if (
+                response.score >= handler.expectMinScore &&
+                handler.expectIntent === response.intent
+              ) {
+                handler.setData(response)
+              } else {
+                throw new ValidateError('Expect score dan intent tidak sesuai')
+              }
+            }
           } else if (handler instanceof MessageUpsertButtonResponse) {
             /**
              * Memastikan bahwa 'selectedId' yang dipilih cocok dengan proses saat ini.

@@ -1,12 +1,13 @@
 import { MessageUpsertType, proto } from '@adiwajshing/baileys'
 import { ChatType } from '../../Contracts/ChatType'
 import { HandlerArgs } from '../../Contracts/IEventListener'
-import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
+import { MessageUpsertWithNlp } from '../../Facades/Events/Message/MessageUpsertWithNlp'
 import Queue from '../../Facades/Queue'
-import { nlpProcess } from '../../nlp/nlpProcess'
-import { getMessageCaption, sendMessageWTyping } from '../../utils'
+import { sendMessageWTyping } from '../../utils'
 
-export class JanganManggilDoang extends MessageUpsert {
+export class JanganManggilDoang extends MessageUpsertWithNlp {
+  expectIntent: string = 'manggildoang'
+  expectMinScore: number = 1
   chat: ChatType = 'mention'
   // patterns: string | false | RegExp | (string | RegExp)[] = [
   //   new RegExp('^[s]+[a]+[r]+$', 'i'),
@@ -26,29 +27,16 @@ export class JanganManggilDoang extends MessageUpsert {
     type: MessageUpsertType
   }>): Promise<void> {
     const jid = props.message.key.remoteJid || ''
-    const message = getMessageCaption(props.message.message!)
-    const response = await nlpProcess(message)
-    const {
-      answer,
-      score,
-      intent,
-    }: {
-      answer: string
-      score: number
-      intent: 'manggildoang'
-    } = response
 
-    if (score == 1 && intent == 'manggildoang') {
-      Queue(() =>
-        sendMessageWTyping(
-          {
-            text: answer,
-          },
-          jid,
-          socket,
-          { quoted: props.message },
-        ),
-      )
-    }
+    Queue(() =>
+      sendMessageWTyping(
+        {
+          text: this.data.answer,
+        },
+        jid,
+        socket,
+        { quoted: props.message },
+      ),
+    )
   }
 }
