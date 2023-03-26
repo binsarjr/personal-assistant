@@ -1,24 +1,22 @@
 import { MessageUpsertType, proto } from '@adiwajshing/baileys'
 import { ChatType } from '../../Contracts/ChatType'
 import { HandlerArgs } from '../../Contracts/IEventListener'
-import { MessageUpsertWithNlp } from '../../Facades/Events/Message/MessageUpsertWithNlp'
+import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
 import Queue from '../../Facades/Queue'
 import { sendMessageWTyping } from '../../utils'
 
-export class JanganManggilDoang extends MessageUpsertWithNlp {
-  expectIntent: string = 'manggildoang'
-  expectMinScore: number = 1
+export class JanganManggilDoang extends MessageUpsert {
   chat: ChatType = 'mention'
-  // patterns: string | false | RegExp | (string | RegExp)[] = [
-  //   new RegExp('^[s]+[a]+[r]+$', 'i'),
-  //   new RegExp('^[b]+[i]+[n]+$', 'i'),
-  //   new RegExp('^[b]+[i]+[n]+[s]+[a]+[r]+$', 'i'),
-  //   new RegExp('^mas\\s+[b]+[i]+[n]+$', 'i'),
-  //   new RegExp('^mas\\s+[b]+[i]+[n]+[s]+[a]+[r]+$', 'i'),
-  //   new RegExp('^(mas|ngab|bro)$', 'i'),
-  //   new RegExp('^pak\\s+[b]+[i]+[n]+$', 'i'),
-  //   new RegExp('^p$', 'i'),
-  // ]
+  patterns: string | false | RegExp | (string | RegExp)[] = [
+    new RegExp('^[s]+[a]+[r]+$', 'i'),
+    new RegExp('^[b]+[i]+[n]+$', 'i'),
+    new RegExp('^[b]+[i]+[n]+[s]+[a]+[r]+$', 'i'),
+    new RegExp('^mas\\s+[b]+[i]+[n]+$', 'i'),
+    new RegExp('^mas\\s+[b]+[i]+[n]+[s]+[a]+[r]+$', 'i'),
+    new RegExp('^(mas|ngab|bro)$', 'i'),
+    new RegExp('^pak\\s+[b]+[i]+[n]+$', 'i'),
+    new RegExp('^p$', 'i'),
+  ]
   async handler({
     props,
     socket,
@@ -31,7 +29,7 @@ export class JanganManggilDoang extends MessageUpsertWithNlp {
     Queue(() =>
       sendMessageWTyping(
         {
-          text: this.data.answer,
+          text: "Maaf, saat ini Binsar sedang tidak dapat dihubungi. Silakan tuliskan permintaan Anda dan akan kami sampaikan kepada Binsar untuk ditindaklanjuti setelah dia kembali online."
         },
         jid,
         socket,
