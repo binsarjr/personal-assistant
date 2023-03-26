@@ -102,7 +102,7 @@ export class WhatsappClient {
               const response: { [i: string]: number } = neuralNetwork.run(
                 text2vec(text),
               )
-              console.log(response, handler)
+              handler.results = response
               if (
                 !(
                   (response[handler.expectIntent] ?? 0) >=

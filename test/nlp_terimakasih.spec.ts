@@ -1,15 +1,15 @@
 import { before, describe, it } from 'mocha'
 import assert from 'node:assert'
-import { join } from 'path'
-import { neuralNetwork, scanCorpus, text2vec } from '../src/nlp/neural'
+import {
+  loadModelNeuralNetWork,
+  neuralNetwork,
+  text2vec,
+} from '../src/nlp/neural'
 import { loadStemmerIdNormalize } from '../src/nlp/stemmer'
 
 before(async () => {
   await loadStemmerIdNormalize()
-  const corpus = await scanCorpus(
-    join(__dirname, '../../dataset/corpus/**/*.{yaml,yml}'),
-  )
-  neuralNetwork.train(corpus)
+  loadModelNeuralNetWork()
 })
 
 describe('Klasifikasi teks Terima Kasih', () => {
@@ -28,10 +28,15 @@ describe('Klasifikasi teks Terima Kasih', () => {
       'Terima kasih atas bantuanmu',
       'Terima kasih banyak',
       'Saya Sangat terima kasih',
-      'mkasih mas'
+      'mkasihh mas',
+      'mksihhhh',
+      'matur nuwun',
+      'nuwun',
+      'suwun',
+      'tq',
+      'thank u',
     ].map((text) => {
       const resp = neuralNetwork.run(text2vec(text))
-      console.log(resp,'ful')
       assert.ok(resp.thank >= 0.9, 'Score tidak valid')
     })
   })
@@ -47,11 +52,26 @@ describe('Klasifikasi teks Terima Kasih', () => {
       'Tidak terima kasih atas perilaku burukmu',
       'Saya tidak berterima kasih atas apa yang kamu lakukan',
       'Saya kecewa dengan tindakanmu',
-      'gk usah mas.mkasih'
+      'gk usah mas.mkasih',
     ].map((text) => {
       const resp = neuralNetwork.run(text2vec(text))
-      console.log(resp)
       assert.ok(resp.thank <= 0.9, 'Score tidak valid')
+    })
+  })
+
+  it('dalam bahasa jawa', () => {
+    ;['matur nuwun', 'nuwwun', 'suwuuuun'].map((text) => {
+      const resp = neuralNetwork.run(text2vec(text))
+      assert.ok(resp.thank >= 0.9, 'Score tidak valid')
+      assert.ok(resp.lang_jawa >= 0.9, 'Score tidak valid')
+    })
+  })
+
+  it('dalam bahasa inggris', () => {
+    ;['thank you'].map((text) => {
+      const resp = neuralNetwork.run(text2vec(text))
+      assert.ok(resp.thank >= 0.9, 'Score tidak valid')
+      assert.ok(resp.lang_english >= 0.9, 'Score tidak valid')
     })
   })
 })

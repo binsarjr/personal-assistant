@@ -2,7 +2,7 @@
 	"scripts": {
 		"dev": "ts-node src/index.ts",
 		"train": "ts-node src/nlp/train.ts",
-		"test": "mocha  --require ts-node/register --recursive ./test/**/*.{spec,test}.ts",
+		"test": "npm run train && mocha  --require ts-node/register --recursive ./test/**/*.{spec,test}.ts",
 		"build": "tsc"
 	},
 	"devDependencies": {

@@ -19,6 +19,15 @@ const tokenizer = new natural.WordTokenizer()
 // @ts-ignore
 const stopWords = new Set(natural.stopwords)
 
+/**
+ * Membersihkan kalimat yang diberikan dengan menghilangkan kata tidak penting.
+ * Fungsi ini menggunakan tokenizer untuk memisahkan kalimat menjadi kata-kata,
+ * kemudian membersihkan kata-kata dengan menggunakan stemmer dan melewati kata-kata
+ * yang bukan stopwords.
+ *
+ * @param sentence - kalimat yang akan dimasukkan.
+ * @returns kalimat yang telah dibersihkan.
+ */
 export const cleaningSentence = (sentence: string) => {
   const words = tokenizer
     .tokenize(sentence)
@@ -29,6 +38,14 @@ export const cleaningSentence = (sentence: string) => {
 }
 
 export const text2vec = (sentence: string) => {
+  /**
+   * Menghapus ekspresi reguler berulang dalam kalimat.
+   * Menggunakan ekspresi reguler untuk mencari dan mengganti karakter berulang.
+   * Kecuali huruf "g" karena banyak kondisi tertentu seperti "nggk" "angga" dsb
+   *
+   * Contoh: makasihhhh -> makasih
+   */
+  sentence = sentence.replace(/([^g])\1+/gi, '$1')
   sentence = cleaningSentence(sentence)
   const input: { [i: string]: number } = {}
   sentence = normalizeId(sentence)
@@ -41,8 +58,23 @@ export const scanCorpus = async (...pathPattern: string[]) => {
   let corpus: TrainData[] = []
   for (const file of files) {
     const yamlData = readFileSync(file, 'utf8')
-    const _corpus = yaml.load(yamlData) as TrainData[]
-    corpus = [...corpus, ..._corpus]
+    const _corpus = yaml.load(yamlData) as { lang?: string; data: TrainData[] }
+
+    corpus = [
+      ...corpus,
+      ..._corpus.data.map((d) => {
+        /**
+         * Jika ada key lang maka berikan expect output lang_{country}
+         * dengan isi matrix barupa 1 jika semua output lainnnya bernilai satu
+         */
+        const valueInput = Object.keys(d.output).map((key) => d.output[key])
+        if (_corpus.lang)
+          d.output['lang_' + _corpus.lang] = Number(
+            valueInput.every((v) => v == 1),
+          )
+        return d
+      }),
+    ]
   }
   return corpus
 }
@@ -52,8 +84,9 @@ export const neuralNetwork = new NeuralNetwork({
 })
 
 export const neuralModelPath = rootPath('model.nlp')
-
-// load model if exists
-if (existsSync(neuralModelPath)) {
-  neuralNetwork.fromJSON(JSON.parse(readFileSync(neuralModelPath).toString()))
+export const loadModelNeuralNetWork = () => {
+  // load model if exists
+  if (existsSync(neuralModelPath)) {
+    neuralNetwork.fromJSON(JSON.parse(readFileSync(neuralModelPath).toString()))
+  }
 }

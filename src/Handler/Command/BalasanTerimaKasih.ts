@@ -15,10 +15,16 @@ export class BalasanTerimaKasih extends MessageUpsertWithNlp {
     type: MessageUpsertType
   }>): Promise<void> {
     const jid = props.message.key.remoteJid || ''
+
+    let answer = ''
+    if (this.results.lang_jawa >= 0.9) answer = 'nggih,sami sami'
+    else if (this.results.lang_indonesia >= 0.9) answer = 'sama sama'
+    else if (this.results.lang_english >= 0.9) answer = 'no problem'
+
     Queue(() =>
       sendMessageWTyping(
         {
-          text: 'Sama sama',
+          text: answer,
         },
         jid,
         socket,
