@@ -38,7 +38,7 @@ describe('Klasifikasi teks Terima Kasih', () => {
       'thank u',
     ].map((text) => {
       const resp = neuralNetwork.run(text2vec(text))
-      assert.ok(resp.thank >= 0.9, 'Score tidak valid')
+      assert.ok(resp.thank >= 0.9, 'Score tidak valid'+ JSON.stringify(resp))
     })
   })
 
@@ -67,7 +67,7 @@ Admin AmikomOne
 Universitas Amikom Yogyakarta`
     ].map((text) => {
       const resp = neuralNetwork.run(text2vec(text))
-      assert.ok(resp.thank <= 0.9, 'Score tidak valid')
+      assert.ok(resp.thank <= 0.9, 'Score tidak valid '+ JSON.stringify(resp))
     })
   })
 
@@ -82,8 +82,8 @@ Universitas Amikom Yogyakarta`
   it('dalam bahasa inggris', () => {
     ;['thank you'].map((text) => {
       const resp = neuralNetwork.run(text2vec(text))
-      assert.ok(resp.thank >= 0.9, 'Score tidak valid')
-      assert.ok(resp.lang_english >= 0.9, 'Score tidak valid')
+      assert.ok(resp.thank >= 0.9, 'Score tidak valid '+ JSON.stringify(resp))
+      assert.ok(resp.lang_english >= 0.9, 'Score tidak valid '+ JSON.stringify(resp))
     })
   })
 })
