@@ -2,7 +2,7 @@ import { isJidGroup, jidNormalizedUser } from '@adiwajshing/baileys'
 import { join } from 'path'
 import { WAEvent } from '../Contracts/WaEvent'
 import { ValidateError } from '../Exceptions'
-import { NlpResponse, nlpProcess } from '../nlp/nlpProcess'
+import { neuralNetwork, text2vec } from '../nlp/neural'
 import { getMessageCaption } from '../utils'
 import { Auth } from './Auth'
 import { MessageUpsert } from './Events/Message/MessageUpsert'
@@ -87,7 +87,6 @@ export class WhatsappClient {
             const text = getMessageCaption(message.message)
             if (handler.patterns) validatePatternMatch(text, handler.patterns)
 
-            
             /**
              * Memvalidasi handler MessageUpsertWithNlp dan mendapatkan data dengan
              * memproses NlpResponse dari teks yang diberikan.
@@ -95,18 +94,21 @@ export class WhatsappClient {
              * expectIntent dari handler.
              * Jika nilai score dan intent tidak sesuai, maka akan menghasilkan error
              * ValidateError.
-             * 
+             *
              * @param handler - handler untuk memvalidasi.
              * @param text - teks untuk di proses.
              */
             if (handler instanceof MessageUpsertWithNlp) {
-              const response: NlpResponse = await nlpProcess(text)
+              const response: { [i: string]: number } = neuralNetwork.run(
+                text2vec(text),
+              )
+              console.log(response, handler)
               if (
-                response.score >= handler.expectMinScore &&
-                handler.expectIntent === response.intent
+                !(
+                  (response[handler.expectIntent] ?? 0) >=
+                  handler.expectMinScore
+                )
               ) {
-                handler.setData(response)
-              } else {
                 throw new ValidateError('Expect score dan intent tidak sesuai')
               }
             }

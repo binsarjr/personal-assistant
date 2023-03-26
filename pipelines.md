@@ -1,4 +1,0 @@
-# default
-
-## main
-nlp.loadOrTrain

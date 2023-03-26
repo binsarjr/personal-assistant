@@ -1,0 +1,23 @@
+
+- input:
+    tidak: 0
+    makasih: 1
+  output:
+    thank: 1
+- input:
+    tidak: 1
+    makasih: 1
+  output:
+    thank: 0
+- input:
+    tidak: 0
+    terima: 1
+    kasih: 1
+  output:
+    thank: 1
+- input:
+    tidak: 1
+    terima: 1
+    kasih: 1
+  output:
+    thank: 0

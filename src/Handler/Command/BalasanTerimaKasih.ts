@@ -5,8 +5,7 @@ import Queue from '../../Facades/Queue'
 import { sendMessageWTyping } from '../../utils'
 
 export class BalasanTerimaKasih extends MessageUpsertWithNlp {
-  expectIntent: string = 'ungkapan.terima-kasih'
-  expectMinScore: number = 1
+  expectIntent: string = 'thank'
   chat: 'all' | 'group' | 'user' = 'user'
   async handler({
     socket,
@@ -19,7 +18,7 @@ export class BalasanTerimaKasih extends MessageUpsertWithNlp {
     Queue(() =>
       sendMessageWTyping(
         {
-          text: this.data.answer,
+          text: 'Sama sama',
         },
         jid,
         socket,

@@ -1,8 +1,12 @@
-// @ts-nocheck
-import { dockStart } from '@nlpjs/basic'
-(async () => {
-  const dock = await dockStart();
-  const nlp = dock.get('nlp');
-  const response = await nlp.process('Terima kasih');
-  console.log(response);
-})();
+import { writeFileSync } from 'fs'
+import { join } from 'path'
+import { neuralModelPath, neuralNetwork, scanCorpus } from './neural'
+
+const main = async () => {
+  const corpus = await scanCorpus(
+    join(__dirname, '../../dataset/corpus/**/*.{yaml,yml}'),
+  )
+  neuralNetwork.train(corpus)
+  writeFileSync(neuralModelPath, JSON.stringify(neuralNetwork.toJSON()))
+}
+main()
