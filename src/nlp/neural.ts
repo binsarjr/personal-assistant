@@ -48,7 +48,6 @@ export const scanCorpus = async (...pathPattern: string[]) => {
 }
 
 export const neuralNetwork = new NeuralNetwork({
-  learningRate: 0.9,
   log: true,
 })
 

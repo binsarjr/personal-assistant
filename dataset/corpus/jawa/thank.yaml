@@ -1,0 +1,15 @@
+- input:
+    matur: 1
+    nuwun: 1
+  output:
+    thank: 1
+- input:
+    matur: 1
+    sembah: 1
+    nuwun: 1
+  output:
+    thank: 1
+- input:
+    suwun: 1
+  output:
+    thank: 1

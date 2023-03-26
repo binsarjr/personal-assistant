@@ -28,8 +28,10 @@ describe('Klasifikasi teks Terima Kasih', () => {
       'Terima kasih atas bantuanmu',
       'Terima kasih banyak',
       'Saya Sangat terima kasih',
+      'mkasih mas'
     ].map((text) => {
       const resp = neuralNetwork.run(text2vec(text))
+      console.log(resp,'ful')
       assert.ok(resp.thank >= 0.9, 'Score tidak valid')
     })
   })
@@ -45,8 +47,10 @@ describe('Klasifikasi teks Terima Kasih', () => {
       'Tidak terima kasih atas perilaku burukmu',
       'Saya tidak berterima kasih atas apa yang kamu lakukan',
       'Saya kecewa dengan tindakanmu',
+      'gk usah mas.mkasih'
     ].map((text) => {
       const resp = neuralNetwork.run(text2vec(text))
+      console.log(resp)
       assert.ok(resp.thank <= 0.9, 'Score tidak valid')
     })
   })
