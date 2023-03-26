@@ -7,11 +7,6 @@ data:
     output:
       who: 1
   - input:
-      siapa: 1
-      kamu: 1
-    output:
-      who: 1
-  - input:
       say: 1
       about: 1
       you: 1
@@ -47,6 +42,7 @@ data:
       for: 1
     output:
       developer: 1
+
   - input:
       when: 1
       is: 1

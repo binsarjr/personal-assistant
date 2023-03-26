@@ -46,6 +46,7 @@ export const text2vec = (sentence: string) => {
    * Contoh: makasihhhh -> makasih
    */
   sentence = sentence.replace(/([^g])\1+/gi, '$1')
+  sentence = normalizeId(sentence)
   sentence = cleaningSentence(sentence)
   const input: { [i: string]: number } = {}
   sentence = normalizeId(sentence)

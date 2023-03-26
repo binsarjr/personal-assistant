@@ -1,0 +1,10 @@
+data:
+  - input:
+      otp: 1
+    output:
+      system_verification: 1
+  - input:
+      verifikasi: 1
+    output:
+      system_verification: 1
+    
