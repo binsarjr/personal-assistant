@@ -1,6 +1,16 @@
 lang: indonesia
 data:
   - input:
+      tidak: 1
+      terimakasih: 1
+    output:
+      thank: 0
+  - input:
+      tidak: 0
+      terimakasih: 1
+    output:
+      thank: 1
+  - input:
       tidak: 0
       makasih: 1
     output:

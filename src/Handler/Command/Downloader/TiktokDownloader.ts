@@ -62,6 +62,7 @@ export class TiktokDownloader extends MessageUpsert {
               video: {
                 url: videosrc,
               },
+              gifPlayback: true
             },
             jid,
             socket,

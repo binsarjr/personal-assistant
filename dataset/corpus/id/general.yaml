@@ -1,0 +1,7 @@
+lang: indonesia
+data:
+  - input:
+      siapa: 1
+      kamu: 1
+    output:
+      who: 1
