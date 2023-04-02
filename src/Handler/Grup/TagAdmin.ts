@@ -5,10 +5,15 @@ import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
 import Queue from '../../Facades/Queue'
 import { sendMessageWTyping } from '../../utils'
 
-export class TagAll extends MessageUpsert {
+export class TagAdmin extends MessageUpsert {
   chat: ChatType = 'group'
   fromMe: boolean = true
-  patterns: string | false | RegExp | (string | RegExp)[] = ['.tagall','/tagall']
+  patterns: string | false | RegExp | (string | RegExp)[] = [
+    '.tagadmin',
+    '/tagadmin',
+    '/admin',
+    '.admin'
+  ]
   async handler({
     socket,
     props,
@@ -23,13 +28,11 @@ export class TagAll extends MessageUpsert {
       sendMessageWTyping(
         {
           text: 'PING!!',
-           mentions: metadata.participants.map(participant => participant.id)
+          mentions: metadata.participants.filter(participant => !!participant.admin).map((participant) => participant.id),
         },
         props.message.key.remoteJid || '',
         socket,
-        {
-            
-        }
+        {},
       ),
     )
   }

@@ -14,7 +14,9 @@ import { DemoteAdmin } from './Handler/Grup/DemoteAdmin'
 import { KickAllMember } from './Handler/Grup/KickAllMember'
 import { KickMember } from './Handler/Grup/KickMember'
 import { PromoteMember } from './Handler/Grup/PromoteMember'
+import { TagAdmin } from './Handler/Grup/TagAdmin'
 import { TagAll } from './Handler/Grup/TagAll'
+import { TagMember } from './Handler/Grup/TagMember'
 import { Halo } from './Handler/HaloHandler'
 import { LagiDiChatHandler } from './Handler/LagiDiChatHandler'
 import { Ping } from './Handler/Ping'
@@ -56,7 +58,7 @@ client.addHandler(
   new DemoteAdmin(),
 )
 
-client.addHandler(new TagAll())
+client.addHandler(new TagAll(),new TagAdmin(), new TagMember())
 
 client.addHandler(new TiktokDownloader(), new InstagramDownloader())
 
