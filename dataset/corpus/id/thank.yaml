@@ -32,3 +32,20 @@ data:
       kasih: 1
     output:
       thank: 0
+
+    # terima kasih tapi boong
+
+  - input:
+      terimakasih: 1
+      tapi: 1
+      bohong: 1
+    output:
+      thank: 0
+  
+  - input:
+      terima: 1
+      kasih: 1
+      tapi: 1
+      bohong: 1
+    output:
+      thank: 0
