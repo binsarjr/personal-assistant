@@ -103,6 +103,9 @@ export class WhatsappClient {
                 text2vec(text),
               )
               handler.results = response
+
+              if (!response)
+                throw new ValidateError('No response neural network')
               if (
                 !(
                   (response[handler.expectIntent] ?? 0) >=

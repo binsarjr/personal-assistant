@@ -38,6 +38,7 @@ export const getMessageQutoedCaption = (message: proto.IMessage) => {
     message?.ephemeralMessage?.message?.extendedTextMessage?.contextInfo
       ?.quotedMessage?.conversation ||
     message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation ||
+    message?.extendedTextMessage?.contextInfo?.quotedMessage?.extendedTextMessage?.text ||
     (msg as proto.Message.IVideoMessage)?.contextInfo?.quotedMessage
       ?.conversation ||
     ''
@@ -146,3 +147,8 @@ export function convertTextToRegex(text: string, threshold = 0.9) {
 
   return new RegExp(regex, 'gi')
 }
+
+
+// https://stackoverflow.com/questions/24205193/javascript-remove-zero-width-space-unicode-8203-from-string
+// http://330k.github.io/misc_tools/unicode_steganography.js
+export const zeroWidthSpaceChecker = (text:string) => /(^[\s\u200b]*|[\s\u200b]*$)/g.test(text)

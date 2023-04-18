@@ -6,6 +6,7 @@ import { CobaButton } from './Handler/CobaButton'
 import { BalasanTerimaKasih } from './Handler/Command/BalasanTerimaKasih'
 import { InstagramDownloader } from './Handler/Command/Downloader/InstagramDownloader'
 import { TiktokDownloader } from './Handler/Command/Downloader/TiktokDownloader'
+import { FindSecretMessageZeroWidthSpaceHandler } from './Handler/Command/FindSecretMessageZeroWidthSpaceHandler'
 import { JanganManggilDoang } from './Handler/Command/JanganManggilDoang'
 import { LagiFree } from './Handler/Command/LagiFree'
 import { SetKesibukkan } from './Handler/Command/SetKesibukkan'
@@ -64,6 +65,9 @@ client.addHandler(new TiktokDownloader(), new InstagramDownloader())
 
 client.addHandler(new CobaButton(), new Ping())
 
+client.addHandler(
+  new FindSecretMessageZeroWidthSpaceHandler()
+)
 
 
 
