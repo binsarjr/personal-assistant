@@ -8,7 +8,11 @@ import { sendMessageWTyping } from '../../utils'
 export class TagAll extends MessageUpsert {
   chat: ChatType = 'group'
   fromMe: boolean = true
-  patterns: string | false | RegExp | (string | RegExp)[] = ['.tagall','/tagall']
+  onlyMe: boolean = true
+  patterns: string | false | RegExp | (string | RegExp)[] = [
+    '.tagall',
+    '/tagall',
+  ]
   async handler({
     socket,
     props,
@@ -23,13 +27,11 @@ export class TagAll extends MessageUpsert {
       sendMessageWTyping(
         {
           text: 'PING!!',
-           mentions: metadata.participants.map(participant => participant.id)
+          mentions: metadata.participants.map((participant) => participant.id),
         },
         props.message.key.remoteJid || '',
         socket,
-        {
-            
-        }
+        {},
       ),
     )
   }

@@ -8,11 +8,12 @@ import { sendMessageWTyping } from '../../utils'
 export class TagAdmin extends MessageUpsert {
   chat: ChatType = 'group'
   fromMe: boolean = true
+  onlyMe: boolean = true
   patterns: string | false | RegExp | (string | RegExp)[] = [
     '.tagadmin',
     '/tagadmin',
     '/admin',
-    '.admin'
+    '.admin',
   ]
   async handler({
     socket,
@@ -28,7 +29,9 @@ export class TagAdmin extends MessageUpsert {
       sendMessageWTyping(
         {
           text: 'PING!!',
-          mentions: metadata.participants.filter(participant => !!participant.admin).map((participant) => participant.id),
+          mentions: metadata.participants
+            .filter((participant) => !!participant.admin)
+            .map((participant) => participant.id),
         },
         props.message.key.remoteJid || '',
         socket,
