@@ -21,6 +21,7 @@ export class KickMember extends MessageUpsert {
     /^sudo\s+rm\s+.*/i,
   ]
   fromMe: boolean = true
+  onlyMe: boolean = true
   groupAccess: 'all' | 'admin' | 'member' = 'admin'
   chat: 'all' | 'group' | 'user' = 'group'
   async handler({
