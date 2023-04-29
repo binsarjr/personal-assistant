@@ -12,7 +12,6 @@ import { LagiFree } from './Handler/Command/LagiFree'
 import { SetKesibukkan } from './Handler/Command/SetKesibukkan'
 import { AddMember } from './Handler/Grup/AddMember'
 import { DemoteAdmin } from './Handler/Grup/DemoteAdmin'
-import { KickAllMember } from './Handler/Grup/KickAllMember'
 import { KickMember } from './Handler/Grup/KickMember'
 import { PromoteMember } from './Handler/Grup/PromoteMember'
 import { TagAdmin } from './Handler/Grup/TagAdmin'
@@ -54,7 +53,7 @@ client.addHandler(new BalasanTerimaKasih())
 client.addHandler(
   new AddMember(),
   new KickMember(),
-  new KickAllMember(),
+  // new KickAllMember(),
   new PromoteMember(),
   new DemoteAdmin(),
 )
