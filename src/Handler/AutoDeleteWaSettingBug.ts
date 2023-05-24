@@ -12,7 +12,7 @@ export class AutoDeleteWaSettingBug extends MessageUpsert {
             delete: props.message.key
         }))
 
-        const message: { id: string, fromMe: boolean, timestamp: number } = {
+        const message: { id: string, fromMe: boolean, timestamp: any } = {
             id: props.message.key.id!,
             fromMe: props.message.key.fromMe!,
             timestamp: props.message.messageTimestamp
