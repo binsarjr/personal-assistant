@@ -30,9 +30,9 @@ const stopWords = new Set(natural.stopwords)
  */
 export const cleaningSentence = (sentence: string) => {
   const words = tokenizer
-    .tokenize(sentence)
-    .map((word) => natural.StemmerId.stem(word))
-    .filter((word) => !stopWords.has(word.toLowerCase()))
+    ?.tokenize(sentence)
+    ?.map((word) => natural?.StemmerId.stem(word))
+    ?.filter((word) => !stopWords?.has(word.toLowerCase()))||[]
   const cleanedSentence = words.join(' ')
   return cleanedSentence
 }
