@@ -1,4 +1,4 @@
-import { MessageUpsertType, getDevice, proto } from '@adiwajshing/baileys'
+import { MessageUpsertType, getDevice, proto } from '@whiskeysockets/baileys'
 import { HandlerArgs } from '../Contracts/IEventListener'
 import { MessageUpsert } from '../Facades/Events/Message/MessageUpsert'
 import Queue from '../Facades/Queue'
@@ -87,7 +87,7 @@ kirim *.profil* untuk melihat profil saya
     //           index: 1,
     //           urlButton: {
     //             displayText: '⭐ Star Baileys on GitHub!',
-    //             url: 'https://github.com/adiwajshing/Baileys',
+    //             url: 'https://github.com/whiskeysockets/Baileys',
     //           },
     //         },
     //         {

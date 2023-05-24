@@ -1,7 +1,7 @@
 import {
-  AuthenticationState,
-  useMultiFileAuthState,
-} from '@adiwajshing/baileys'
+    AuthenticationState,
+    useMultiFileAuthState,
+} from '@whiskeysockets/baileys'
 import { existsSync, mkdirSync } from 'fs'
 import { dirname, join } from 'path'
 

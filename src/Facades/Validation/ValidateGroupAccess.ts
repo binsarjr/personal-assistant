@@ -1,4 +1,4 @@
-import { GroupParticipant } from '@adiwajshing/baileys'
+import { GroupParticipant } from '@whiskeysockets/baileys'
 import { ValidateError } from '../../Exceptions'
 /**
  * Periksa apakah partisipan dalam kelompok memiliki hak akses yang tepat.

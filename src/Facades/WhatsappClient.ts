@@ -1,4 +1,4 @@
-import { isJidGroup, jidNormalizedUser } from '@adiwajshing/baileys'
+import { isJidGroup, jidNormalizedUser } from '@whiskeysockets/baileys'
 import { join } from 'path'
 import { WAEvent } from '../Contracts/WaEvent'
 import { ValidateError } from '../Exceptions'

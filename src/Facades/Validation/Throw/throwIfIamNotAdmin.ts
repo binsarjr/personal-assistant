@@ -1,4 +1,4 @@
-import { GroupParticipant, WASocket } from '@adiwajshing/baileys'
+import { GroupParticipant, WASocket } from '@whiskeysockets/baileys'
 import { ValidateError } from '../../../Exceptions'
 
 export const throwIfIamNotAdmin = (

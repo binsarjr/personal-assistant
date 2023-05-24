@@ -1,10 +1,10 @@
 import {
-  getContentType,
-  isJidGroup,
-  isJidUser,
-  jidNormalizedUser,
-  proto,
-} from '@adiwajshing/baileys'
+    getContentType,
+    isJidGroup,
+    isJidUser,
+    jidNormalizedUser,
+    proto,
+} from '@whiskeysockets/baileys'
 import { ChatType } from '../../Contracts/ChatType'
 import { ValidateError } from '../../Exceptions'
 

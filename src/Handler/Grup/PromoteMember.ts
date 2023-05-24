@@ -1,4 +1,4 @@
-import { MessageUpsertType, getContentType, proto } from '@adiwajshing/baileys'
+import { MessageUpsertType, getContentType, proto } from '@whiskeysockets/baileys'
 import { HandlerArgs } from '../../Contracts/IEventListener'
 import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
 import Queue from '../../Facades/Queue'

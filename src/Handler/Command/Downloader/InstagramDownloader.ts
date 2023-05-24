@@ -1,10 +1,10 @@
-import { MessageUpsertType, proto } from '@adiwajshing/baileys'
 import {
-  instagramdl,
-  instagramdlv2,
-  instagramdlv3,
-  instagramdlv4
+    instagramdl,
+    instagramdlv2,
+    instagramdlv3,
+    instagramdlv4
 } from '@bochilteam/scraper'
+import { MessageUpsertType, proto } from '@whiskeysockets/baileys'
 import got from 'got'
 import { HandlerArgs } from '../../../Contracts/IEventListener'
 import { MessageUpsert } from '../../../Facades/Events/Message/MessageUpsert'

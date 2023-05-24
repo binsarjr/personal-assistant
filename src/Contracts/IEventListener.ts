@@ -1,4 +1,4 @@
-import { BaileysEventMap, WASocket } from '@adiwajshing/baileys'
+import { BaileysEventMap, WASocket } from '@whiskeysockets/baileys'
 
 export interface HandlerArgs<T> {
   props: T

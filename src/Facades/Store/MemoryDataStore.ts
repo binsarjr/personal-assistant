@@ -1,4 +1,4 @@
-import { makeInMemoryStore } from '@adiwajshing/baileys'
+import { makeInMemoryStore } from '@whiskeysockets/baileys'
 
 export class MemoryDataStore {
   public readonly store = makeInMemoryStore({})

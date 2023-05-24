@@ -1,14 +1,14 @@
 import makeWASocket, {
-  BaileysEventMap,
-  Browsers,
-  DisconnectReason,
-  WASocket,
-  fetchLatestBaileysVersion,
-  isJidBroadcast,
-  isJidStatusBroadcast,
-  makeCacheableSignalKeyStore,
-} from '@adiwajshing/baileys'
-import tempLogger from '@adiwajshing/baileys/lib/Utils/logger'
+    BaileysEventMap,
+    Browsers,
+    DisconnectReason,
+    WASocket,
+    fetchLatestBaileysVersion,
+    isJidBroadcast,
+    isJidStatusBroadcast,
+    makeCacheableSignalKeyStore,
+} from '@whiskeysockets/baileys'
+import tempLogger from '@whiskeysockets/baileys/lib/Utils/logger'
 import { IEventListener } from '../Contracts/IEventListener'
 import { ValidateError } from '../Exceptions'
 import { Auth } from './Auth'
@@ -55,7 +55,7 @@ export class WhastappConnection {
       // can use Windows, Ubuntu here too
       browser: Browsers.macOS('Desktop'),
       // solusi bug button dan semacamnya tidak tampil
-      // https://github.com/adiwajshing/Baileys/issues/2328#issuecomment-1316161411
+      // https://github.com/whiskeysockets/Baileys/issues/2328#issuecomment-1316161411
       patchMessageBeforeSending: (message) => {
         const requiresPatch = !!(
           message.buttonsMessage ||

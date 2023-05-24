@@ -1,4 +1,4 @@
-import { MessageUpsertType, WAMessage } from '@adiwajshing/baileys'
+import { MessageUpsertType, WAMessage } from '@whiskeysockets/baileys'
 import { ChatType } from '../../../Contracts/ChatType'
 import { MessageEvent } from '../../../Contracts/Events/MessageEvent'
 import { HandlerArgs } from '../../../Contracts/IEventListener'

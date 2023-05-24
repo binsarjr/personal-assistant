@@ -1,9 +1,9 @@
 import {
-  MessageUpsertType,
-  getContentType,
-  jidNormalizedUser,
-  proto,
-} from '@adiwajshing/baileys'
+    MessageUpsertType,
+    getContentType,
+    jidNormalizedUser,
+    proto,
+} from '@whiskeysockets/baileys'
 import { HandlerArgs } from '../../Contracts/IEventListener'
 import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
 import Queue from '../../Facades/Queue'

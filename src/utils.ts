@@ -1,11 +1,11 @@
 import {
-  AnyMessageContent,
-  MiscMessageGenerationOptions,
-  WASocket,
-  delay,
-  getContentType,
-  proto,
-} from '@adiwajshing/baileys'
+    AnyMessageContent,
+    MiscMessageGenerationOptions,
+    WASocket,
+    delay,
+    getContentType,
+    proto,
+} from '@whiskeysockets/baileys'
 import FuzzySet from 'fuzzyset'
 import { join } from 'path'
 

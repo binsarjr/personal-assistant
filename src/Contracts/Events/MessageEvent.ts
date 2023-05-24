@@ -1,4 +1,4 @@
-import { isJidUser } from '@adiwajshing/baileys'
+import { isJidUser } from '@whiskeysockets/baileys'
 import { WAEvent } from '../WaEvent'
 
 export abstract class MessageEvent extends WAEvent {

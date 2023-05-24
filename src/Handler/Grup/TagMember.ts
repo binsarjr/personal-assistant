@@ -1,4 +1,4 @@
-import { MessageUpsertType, proto } from '@adiwajshing/baileys'
+import { MessageUpsertType, proto } from '@whiskeysockets/baileys'
 import { ChatType } from '../../Contracts/ChatType'
 import { HandlerArgs } from '../../Contracts/IEventListener'
 import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'

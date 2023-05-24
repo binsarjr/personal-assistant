@@ -1,5 +1,5 @@
-import { MessageUpsertType, proto } from '@adiwajshing/baileys'
 import { tiktokdl, tiktokdlv2, tiktokdlv3 } from '@bochilteam/scraper'
+import { MessageUpsertType, proto } from '@whiskeysockets/baileys'
 import { HandlerArgs } from '../../../Contracts/IEventListener'
 import { MessageUpsert } from '../../../Facades/Events/Message/MessageUpsert'
 import Queue from '../../../Facades/Queue'

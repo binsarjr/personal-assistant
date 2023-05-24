@@ -1,17 +1,17 @@
 import {
-  MessageUpsertType,
-  getContentType,
-  isJidUser,
-  jidNormalizedUser,
-  proto,
-} from '@adiwajshing/baileys'
+    MessageUpsertType,
+    getContentType,
+    isJidUser,
+    jidNormalizedUser,
+    proto,
+} from '@whiskeysockets/baileys'
 import { HandlerArgs } from '../../Contracts/IEventListener'
 import { MessageUpsert } from '../../Facades/Events/Message/MessageUpsert'
 import Queue from '../../Facades/Queue'
 import {
-  getMessageCaption,
-  getMessageQutoedCaption,
-  sendMessageWTyping,
+    getMessageCaption,
+    getMessageQutoedCaption,
+    sendMessageWTyping,
 } from '../../utils'
 
 export class KickMember extends MessageUpsert {

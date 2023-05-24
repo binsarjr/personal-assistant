@@ -1,4 +1,4 @@
-import { WASocket } from '@adiwajshing/baileys'
+import { WASocket } from '@whiskeysockets/baileys'
 import { readFileSync } from 'fs'
 import { join } from 'path'
 import Queue from '../Facades/Queue'

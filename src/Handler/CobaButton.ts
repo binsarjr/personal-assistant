@@ -1,4 +1,4 @@
-import { MessageUpsertType, proto } from '@adiwajshing/baileys'
+import { MessageUpsertType, proto } from '@whiskeysockets/baileys'
 import { HandlerArgs } from '../Contracts/IEventListener'
 import { MessageUpsert } from '../Facades/Events/Message/MessageUpsert'
 import Queue from '../Facades/Queue'
@@ -55,7 +55,7 @@ export class CobaButton extends MessageUpsert {
               index: 1,
               urlButton: {
                 displayText: '⭐ Star Baileys on GitHub!',
-                url: 'https://github.com/adiwajshing/Baileys',
+                url: 'https://github.com/whiskeysockets/Baileys',
               },
             },
             {
