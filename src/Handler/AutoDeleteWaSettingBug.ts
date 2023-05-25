@@ -3,7 +3,7 @@ import { HandlerArgs } from "../Contracts/IEventListener"
 import { MessageUpsert } from "../Facades/Events/Message/MessageUpsert"
 
 export class AutoDeleteWaSettingBug extends MessageUpsert {
-    patterns: RegExp = /wa\.me\/settings/ig
+    patterns: RegExp = /wa\.me\/{1,}settings/ig
     fromMe: boolean = true
     async handler({ socket, props }: HandlerArgs<{ message: proto.IWebMessageInfo; type: MessageUpsertType }>): Promise<void> {
         const jid = props.message.key.remoteJid || ''
