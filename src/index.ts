@@ -1,7 +1,6 @@
 import dotenv from 'dotenv'
 import { gracefulShutdown, scheduleJob } from 'node-schedule'
 import { WhatsappClient } from './Facades/WhatsappClient'
-import { AutoDeleteWaSettingBug } from './Handler/AutoDeleteWaSettingBug'
 import { ClearDataStore } from './Handler/ClearDataStore'
 import { CobaButton } from './Handler/CobaButton'
 import { BalasanTerimaKasih } from './Handler/Command/BalasanTerimaKasih'
@@ -68,9 +67,9 @@ client.addHandler(new CobaButton(), new Ping())
 client.addHandler(
   new FindSecretMessageZeroWidthSpaceHandler()
 )
-client.addHandler(
-  new AutoDeleteWaSettingBug()
-)
+// client.addHandler(
+//   new AutoDeleteWaSettingBug()
+// )
 
 
 
