@@ -1,8 +1,5 @@
 import {
-    instagramdl,
-    instagramdlv2,
-    instagramdlv3,
-    instagramdlv4
+  instagramdl,
 } from '@bochilteam/scraper'
 import { MessageUpsertType, proto } from '@whiskeysockets/baileys'
 import got from 'got'
@@ -16,24 +13,23 @@ const download = async (link: string): Promise<string[]> => {
   const res = await Promise.any([
     (async () => {
       const res = await instagramdl(link)
-      console.log(res,'v1')
-      return res.map((r) => r.url)
+      return res.medias.map((r) => r.url)
     })(),
-    (async () => {
-      const res = await instagramdlv2(link)
-      console.log(res,'v2')
-      return res.map((r) => r.url)
-    })(),
-    (async () => {
-      const res = await instagramdlv3(link)
-      console.log(res,'v2')
-      return res.medias.map((m) => m.url)
-    })(),
-    (async () => {
-      const res = await instagramdlv4(link)
-      console.log(res,'v4')
-      return res.map((r) => r.url)
-    })(),
+    // (async () => {
+    //   const res = await instagramdlv2(link)
+    //   console.log(res,'v2')
+    //   return res.map((r) => r.url)
+    // })(),
+    // (async () => {
+    //   const res = await instagramdlv3(link)
+    //   console.log(res,'v2')
+    //   return res.medias.map((m) => m.url)
+    // })(),
+    // (async () => {
+    //   const res = await instagramdlv4(link)
+    //   console.log(res,'v4')
+    //   return res.map((r) => r.url)
+    // })(),
   ])
   return res
 }
