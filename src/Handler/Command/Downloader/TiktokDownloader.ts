@@ -1,4 +1,4 @@
-import { tiktokdl, tiktokdlv2, tiktokdlv3 } from '@bochilteam/scraper'
+import { tiktokdl } from '@bochilteam/scraper'
 import { MessageUpsertType, proto } from '@whiskeysockets/baileys'
 import { HandlerArgs } from '../../../Contracts/IEventListener'
 import { MessageUpsert } from '../../../Facades/Events/Message/MessageUpsert'
@@ -12,21 +12,19 @@ const download = async (link: string): Promise<string> => {
       const res = await tiktokdl(link)
       console.log(res, 'v1')
       return (
-        res.video.no_watermark_raw ||
-        res.video.no_watermark2 ||
-        res.video.no_watermark
+        res.video.no_watermark_hd
       )
     })(),
-    (async () => {
-      const res = await tiktokdlv2(link)
-      console.log(res, 'v2')
-      return res.video.no_watermark_hd || res.video.no_watermark
-    })(),
-    (async () => {
-      const res = await tiktokdlv3(link)
-      console.log(res, 'v3')
-      return res.video.no_watermark2 || res.video.no_watermark
-    })(),
+    // (async () => {
+    //   const res = await tiktokdlv2(link)
+    //   console.log(res, 'v2')
+    //   return res.video.no_watermark_hd || res.video.no_watermark
+    // })(),
+    // (async () => {
+    //   const res = await tiktokdlv3(link)
+    //   console.log(res, 'v3')
+    //   return res.video.no_watermark2 || res.video.no_watermark
+    // })(),
   ])
   return res
 }
@@ -62,7 +60,6 @@ export class TiktokDownloader extends MessageUpsert {
               video: {
                 url: videosrc,
               },
-              gifPlayback: true
             },
             jid,
             socket,

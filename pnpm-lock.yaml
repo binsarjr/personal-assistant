@@ -5,8 +5,11 @@ dependencies:
     specifier: ^0.2.4
     version: 0.2.4
   '@bochilteam/scraper':
-    specifier: 4.0.22-alpha.0
-    version: 4.0.22-alpha.0
+    specifier: 4.2.3
+    version: 4.2.3(ws@8.13.0)
+  '@bochilteam/scraper-downloader':
+    specifier: ^1.0.2
+    version: 1.0.2
   '@nlpjs/neural':
     specifier: ^4.25.0
     version: 4.25.0
@@ -92,22 +95,105 @@ packages:
       regenerator-runtime: 0.13.11
     dev: false
 
-  /@bochilteam/scraper@4.0.22-alpha.0:
-    resolution: {integrity: sha512-Y+TvEkbNIVpt4tuT/nXg+5RcPNIMiesI+yiF8zNlsUjLkDFGPto8vHCMSccLbTNwUSyd3DARiBB5dTR6TYXB1Q==}
-    engines: {node: '>= 12.20'}
+  /@bochilteam/scraper-bmkg@1.0.2:
+    resolution: {integrity: sha512-Wqm11fBYiAZCzxQtqOl2KONTeQkd16rOEu5wMH1ZNzc7k2511pAs93yM2u5mmN25A09vY/9m0BgM8Hot7onGWg==}
+    dependencies:
+      cheerio: 1.0.0-rc.12
+      got: 11.8.6
+      zod: 3.20.3
+    dev: false
+
+  /@bochilteam/scraper-downloader@1.0.2:
+    resolution: {integrity: sha512-VskQCyG5sqRwuS26zn9CMp8FibIHATPesN8PIbdFi/4epVvE003IcnRwjo8Cz26DxcfCwvUOdNaPQWoclyEwNQ==}
+    dependencies:
+      got: 11.8.6
+      zod: 3.20.3
+    dev: false
+
+  /@bochilteam/scraper-games@1.0.2:
+    resolution: {integrity: sha512-TO6EUQEn+oMTCPU8i+PPhhKXgcwahBpKf0pHV9WVYECOj252vhp0kNwEVrFhvd35r6JeEwWb4Mlkv+p1CmL1iQ==}
+    dependencies:
+      got: 11.8.6
+      zod: 3.20.3
+    dev: false
+
+  /@bochilteam/scraper-images@1.0.2:
+    resolution: {integrity: sha512-WJD9ZA6fFxj9OlMGtnY583VF8nYx0GUDWMOvIRT4FDz/+jKdL2INzeFuUfdR4hyt8rihmlIsT8lzM/PBSAZJ1w==}
+    dependencies:
+      cheerio: 1.0.0-rc.12
+      got: 11.8.6
+      zod: 3.20.3
+    dev: false
+
+  /@bochilteam/scraper-news@1.0.2:
+    resolution: {integrity: sha512-1vmbrcUfJvSnfq+R7A4RbcusfdQkHdBLZYjtQG12T/RLiAmwdAmKQje3fXAHnh6POxGTjS9RrZWIDJ3Umb+gAQ==}
+    dependencies:
+      cheerio: 1.0.0-rc.12
+      got: 11.8.6
+      zod: 3.20.3
+    dev: false
+
+  /@bochilteam/scraper-others@1.0.2:
+    resolution: {integrity: sha512-skWayp4wOFRrA8IrrW0ktYtlhF0yXSP/X9bYOkMGC35ilC0wlcrcsjfihDRjqXoiYymrPt3A4mptWGXCtajqGg==}
+    dependencies:
+      cheerio: 1.0.0-rc.12
+      got: 11.8.6
+      zod: 3.20.3
+    dev: false
+
+  /@bochilteam/scraper-primbon@1.0.2:
+    resolution: {integrity: sha512-xEMp0w/2VFJhDDWmUa0VcxAoRXWPp0N6TFiaJQ5l2p642AmxUs3gyQTTLBEx0dbAvCNuGPdrTAUs1uFDbqBZIg==}
+    dependencies:
+      cheerio: 1.0.0-rc.12
+      got: 11.8.6
+      zod: 3.20.3
+    dev: false
+
+  /@bochilteam/scraper-religions@1.0.2:
+    resolution: {integrity: sha512-SVBEafuqavxsPOrwFCQcYAGO6GX9Ou486vLmaoX+toyRJ3dCmdc9o7hwprRxI0uGKXfNPmBmq9tC+qS6RjSZjg==}
+    dependencies:
+      cheerio: 1.0.0-rc.12
+      got: 11.8.6
+      similarity: 1.2.1
+      zod: 3.20.3
+    dev: false
+
+  /@bochilteam/scraper-sosmed@1.0.4(ws@8.13.0):
+    resolution: {integrity: sha512-4buG7rz6ON807SpayQoCPt4nFH7WPv3XqjHTh6uoRi7E8Uqb3F2j9I+0N5QeUtZGd2nUzEhiBG2NOpM3XFhYdg==}
+    peerDependencies:
+      ws: ^8.13.0
+    dependencies:
+      form-data: 4.0.0
+      got: 11.8.6
+      human-readable: 0.2.1
+      ws: 8.13.0
+      zod: 3.20.3
+    dev: false
+
+  /@bochilteam/scraper-texts@1.0.2:
+    resolution: {integrity: sha512-FRtQlZoOZQv4u5zc4J1w+wnaHLcRnWppQ0zSHvxqqHPSOzH/2M/rt1mfobAMdYGqlV6+ZWjDJrZLeKmM4Kl7XA==}
     dependencies:
       cheerio: 1.0.0-rc.12
       form-data: 4.0.0
       got: 11.8.6
-      human-readable: 0.2.1
-      rimraf: 3.0.2
-      similarity: 1.2.1
       zod: 3.20.3
-    optionalDependencies:
-      ws: 8.13.0
+    dev: false
+
+  /@bochilteam/scraper@4.2.3(ws@8.13.0):
+    resolution: {integrity: sha512-caBINSXNtwmTyWp8lEqilAAVqyR5gz5tm+lUujrMqKb7JzvCFVj9qIgn+DPtkTOpP7EZYidauKFhvR7PL5oV3A==}
+    dependencies:
+      '@bochilteam/scraper-bmkg': 1.0.2
+      '@bochilteam/scraper-downloader': 1.0.2
+      '@bochilteam/scraper-games': 1.0.2
+      '@bochilteam/scraper-images': 1.0.2
+      '@bochilteam/scraper-news': 1.0.2
+      '@bochilteam/scraper-others': 1.0.2
+      '@bochilteam/scraper-primbon': 1.0.2
+      '@bochilteam/scraper-religions': 1.0.2
+      '@bochilteam/scraper-sosmed': 1.0.4(ws@8.13.0)
+      '@bochilteam/scraper-texts': 1.0.2
     transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
+      - ws
     dev: false
 
   /@cspotcode/source-map-support@0.8.1:
@@ -808,6 +894,7 @@ packages:
     dependencies:
       balanced-match: 1.0.2
       concat-map: 0.0.1
+    dev: true
 
   /brace-expansion@2.0.1:
     resolution: {integrity: sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==}
@@ -960,6 +1047,7 @@ packages:
 
   /concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    dev: true
 
   /content-type@1.0.4:
     resolution: {integrity: sha512-hIP3EEPs8tB9AT1L+NUqtwOAps4mk2Zob89MWXMHjHWg9milF/j4osnnQLXBCBFBk/tvIG/tUc9mOUJiPBhPXA==}
@@ -1251,17 +1339,6 @@ packages:
       path-is-absolute: 1.0.1
     dev: true
 
-  /glob@7.2.3:
-    resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    dependencies:
-      fs.realpath: 1.0.0
-      inflight: 1.0.6
-      inherits: 2.0.4
-      minimatch: 3.1.2
-      once: 1.4.0
-      path-is-absolute: 1.0.1
-    dev: false
-
   /glob@9.3.2:
     resolution: {integrity: sha512-BTv/JhKXFEHsErMte/AnfiSv8yYOLLiyH2lTg8vn02O21zWFgHPTfxtgn1QRe7NRgggUhC8hacR2Re94svHqeA==}
     engines: {node: '>=16 || 14 >=14.17'}
@@ -1345,6 +1422,7 @@ packages:
     dependencies:
       once: 1.4.0
       wrappy: 1.0.2
+    dev: true
 
   /inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
@@ -1536,6 +1614,7 @@ packages:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
     dependencies:
       brace-expansion: 1.1.11
+    dev: true
 
   /minimatch@5.0.1:
     resolution: {integrity: sha512-nLDxIFRyhDblz3qMuq+SoRZED4+miJ/G+tdDrjkkkRnjAsBexeGpgjLEQ0blJy7rHhR2b93rhQY4SvyWu9v03g==}
@@ -1762,6 +1841,7 @@ packages:
   /path-is-absolute@1.0.1:
     resolution: {integrity: sha512-AVbw3UJ2e9bq64vSaS9Am0fje1Pa8pbGqTTsmXfaIiMpnr5DlDhfJOuLj9Sf95ZPVDAUerDfEk88MPmPe7UCQg==}
     engines: {node: '>=0.10.0'}
+    dev: true
 
   /path-scurry@1.6.3:
     resolution: {integrity: sha512-RAmB+n30SlN+HnNx6EbcpoDy9nwdpcGPnEKrJnu6GZoDWBdIjo1UQMVtW2ybtC7LC2oKLcMq8y5g8WnKLiod9g==}
@@ -1960,13 +2040,6 @@ packages:
     resolution: {integrity: sha512-4gl03wn3hj1HP3yzgdI7d3lCkF95F21Pz4BPGvKHinyQzALR5CapwC8yIi0Rh58DEMQ/SguC03wFj2k0M/mHhw==}
     dependencies:
       lowercase-keys: 2.0.0
-    dev: false
-
-  /rimraf@3.0.2:
-    resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
-    hasBin: true
-    dependencies:
-      glob: 7.2.3
     dev: false
 
   /rwlock@5.0.0:
