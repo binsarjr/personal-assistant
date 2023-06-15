@@ -60,11 +60,19 @@ export class KickMember extends MessageUpsert {
         ? message[type]!.message![getContentType(message[type]!.message!)!]
         : message[type]
 
+    let ephemeralMessageParticipant = message.ephemeralMessage?.message?.extendedTextMessage?.contextInfo?.participant
+    let resolvedEphemeralMessageParticipant = ephemeralMessageParticipant
+      ? [ephemeralMessageParticipant]
+      : null
+
     let mentions =
+      resolvedEphemeralMessageParticipant ||
+      message.ephemeralMessage?.message?.extendedTextMessage?.contextInfo?.mentionedJid ||
       message.extendedTextMessage?.contextInfo?.mentionedJid ||
       (msg as proto.Message.IVideoMessage).contextInfo?.mentionedJid ||
       (msg as proto.IMessage).extendedTextMessage?.contextInfo?.mentionedJid ||
       []
+
     mentions = mentions.filter(Boolean)
     participants = [...participants, ...mentions]
 

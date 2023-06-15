@@ -38,8 +38,13 @@ export class AddMember extends MessageUpsert {
         ? message[type]!.message![getContentType(message[type]!.message!)!]
         : message[type]
 
+      let ephemeralMessageParticipant = message.ephemeralMessage?.message?.extendedTextMessage?.contextInfo?.participant
+      let resolvedEphemeralMessageParticipant = ephemeralMessageParticipant
+        ? [ephemeralMessageParticipant]
+        : null
+
     let mentions =
-      message.ephemeralMessage?.message?.extendedTextMessage?.contextInfo?.mentionedJid ||
+      resolvedEphemeralMessageParticipant ||
       message.extendedTextMessage?.contextInfo?.quotedMessage
         ?.extendedTextMessage?.contextInfo?.mentionedJid ||
       (msg as proto.Message.IVideoMessage).contextInfo?.mentionedJid ||
