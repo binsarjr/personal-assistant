@@ -10,6 +10,8 @@ on:
       - closed
     
 
+env:
+  GIT_SSH_COMMAND: ssh -i /home/ubuntu/binsar/.ssh/id_rsa_personal_asistant -o IdentitiesOnly=yes
 
 jobs:
   deploy:
@@ -26,41 +28,21 @@ jobs:
         node-version: 17.x
     
     
-    - name: Install dependencies
-      run: npm install
-    - name: Build TypeScript
-      run: npm run build
-    
-
-
-    - name: Upload to Server
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
-        source: "lib,dataset,asset,package.json,ecosystem.config.js"
-        target: ${{ secrets.SERVER_CWD }}
-
   
-    # - run: rm -rf lib
-    # - name: Remove Cached Lib folder
-    #   uses:  actions/cache@v2
-    #   with:
-    #     path: lib
-    #     key: Build Cache
 
-    - name: Add SSH key to agent
+    - name: Deploy
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
+        envs: GIT_SSH_COMMAND
         script: |
           cd ${{ secrets.SERVER_CWD }}
-          npm i --only-prod
+          yarn install --production
+          yarn build
           GEMINI="${{ secrets.GEMINI_KEY }}" pm2 restart ecosystem.config.js --update-env
+          history -d $(history 2 | awk '{print $1}')
           pm2 save
 
