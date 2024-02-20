@@ -35,7 +35,7 @@ jobs:
           cd ${{ secrets.SERVER_CWD }}
           yarn install --production
           yarn build
-          GEMINI="${{ secrets.GEMINI_KEY }}" pm2 restart ecosystem.config.js --update-env
+          GEMINI_KEY="${{ secrets.GEMINI_KEY }}" pm2 restart ecosystem.config.js --update-env
           history -d $(history 2 | awk '{print $1}')
           pm2 save
 

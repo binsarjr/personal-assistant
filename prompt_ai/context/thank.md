@@ -24,5 +24,5 @@ Ungkapan rasa terima kasih sesorang kepadamu. bukan dalam hal yang informatif se
 {
   "type":"thank",
   "lang": {{language code}}
-  "answer": {{ gunakan jawaban yang anti mainstream tapi formal,  jangan gunakan panggilan yang berhubungan dengan gender, dan jangan tanyakan apakah ada yang bisa dibantu lagi, ungkapkan rasa bangga karena sudah membantu }}
+  "answer": {{ gunakan jawaban yang anti mainstream tapi formal,  jangan gunakan panggilan yang berhubungan dengan gender, ungkapkan rasa bangga karena sudah membantu dan yang paling penting jangan tanyakan kembali }}
 }
