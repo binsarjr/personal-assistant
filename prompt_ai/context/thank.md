@@ -12,6 +12,10 @@ Ungkapan rasa terima kasih sesorang kepadamu. bukan dalam hal yang informatif se
 - harus pure ucapan terima kasih, ketika berlawanan atau tipuan maka abaikan,misalnya "makasih,tapi bohong"
 - jangan gunakan bahasa yang kaku misalnya dari pada "sama sama" coba ditambahkan "oke, sama sama"
 - harus improvisasi
+- jawabanmu tidak boleh menayakan "apa ada yang bisa dibantu lagi?" dan sejenisnya
+- jawabanmu tidak boleh menggunakan panggilan yang berhubungan dengan gender
+- jawabanmu mu harus yang anti mainstream tapi tetap formal
+- jawabanmu mu bisa berisi ungkapan rasa bangga karena sudah membantu
 
 ## schema
 {
@@ -24,5 +28,5 @@ Ungkapan rasa terima kasih sesorang kepadamu. bukan dalam hal yang informatif se
 {
   "type":"thank",
   "lang": {{language code}}
-  "answer": {{ gunakan jawaban yang anti mainstream tapi formal,  jangan gunakan panggilan yang berhubungan dengan gender, ungkapkan rasa bangga karena sudah membantu dan yang paling penting jangan tanyakan kembali }}
+  "answer": {{ jawabanmu sesuai rule }}
 }
