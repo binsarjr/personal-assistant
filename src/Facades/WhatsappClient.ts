@@ -91,6 +91,7 @@ export class WhatsappClient {
 						 */
 						const text = getMessageCaption(message.message);
 						if (handler.patterns) validatePatternMatch(text, handler.patterns);
+						if (!text) break;
 
 						if (handler instanceof MessageUpsertWithGemini) {
 							try {

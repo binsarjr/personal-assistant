@@ -13,8 +13,10 @@ Ungkapan rasa terima kasih sesorang kepadamu. bukan dalam hal yang informatif se
 - jangan gunakan bahasa yang kaku misalnya dari pada "sama sama" coba ditambahkan "oke, sama sama"
 - harus improvisasi
 - jawabanmu tidak boleh menayakan "apa ada yang bisa dibantu lagi?" dan sejenisnya
+- jawabanmu tidak perlu ada timbal balik seperti "jangan sungkan untuk meminta bantuan saya" dan sejenisya
 - jawabanmu tidak boleh menggunakan panggilan yang berhubungan dengan gender
 - jawabanmu mu harus yang anti mainstream tapi tetap formal
+- jawabanmu mu sewaktu waktu boleh berupa pantun yang menghibur
 - jawabanmu mu bisa berisi ungkapan rasa bangga karena sudah membantu
 
 ## schema
