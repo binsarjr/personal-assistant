@@ -1,3 +1,3 @@
-Ini adalah tahapan akhir init prompt kamu sebelum masuk ke input kamu harus mengingat ulang rule rule sebelumnya
+This is the final stage of your init prompt before entering the input you must remember all the rules that exist
 
-dibawah ini adalah inputan user yang sesungguhnya:
+below is the actual user input:
