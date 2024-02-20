@@ -1,38 +1,37 @@
 {
-	"scripts": {
-		"dev": "ts-node src/index.ts",
-		"train": "ts-node src/nlp/train.ts",
-		"test": "npm run train && mocha  --require ts-node/register --recursive ./test/**/*.{spec,test}.ts",
-		"build": "tsc"
-	},
-	"devDependencies": {
-		"@types/fuzzyset": "^1.0.4",
-		"@types/js-yaml": "^4.0.5",
-		"@types/mocha": "^10.0.1",
-		"@types/node": "^18.11.18",
-		"@types/node-schedule": "^2.1.0",
-		"mocha": "^10.2.0",
-		"ts-node": "^10.9.1",
-		"typescript": "^4.9.4"
-	},
-	"dependencies": {
-		"@adiwajshing/keyed-db": "^0.2.4",
-		"@bochilteam/scraper": "4.2.3",
-		"@bochilteam/scraper-downloader": "^1.0.2",
-		"@nlpjs/neural": "^4.25.0",
-		"@whiskeysockets/baileys": "^6.0.1",
-		"csv-parser": "^3.0.0",
-		"dotenv": "^16.0.3",
-		"fuzzyset": "^1.0.7",
-		"glob": "^9.3.2",
-		"got": "^11.*",
-		"jimp": "^0.16.2",
-		"js-yaml": "^4.1.0",
-		"link-preview-js": "^3.0.4",
-		"natural": "^6.2.0",
-		"node-json-db": "^2.1.5",
-		"node-schedule": "^2.1.1",
-		"p-limit": "^3.*",
-		"qrcode-terminal": "^0.12.0"
-	}
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "test": "npm run train && mocha  --require ts-node/register --recursive ./test/**/*.{spec,test}.ts",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/fuzzyset": "^1.0.4",
+    "@types/js-yaml": "^4.0.5",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.11.18",
+    "@types/node-schedule": "^2.1.0",
+    "mocha": "^10.2.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "@adiwajshing/keyed-db": "^0.2.4",
+    "@bochilteam/scraper": "4.2.3",
+    "@bochilteam/scraper-downloader": "^1.0.2",
+    "@google/generative-ai": "^0.2.1",
+    "@whiskeysockets/baileys": "^6.0.1",
+    "csv-parser": "^3.0.0",
+    "dotenv": "^16.0.3",
+    "fuzzyset": "^1.0.7",
+    "glob": "^9.3.2",
+    "got": "^11.*",
+    "jimp": "^0.16.2",
+    "js-yaml": "^4.1.0",
+    "link-preview-js": "^3.0.4",
+    "natural": "^6.2.0",
+    "node-json-db": "^2.1.5",
+    "node-schedule": "^2.1.1",
+    "p-limit": "^3.*",
+    "qrcode-terminal": "^0.12.0"
+  }
 }

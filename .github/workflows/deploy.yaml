@@ -3,17 +3,17 @@ on:
   push:
     branches:
       - "main"
-  # workflow_run:
-  #   workflows: [Build]
-  #   branches: [main]
-  #   types:
-  #     - completed
+  pull_request:
+    branches:
+      - "main"
+    types:
+      - closed
+    
+
 
 jobs:
-  # train:
-  #   uses: ./.github/workflows/train.yaml
   deploy:
-    # needs: train
+    
     runs-on: ubuntu-latest
     steps:
     - name: Pull commit
@@ -28,8 +28,6 @@ jobs:
     
     - name: Install dependencies
       run: npm install
-    - name: Train nlp model
-      run: npm run train
     - name: Build TypeScript
       run: npm run build
     
@@ -42,7 +40,7 @@ jobs:
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
-        source: "lib,dataset,asset,package.json,ecosystem.config.js,model.nlp"
+        source: "lib,dataset,asset,package.json,ecosystem.config.js"
         target: ${{ secrets.SERVER_CWD }}
 
   
@@ -63,7 +61,6 @@ jobs:
         script: |
           cd ${{ secrets.SERVER_CWD }}
           npm i --only-prod
-          pm2 delete ecosystem.config.js
-          pm2 start ecosystem.config.js
+          GEMINI="${{ secrets.GEMINI_KEY }} pm2 restart ecosystem.config.js --update-env
           pm2 save
 

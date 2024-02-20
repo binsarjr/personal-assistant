@@ -2,13 +2,14 @@ import { isJidGroup, jidNormalizedUser } from "@whiskeysockets/baileys";
 import { join } from "path";
 import { WAEvent } from "../Contracts/WaEvent";
 import { ValidateError } from "../Exceptions";
-import { neuralNetwork, text2vec } from "../nlp/neural";
+import { gemini } from "../supports/gemini";
+import { createPrompt } from "../supports/prompt";
 import { getMessageCaption } from "../utils";
 import { Auth } from "./Auth";
 import { MessageUpsert } from "./Events/Message/MessageUpsert";
 import { MessageUpsertButtonResponse } from "./Events/Message/MessageUpsertButtonResponse";
 import { MessageUpsertListResponse } from "./Events/Message/MessageUpsertListResponse";
-import { MessageUpsertWithNlp } from "./Events/Message/MessageUpsertWithNlp";
+import { MessageUpsertWithGemini } from "./Events/Message/MessageUpsertWithGemini";
 import { MemoryDataStore } from "./Store/MemoryDataStore";
 import { ValidateChatAccess } from "./Validation/ValidateChatAccess";
 import { ValidateGroupAccess } from "./Validation/ValidateGroupAccess";
@@ -91,32 +92,27 @@ export class WhatsappClient {
 						const text = getMessageCaption(message.message);
 						if (handler.patterns) validatePatternMatch(text, handler.patterns);
 
-						/**
-						 * Memvalidasi handler MessageUpsertWithNlp dan mendapatkan data dengan
-						 * memproses NlpResponse dari teks yang diberikan.
-						 * Score dan intent dari NlpResponse harus sesuai dengan expectMinScore dan
-						 * expectIntent dari handler.
-						 * Jika nilai score dan intent tidak sesuai, maka akan menghasilkan error
-						 * ValidateError.
-						 *
-						 * @param handler - handler untuk memvalidasi.
-						 * @param text - teks untuk di proses.
-						 */
-						if (handler instanceof MessageUpsertWithNlp) {
-							const response: { [i: string]: number } = neuralNetwork.run(
-								text2vec(text)
-							);
-							handler.results = response;
+						if (handler instanceof MessageUpsertWithGemini) {
+							try {
+								const prompts = await createPrompt(text);
 
-							if (!response)
-								throw new ValidateError("No response neural network");
-							if (
-								!(
-									(response[handler.expectIntent] ?? 0) >=
-									handler.expectMinScore
-								)
-							) {
-								throw new ValidateError("Expect score dan intent tidak sesuai");
+								const response = await gemini().generateContent(prompts);
+
+								const result: {
+									type: string;
+									answer: string;
+								} = JSON.parse(response.response.text());
+								console.log("\n\n\n\n\n\n\n\n");
+								console.log(result);
+								console.log(handler);
+
+								console.log("\n\n\n\n\n\n\n\n");
+								if (result.type != handler.context) {
+									break;
+								}
+								handler.result = result;
+							} catch (error) {
+								throw new ValidateError(error as any);
 							}
 						}
 					} else if (handler instanceof MessageUpsertButtonResponse) {

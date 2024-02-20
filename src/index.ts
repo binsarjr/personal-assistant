@@ -24,11 +24,7 @@ import {
 	LihatProfile,
 	LihatProfileTemplateButton,
 } from "./Handler/TemplateButton/LihatProfile";
-import { loadModelNeuralNetWork } from "./nlp/neural";
-import { loadStemmerIdNormalize } from "./nlp/stemmer";
 dotenv.config();
-loadStemmerIdNormalize();
-loadModelNeuralNetWork();
 // import { HaloHandler } from './Handler/Halo'
 
 const client = new WhatsappClient({
