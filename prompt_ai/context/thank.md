@@ -31,6 +31,8 @@ Ungkapan rasa terima kasih sesorang kepadamu. bukan dalam hal yang informatif se
 - Hapus elemen timbal balik, seperti "jangan sungkan untuk meminta bantuan saya."
 - jawabanmu tidak boleh menggunakan panggilan yang berhubungan dengan gender
 - Hindari penggunaan panggilan yang berkaitan dengan gender.
+- JAWABAN HARUS MENGIKUTI GAYA BAHASA PENULIS, KETIKA PENULIS MENGGUNAKAN PANTUN, MAKA JAWAB DENGAN PANTUN JUGA
+- Jika penulis menyampaikan ucapan terima kasih dalam bentuk pantun, jawaban AI harus mengikuti gaya tersebut dengan menggunakan pantun.
 
 ## schema
 {
