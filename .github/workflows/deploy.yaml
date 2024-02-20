@@ -61,6 +61,6 @@ jobs:
         script: |
           cd ${{ secrets.SERVER_CWD }}
           npm i --only-prod
-          GEMINI="${{ secrets.GEMINI_KEY }} pm2 restart ecosystem.config.js --update-env
+          GEMINI="${{ secrets.GEMINI_KEY }}" pm2 restart ecosystem.config.js --update-env
           pm2 save
 
