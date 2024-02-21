@@ -20,13 +20,15 @@ export class AutoRevealOnceView extends MessageUpsert {
 		type: MessageUpsertType;
 	}>): Promise<void> {
 		const jid = props.message.key.remoteJid || "";
+		const viewOnceMessage =
+			props.message.message?.viewOnceMessage ||
+			props.message.message?.viewOnceMessageV2 ||
+			props.message.message?.viewOnceMessageV2Extension;
 
-		const isViewOnce = !!props.message.message?.viewOnceMessage;
+		const isViewOnce = !!viewOnceMessage;
 		if (isViewOnce) {
-			const image =
-				props.message.message?.viewOnceMessage?.message?.imageMessage;
-			const video =
-				props.message.message?.viewOnceMessage?.message?.videoMessage;
+			const image = viewOnceMessage?.message?.imageMessage;
+			const video = viewOnceMessage?.message?.videoMessage;
 			const caption = image?.caption || video?.caption;
 
 			let text = `👀 View Once Message Revealed 👀\n`;
