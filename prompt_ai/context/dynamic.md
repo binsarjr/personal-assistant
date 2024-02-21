@@ -8,7 +8,6 @@ Label kan dan kategori pertanyaan dari pengguna sebagai corpus atau label klasif
   - aboutme
   - ask_for_cv
   - ask_for_resume
-  - balasan_terima_kasih
 
 
 ## schema
