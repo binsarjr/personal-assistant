@@ -29,6 +29,11 @@ export const initialPrompt = async () => {
 	const prompts = await Promise.all([
 		getPromptRule(),
 		getPromptInitialInformation(),
+		(async () => {
+			return (
+				await readFile(rootPath("/prompt_ai/default.md"), "utf-8")
+			).toString();
+		})(),
 	]);
 
 	const prompts_context = await glob(rootPath("/prompt_ai/context/**/*.md"));
