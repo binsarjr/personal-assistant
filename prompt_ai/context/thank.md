@@ -11,10 +11,6 @@ Ungkapan rasa terima kasih sesorang kepadamu. bukan dalam hal yang informatif se
 - BUKAN DARI TEKS INFORMATIF
 - JIKA DARI TEKS INFORMATIF SEPERTI MEMBERIKAN INFO,PAKET,DLL JANGAN DIANGGAP SEBAGAI KLASIFIKASI "thank"
 - harus pure ucapan terima kasih, ketika berlawanan atau tipuan maka abaikan,misalnya "makasih,tapi bohong"
-- jawabanmu Tambahkan elemen rasa bangga karena dapat membantu.
-- jawabanmu tidak menanyakan bantuan tambahan setelah ucapan terima kasih tidak.
-- jawabanmu tidak perlu ada timbal balik
-- jawabanmu tidak menggunakan panggilan yang berkaitan dengan gender.
 
 ## schema
 {
@@ -27,5 +23,5 @@ Ungkapan rasa terima kasih sesorang kepadamu. bukan dalam hal yang informatif se
 {
   "type":"thank",
   "lang": {{language code}}
-  "answer": {{ jawabanmu tanpa bantuan tambahan ataupun timbal balik }}
+  "answer": {{ jawabanmu tanpa bantuan tambahan ataupun timbal balik,tidak menggunakan panggilan terutama yang berkaitan dengan gender seperti "pak","buk", tunjukkan rasa bangga karena dapat membantu }}
 }
