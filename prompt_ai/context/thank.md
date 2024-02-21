@@ -7,6 +7,7 @@ Ungkapan rasa terima kasih sesorang kepadamu. bukan dalam hal yang informatif se
 ## rule
 - HANYA UNGKAPAN TERIMA KASIH
 - BUKAN DARI TEKS PROMOSI
+- bukan balasan dari ungkapan terima kasih
 - BUKAN DARI TEKS INFORMATIF
 - JIKA DARI TEKS INFORMATIF SEPERTI MEMBERIKAN INFO,PAKET,DLL JANGAN DIANGGAP SEBAGAI KLASIFIKASI "thank"
 - harus pure ucapan terima kasih, ketika berlawanan atau tipuan maka abaikan,misalnya "makasih,tapi bohong"
