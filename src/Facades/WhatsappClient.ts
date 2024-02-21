@@ -96,6 +96,10 @@ export class WhatsappClient {
 						if (handler instanceof MessageUpsertWithGemini) {
 							try {
 								const prompts = await createPrompt(text);
+								console.log("\n\n\n\n\n\n\n\n");
+
+								console.log(prompts.join("\n"), "PROMPTS");
+								console.log("\n\n\n\n\n\n\n\n");
 
 								const response = await gemini().generateContent(prompts);
 
