@@ -49,5 +49,5 @@ export const initialPrompt = async () => {
 };
 
 export const createPrompt = async (prompt: string) => {
-	return [...(await initialPrompt()), prompt];
+	return [...(await initialPrompt()), prompt].join("\n\n\n");
 };
