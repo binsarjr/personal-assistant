@@ -14,12 +14,10 @@
     "ts-node": "^10.9.1"
   },
   "dependencies": {
-    "typescript": "^4.9.4",
-    "@adiwajshing/keyed-db": "^0.2.4",
     "@bochilteam/scraper": "4.2.3",
     "@bochilteam/scraper-downloader": "^1.0.2",
     "@google/generative-ai": "^0.2.1",
-    "@whiskeysockets/baileys": "^6.0.1",
+    "@whiskeysockets/baileys": "^6.6.0",
     "csv-parser": "^3.0.0",
     "dotenv": "^16.0.3",
     "fuzzyset": "^1.0.7",
@@ -32,6 +30,7 @@
     "node-json-db": "^2.1.5",
     "node-schedule": "^2.1.1",
     "p-limit": "^3.*",
-    "qrcode-terminal": "^0.12.0"
+    "qrcode-terminal": "^0.12.0",
+    "typescript": "^4.9.4"
   }
 }
