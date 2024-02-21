@@ -3,6 +3,7 @@ import { gracefulShutdown } from "node-schedule";
 import { WhatsappClient } from "./Facades/WhatsappClient";
 import { ClearDataStore } from "./Handler/ClearDataStore";
 import { CobaButton } from "./Handler/CobaButton";
+import { BalasanTerimaKasih } from "./Handler/Command/BalasanTerimaKasih";
 import { InstagramDownloader } from "./Handler/Command/Downloader/InstagramDownloader";
 import { TiktokDownloader } from "./Handler/Command/Downloader/TiktokDownloader";
 import { FindSecretMessageZeroWidthSpaceHandler } from "./Handler/Command/FindSecretMessageZeroWidthSpaceHandler";
@@ -44,7 +45,7 @@ client.addHandler(
 );
 client.addHandler(new SetKesibukkan(), new LagiFree(), new LagiDiChatHandler());
 // client.addHandler(new JanganManggilDoang());
-// client.addHandler(new BalasanTerimaKasih());
+client.addHandler(new BalasanTerimaKasih());
 client.addHandler(
 	new AddMember(),
 	new KickMember(),
