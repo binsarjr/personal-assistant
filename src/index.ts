@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import { gracefulShutdown } from "node-schedule";
 import { WhatsappClient } from "./Facades/WhatsappClient";
+import { AutoRevealOnceView } from "./Handler/AutoRevealOnceView";
 import { ClearDataStore } from "./Handler/ClearDataStore";
 import { CobaButton } from "./Handler/CobaButton";
 import { BalasanTerimaKasih } from "./Handler/Command/BalasanTerimaKasih";
@@ -46,6 +47,7 @@ client.addHandler(
 client.addHandler(new SetKesibukkan(), new LagiFree(), new LagiDiChatHandler());
 // client.addHandler(new JanganManggilDoang());
 client.addHandler(new BalasanTerimaKasih());
+client.addHandler(new AutoRevealOnceView());
 client.addHandler(
 	new AddMember(),
 	new KickMember(),
