@@ -23,9 +23,12 @@ export class AutoRevealOnceView extends MessageUpsert {
 		const viewOnceMessage =
 			props.message.message?.viewOnceMessage ||
 			props.message.message?.viewOnceMessageV2 ||
-			props.message.message?.viewOnceMessageV2Extension;
+			props.message.message?.viewOnceMessageV2Extension ||
+			props.message;
 
-		const isViewOnce = !!viewOnceMessage;
+		const isViewOnce =
+			viewOnceMessage?.message?.imageMessage?.viewOnce ||
+			viewOnceMessage?.message?.videoMessage?.viewOnce;
 		if (isViewOnce) {
 			const image = viewOnceMessage?.message?.imageMessage;
 			const video = viewOnceMessage?.message?.videoMessage;
