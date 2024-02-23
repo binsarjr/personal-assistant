@@ -8,6 +8,9 @@ Label kan dan kategori pertanyaan dari pengguna sebagai corpus atau label klasif
   - aboutme
   - ask_for_cv
   - ask_for_resume
+- type yang mungkin mengganggu konteks karena kemiripan, jika ditemukan kemiripan,langsung saja klasifikasikan antara dibawah ini:
+  - reply_to_thank
+  - telling_me_to_thank
 
 
 ## schema

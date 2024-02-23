@@ -1,15 +1,16 @@
 
 # thank
 ## konteks
-Ungkapan rasa terima kasih sesorang kepadamu. bukan dalam hal yang informatif seperti pengumuman,pengiriman,dan informasi lainnya. harus ada kata yang dikategorikan "terima kasih"
+please pay attention to the context, whether the input really wants to say thank you or not or there is another intention.
 
 
 ## rule
-- HANYA UNGKAPAN TERIMA KASIH
-- BUKAN DARI TEKS PROMOSI
-- isi pesan bukanlah berupa balasan dari ungkapan terima kasih, seperti "sama sama" bukanlah terima kasih
-- BUKAN DARI TEKS INFORMATIF
-- JIKA DARI TEKS INFORMATIF SEPERTI MEMBERIKAN INFO,PAKET,DLL JANGAN DIANGGAP SEBAGAI KLASIFIKASI "thank"
+- JUST AN EXPRESSION OF THANKS
+- not telling me to thank you
+- no other intentions
+- NOT FROM PROMOTIONAL TEXT
+- NOT FROM INFORMATIVE TEXT
+- IF FROM INFORMATIVE TEXT LIKE GIVING INFO, PACKAGES, ETC DO NOT THINK OF IT AS A "thank" CLASSIFICATION
 - harus pure ucapan terima kasih, ketika berlawanan atau tipuan maka abaikan,misalnya "makasih,tapi bohong"
 
 ## schema

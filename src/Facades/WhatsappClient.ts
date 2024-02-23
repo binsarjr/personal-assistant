@@ -103,7 +103,7 @@ export class WhatsappClient {
 								console.log("\n\n\n\n\n\n\n\n");
 
 								const response = await gemini().generateContent(prompts);
-
+								console.log(response.response.text());
 								const result: {
 									type: string;
 									answer: string;
