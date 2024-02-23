@@ -13,6 +13,8 @@ export default class {
 
 		this.socket = baileys.makeWASocket({
 			version,
+			// @ts-ignore
+			logger,
 			auth: {
 				creds: state.creds,
 				keys: state.keys,
@@ -35,11 +37,11 @@ export default class {
 					baileys.DisconnectReason.loggedOut;
 
 			if (shouldReconnect) {
-				logger.warning("connection closed due to ");
-				logger.error(lastDisconnect?.error?.toString() as string);
-				logger.warning(
-					shouldReconnect ? "reconnecting" : "not reconnecting due to error",
-					"shouldReconnect"
+				logger.warn(
+					"connection closed due to ",
+					lastDisconnect?.error,
+					", reconnecting ",
+					shouldReconnect
 				);
 
 				return this.connectToWhatsapp();
