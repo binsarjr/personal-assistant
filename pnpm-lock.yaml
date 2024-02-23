@@ -14,12 +14,12 @@ dependencies:
   dotenv:
     specifier: ^16.4.5
     version: 16.4.5
-  dotenv-validator:
-    specifier: ^1.0.1
-    version: 1.0.1
   link-preview-js:
     specifier: ^3.0.4
     version: 3.0.4
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   lowdb:
     specifier: ^7.0.1
     version: 7.0.1
@@ -31,6 +31,9 @@ devDependencies:
   '@types/dotenv':
     specifier: ^8.2.0
     version: 8.2.0
+  '@types/lodash':
+    specifier: ^4.14.202
+    version: 4.14.202
   '@types/lowdb':
     specifier: ^1.0.15
     version: 1.0.15
@@ -476,10 +479,6 @@ packages:
       domhandler: 5.0.3
     dev: false
 
-  /dotenv-validator@1.0.1:
-    resolution: {integrity: sha512-6MgtdBVaUGv8fb6cwLRmAYWsXXl39JENBjTGCqpNmY8DgAyuQ51vUiUpet7puy0/L4suSHs4tG6KNVz0en75lA==}
-    dev: false
-
   /dotenv@16.4.5:
     resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
     engines: {node: '>=12'}
@@ -581,6 +580,10 @@ packages:
 
   /lodash.clonedeep@4.5.0:
     resolution: {integrity: sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==}
+    dev: false
+
+  /lodash@4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
     dev: false
 
   /long@4.0.0:

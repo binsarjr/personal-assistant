@@ -6,6 +6,7 @@
   "type": "module",
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
+    "@types/lodash": "^4.14.202",
     "@types/lowdb": "^1.0.15",
     "@types/node": "^18.11.18",
     "@types/node-schedule": "^2.1.0",
@@ -17,6 +18,7 @@
     "@whiskeysockets/baileys": "^6.6.0",
     "dotenv": "^16.4.5",
     "link-preview-js": "^3.0.4",
+    "lodash": "^4.17.21",
     "lowdb": "^7.0.1",
     "qrcode-terminal": "^0.12.0"
   }

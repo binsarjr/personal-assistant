@@ -27,8 +27,8 @@ process.on("SIGINT", async () => {
 	process.exit();
 });
 
-while (true) {
-	console.log("oke", process.env.DATABASE_FILE);
-	await new Promise((resolve) => setTimeout(resolve, 1000));
-}
-console.log(DB.data.owner.push("oke"));
+// while (true) {
+// 	console.log("oke", process.env.DATABASE_FILE);
+// 	await new Promise((resolve) => setTimeout(resolve, 1000));
+// }
+console.log(DB.chain.get("owner").value());
