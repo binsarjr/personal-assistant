@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "node --loader ts-node/esm  src/index.ts",
+    "dev": "node --trace-warnings --loader ts-node/esm  src/index.ts",
     "build": "tsc"
   },
   "type": "module",

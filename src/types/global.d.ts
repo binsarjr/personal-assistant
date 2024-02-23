@@ -2,6 +2,8 @@ import type { ENV_RULES } from "../configs/env.config.ts";
 
 export interface Data {
 	owner: string[];
+	// for baileys auth store
+	auths: { [sessionId: string]: any };
 }
 
 type EnvRulesDictionary = {
