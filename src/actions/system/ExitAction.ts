@@ -26,7 +26,10 @@ export default class implements BaseAction {
 
 	protected async handlerBeforeExit() {
 		this.handlerExiting(async () => {
-			logger.info("Aplikasi akan keluar Mohon menunggu sampai proses selesai");
+			logger.info("Aplikasi akan keluar");
+			logger.info(
+				"Demi menjaga data tetap tersimpan dengan aman, mohon menunggu sampai proses selesai"
+			);
 			logger.info("Database sedang disimpan...");
 			await DB.write();
 			logger.info("Database berhasil disimpan.");
