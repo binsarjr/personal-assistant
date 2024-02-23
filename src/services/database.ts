@@ -1,7 +1,7 @@
 import "dotenv/config";
 import lodash from "lodash";
 import { Low } from "lowdb";
-import { JSONFile } from "lowdb/node";
+import { DataFile } from "lowdb/node";
 import type { Data } from "../types/global.js";
 
 class LowWithLodash<T> extends Low<T> {
@@ -10,7 +10,11 @@ class LowWithLodash<T> extends Low<T> {
 
 const defaultData: Data = { owner: [], auths: {} };
 
-const adapter = new JSONFile<Data>(process.env.DATABASE_FILE!);
+const adapter = new DataFile<Data>(process.env.DATABASE_FILE!, {
+	parse: JSON.parse,
+	stringify: JSON.stringify,
+});
+
 const DB = new LowWithLodash(adapter, defaultData);
 await DB.read();
 
