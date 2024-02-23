@@ -1,5 +1,6 @@
 import type { BaseAction } from "../../contracts/actions/BaseAction.js";
 import DB from "../../services/database.js";
+import logger from "../../services/logger.js";
 
 export default class implements BaseAction {
 	exiting = false;
@@ -13,31 +14,27 @@ export default class implements BaseAction {
 	 */
 	protected async handlerExiting(callback: () => Promise<void>) {
 		if (this.exiting) return;
+		console.log();
 		this.exiting = true;
 		await callback();
 		this.exiting = false;
+
+		logger.info("Aplikasi berhasil keluar.");
+
 		process.exit();
 	}
 
 	protected async handlerBeforeExit() {
 		this.handlerExiting(async () => {
-			console.log("Aplikasi akan keluar...");
-
-			console.log("Saving...");
+			logger.warning("Aplikasi akan keluar...");
+			await new Promise((resolve) => setTimeout(resolve, 5000));
+			logger.info("Database sedang disimpan...");
 			await DB.write();
-			console.log("Saved");
-
-			console.log("Eksekusi sebelum keluar selesai.");
+			logger.info("Database berhasil disimpan.");
 		});
 	}
 
 	protected async handlerSigInt() {
-		this.handlerExiting(async () => {
-			console.log("Aplikasi menerima sinyal SIGINT (Ctrl+C).");
-
-			console.log("Saving...");
-			await DB.write();
-			console.log("Saved");
-		});
+		this.handlerBeforeExit();
 	}
 }

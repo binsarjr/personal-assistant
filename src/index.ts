@@ -6,8 +6,8 @@ loadEnv();
 
 new ExitAction().execute();
 
-while (true) {
-	console.log("oke", process.env.DATABASE_FILE);
-	await new Promise((resolve) => setTimeout(resolve, 1000));
-}
+// while (true) {
+// 	console.log("oke", process.env.DATABASE_FILE);
+// 	await new Promise((resolve) => setTimeout(resolve, 1000));
+// }
 console.log(DB.chain.get("owner").value());
