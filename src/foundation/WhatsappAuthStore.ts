@@ -1,6 +1,5 @@
 import * as baileys from "@whiskeysockets/baileys";
 import {
-	BufferJSON,
 	initAuthCreds,
 	type AuthenticationCreds,
 	type SignalKeyStore,
@@ -66,7 +65,7 @@ export default class implements WhatsappAuthStore {
 			const data = DB.data.auths[this.sessionId][type];
 			if (data === undefined) return null;
 
-			return JSON.parse(data, BufferJSON.reviver);
+			return data;
 		} catch (e: any) {
 			logger.info("Trying to read non existent session data");
 			logger.error(e.toString());
@@ -76,7 +75,6 @@ export default class implements WhatsappAuthStore {
 
 	async write(data: any, type: string) {
 		try {
-			data = JSON.stringify(data, BufferJSON.replacer);
 			if (DB.data.auths[this.sessionId] === undefined)
 				DB.data.auths[this.sessionId] = {};
 
