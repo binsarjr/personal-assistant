@@ -11,4 +11,8 @@ export const ENV_RULES = createEnvRules({
 		required: false,
 		default: "database.json",
 	},
+	COMMAND_SIGN: {
+		required: false,
+		default: ".",
+	},
 } as const);

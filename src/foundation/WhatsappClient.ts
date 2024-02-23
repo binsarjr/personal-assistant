@@ -3,11 +3,14 @@ import WhatsappAuthStore from "./WhatsappAuthStore.js";
 import WhatsappConnection from "./WhatsappConnection.js";
 
 export default class implements WhatsappClient {
-	constructor(public readonly sessionId: string) {}
-	async start() {
-		const connection = new WhatsappConnection(
+	public readonly connection: WhatsappConnection;
+	constructor(public readonly sessionId: string) {
+		this.connection = new WhatsappConnection(
 			new WhatsappAuthStore(this.sessionId)
 		);
-		await connection.connectToWhatsapp();
+	}
+
+	async start() {
+		await this.connection.connectToWhatsapp();
 	}
 }
