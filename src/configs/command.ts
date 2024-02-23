@@ -1,6 +1,6 @@
-import HelloWorldAction from "../actions/message/HelloWorldAction.js";
+import PingAction from "../actions/message/random/PingAction.js";
 import type CommandConfig from "../types/CommandConfig.js";
 
 export const commands: CommandConfig = {
-	messagesHandler: [new HelloWorldAction()],
+	messagesHandler: [new PingAction()],
 };

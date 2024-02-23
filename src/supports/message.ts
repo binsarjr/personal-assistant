@@ -92,9 +92,9 @@ export const sendWithTyping = async (
 	await socket.sendPresenceUpdate("paused", jid);
 
 	const sendedMsg = await socket.sendMessage(jid, message, options);
-	// if (sendedMsg) {
-	// 	await delay(randomInteger(10, 200));
-	// 	await react(socket, "🤖", sendedMsg);
-	// }
+	if (sendedMsg) {
+		await delay(randomInteger(10, 200));
+		await react(socket, "🤖", sendedMsg);
+	}
 	return sendedMsg;
 };
