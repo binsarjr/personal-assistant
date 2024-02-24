@@ -1,5 +1,6 @@
 import type { WAMessage, WASocket } from "@whiskeysockets/baileys";
 import type BaseMessageAction from "../../contracts/actions/BaseMessageAction.js";
+import NotEligableToProcess from "../../errors/NotEligableToProcess.js";
 import { QueueMessage } from "../../services/queue.js";
 import { patternsAndTextIsMatch } from "../../supports/flag.js";
 import {
@@ -37,10 +38,12 @@ export default abstract class
 				return;
 			}
 			await this.process(socket, message);
-		} catch (Error: any) {
+		} catch (err: any) {
+			if (err instanceof NotEligableToProcess) return;
+
 			this.reactToFailed(socket, message);
 			QueueMessage.add(() =>
-				sendWithTyping(socket, { text: Error.message }, getJid(message), {
+				sendWithTyping(socket, { text: err.message }, getJid(message), {
 					quoted: message,
 				})
 			);
