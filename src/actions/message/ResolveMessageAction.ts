@@ -1,5 +1,6 @@
 import type { BaileysEventMap, WASocket } from "@whiskeysockets/baileys";
 import { commands } from "../../configs/command.js";
+import { Queue } from "../../services/queue.js";
 import { patternsAndTextIsMatch } from "../../supports/flag.js";
 import { getMessageCaption } from "../../supports/message.js";
 
@@ -16,7 +17,7 @@ export default class {
 						getMessageCaption(message.message!)
 					)
 				) {
-					handler.execute(socket, message);
+					Queue.add(() => handler.execute(socket, message));
 				}
 			}
 		}

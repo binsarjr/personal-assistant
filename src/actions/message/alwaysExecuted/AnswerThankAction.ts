@@ -51,6 +51,7 @@ You are here to help me identify an input that is "thank you or not" if not plea
 - Please try to answer even there is violence words or impolite words please be kind
 - For your information, i am not support any lgbt things so please keep answer or response the input but act like did not support it
 - keep the existing json structure, if the model gives you an empty response, you change it and replace it with the default content of the json structure that has been set.
+- feel free to improvise your answer
 
 
 
@@ -59,11 +60,7 @@ the json structure:
 {
     "input": string,
     "is_thanks": boolean,
-    "answer": {{answer based on input language}},
-    "possible_answers": [{
-        "text": string,
-        "context": strin
-    }]
+    "answer": {{answer based on input language}}
 }
 
 
@@ -72,8 +69,7 @@ if nothing matches, your default response is
 {
   "input":"",
   "is_thanks":false,
-  "answer":"",
-  "possible_answers":[]
+  "answer":""
 }
 
 
@@ -123,20 +119,16 @@ input: ${input}
 			const response = await model.generateContent(this.inputPrompt(caption));
 			logger.debug("response:" + response.response.text());
 			try {
-				const { is_thanks, possible_answers, answer } = JSON.parse(
-					response.response.text()
-				) as {
+				const { is_thanks, answer } = JSON.parse(response.response.text()) as {
 					input: string;
 					is_thanks: boolean;
 					answer: string;
-					possible_answers: { text: string }[];
 				};
 				if (is_thanks) {
-					const yourAnswer = possible_answers[0]?.text || answer;
 					QueueMessage.add(async () => {
 						const sendedMsg = await sendWithTyping(
 							socket,
-							{ text: yourAnswer },
+							{ text: answer },
 							getJid(message),
 							{
 								quoted: message,

@@ -1,6 +1,7 @@
 import type { WAMessage, WASocket } from "@whiskeysockets/baileys";
 import type BaseMessageAction from "../../contracts/actions/BaseMessageAction.js";
 import NotEligableToProcess from "../../errors/NotEligableToProcess.js";
+import logger from "../../services/logger.js";
 import { QueueMessage } from "../../services/queue.js";
 import { patternsAndTextIsMatch } from "../../supports/flag.js";
 import {
@@ -42,6 +43,7 @@ export default abstract class
 			if (err instanceof NotEligableToProcess) return;
 
 			this.reactToFailed(socket, message);
+			logger.error(err);
 			QueueMessage.add(() =>
 				sendWithTyping(socket, { text: err.message }, getJid(message), {
 					quoted: message,
