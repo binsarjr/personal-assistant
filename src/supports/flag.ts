@@ -2,6 +2,8 @@ import type { MessagePattern } from "../types/MessagePattern.js";
 
 export const withSign = (command: string): string =>
 	process.env.COMMAND_SIGN + command;
+export const withSignRegex = (command: string): RegExp =>
+	new RegExp(`^\\${process.env.COMMAND_SIGN}${command}`, "i");
 
 export const patternsAndTextIsMatch = (
 	patterns: MessagePattern,

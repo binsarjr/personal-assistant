@@ -3,6 +3,7 @@ import {
 	type WAMessage,
 	type WASocket,
 } from "@whiskeysockets/baileys";
+import NotEligableToProcess from "../../errors/NotEligableToProcess.js";
 import { getJid } from "../../supports/message.js";
 import BaseMessageHandlerAction from "./BaseMessageHandlerAction.js";
 
@@ -11,9 +12,11 @@ export default abstract class extends BaseMessageHandlerAction {
 		socket: WASocket,
 		message: WAMessage
 	): Promise<boolean> {
-		return (
-			!!isJidGroup(getJid(message)) &&
-			super.isEligibleToProcess(socket, message)
-		);
+		if (!(await super.isEligibleToProcess(socket, message)))
+			throw new NotEligableToProcess();
+
+		if (!isJidGroup(getJid(message))) throw new NotEligableToProcess();
+
+		return true;
 	}
 }

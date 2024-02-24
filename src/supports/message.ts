@@ -27,7 +27,32 @@ export const react = async (
 	});
 };
 
+export const getMessageFromViewOnce = (
+	message: WAMessage
+): proto.IMessage | null | undefined => {
+	return (
+		message.message?.viewOnceMessage?.message ||
+		message.message?.viewOnceMessageV2?.message ||
+		message.message?.viewOnceMessageV2Extension?.message ||
+		message.message
+	);
+};
+
+export const getContextInfo = (
+	_message: WAMessage
+): proto.IContextInfo | null => {
+	const message = getMessageFromViewOnce(_message);
+
+	return (
+		message?.ephemeralMessage?.message?.extendedTextMessage?.contextInfo ||
+		message?.extendedTextMessage?.contextInfo ||
+		null
+	);
+};
+
 export const getMessageCaption = (message: proto.IMessage) => {
+	if (!message) return "";
+
 	const type = getContentType(message)!;
 	const msg =
 		type == "viewOnceMessage"
