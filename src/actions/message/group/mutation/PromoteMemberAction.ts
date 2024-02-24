@@ -1,5 +1,4 @@
 import {
-	delay,
 	jidNormalizedUser,
 	type GroupMetadata,
 	type WAMessage,
@@ -7,10 +6,9 @@ import {
 } from "@whiskeysockets/baileys";
 import NotEligableToProcess from "../../../../errors/NotEligableToProcess.js";
 import GroupMessageHandlerAction from "../../../../foundation/actions/GroupMessageHandlerAction.js";
-import { Queue } from "../../../../services/queue.js";
+import { QueueMutation } from "../../../../services/queue.js";
 import { withSignRegex } from "../../../../supports/flag.js";
 import { getContextInfo, getJid } from "../../../../supports/message.js";
-import { randomInteger } from "../../../../supports/number.js";
 import type { MessagePattern } from "../../../../types/MessagePattern.js";
 
 export default class extends GroupMessageHandlerAction {
@@ -57,8 +55,7 @@ export default class extends GroupMessageHandlerAction {
 
 		const mentionedJid = getContextInfo(message)?.mentionedJid || [];
 
-		await Queue.add(async () => {
-			await delay(randomInteger(500, 1000));
+		await QueueMutation.add(async () => {
 			await socket.groupParticipantsUpdate(
 				getJid(message),
 				mentionedJid,

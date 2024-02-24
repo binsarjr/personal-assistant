@@ -4,6 +4,10 @@ import type { EnvRule } from "../types/env.js";
 const createEnvRules = <T extends Record<string, EnvRule>>(rules: T) => rules;
 
 export const ENV_RULES = createEnvRules({
+	BOT_NAME: {
+		required: false,
+		default: "bangbin",
+	},
 	GEMINI_API_KEY: {
 		required: true,
 	},

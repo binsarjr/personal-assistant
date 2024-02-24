@@ -16,7 +16,7 @@ export const getJid = (message: WAMessage): string => {
 export const react = async (
 	socket: WASocket,
 	emoji: string,
-	message: WAMessage
+	message: WAMessage | proto.IWebMessageInfo
 ): Promise<void> => {
 	await delay(randomInteger(100, 500));
 	socket.sendMessage(getJid(message), {

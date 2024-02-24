@@ -13,7 +13,7 @@ import type { MessagePattern } from "../../../../types/MessagePattern.js";
 
 export default class extends GroupMessageHandlerAction {
 	patterns(): MessagePattern {
-		return withSignRegex("demote .*");
+		return withSignRegex("kick .*");
 	}
 
 	protected eligableIfBotIsAdmin(socket: WASocket, metadata: GroupMetadata) {
@@ -25,28 +25,16 @@ export default class extends GroupMessageHandlerAction {
 		if (!me?.admin) throw new NotEligableToProcess();
 	}
 
-	protected eligableIfRequestFromUserAdmin(
-		metadata: GroupMetadata,
-		message: WAMessage
-	) {
-		const user_requested = metadata.participants.find(
-			(participant) =>
-				jidNormalizedUser(participant.id) ===
-				jidNormalizedUser(message.key.participant || "")
-		);
-
-		if (!user_requested?.admin) throw new NotEligableToProcess();
-	}
-
 	async isEligibleToProcess(
 		socket: WASocket,
 		message: WAMessage
 	): Promise<boolean> {
 		await super.isEligibleToProcess(socket, message);
 
+		if (!message.key.fromMe) return false;
+
 		const metadata = await socket.groupMetadata(getJid(message));
 		this.eligableIfBotIsAdmin(socket, metadata);
-		this.eligableIfRequestFromUserAdmin(metadata, message);
 		return true;
 	}
 
@@ -59,7 +47,7 @@ export default class extends GroupMessageHandlerAction {
 			await socket.groupParticipantsUpdate(
 				getJid(message),
 				mentionedJid,
-				"demote"
+				"remove"
 			);
 			await this.reactToDone(socket, message);
 		});
