@@ -18,6 +18,7 @@ export const react = async (
 	emoji: string,
 	message: WAMessage
 ): Promise<void> => {
+	await delay(randomInteger(100, 500));
 	socket.sendMessage(getJid(message), {
 		react: {
 			text: emoji,

@@ -1,4 +1,9 @@
-import type { WAMessage, WASocket } from "@whiskeysockets/baileys";
+import {
+	isJidGroup,
+	type WAMessage,
+	type WASocket,
+} from "@whiskeysockets/baileys";
+import { getJid } from "../../supports/message.js";
 import BaseMessageHandlerAction from "./BaseMessageHandlerAction.js";
 
 export default abstract class extends BaseMessageHandlerAction {
@@ -6,6 +11,9 @@ export default abstract class extends BaseMessageHandlerAction {
 		socket: WASocket,
 		message: WAMessage
 	): Promise<boolean> {
-		return super.isEligibleToProcess(socket, message);
+		return (
+			!!isJidGroup(getJid(message)) &&
+			super.isEligibleToProcess(socket, message)
+		);
 	}
 }
