@@ -58,26 +58,21 @@ export default class extends BaseMessageHandlerAction {
 		await Promise.all(
 			urls.map(async (url) => {
 				const { video, images } = await this.download(url.toString());
-				console.log("\n\n\n\n\n\n");
-
-				console.log(video, images);
-				console.log("\n\n\n\n\n\n");
-				await socket.sendMessage(
-					jid,
-					{
-						video: {
-							url: video,
+				if (video)
+					await socket.sendMessage(
+						jid,
+						{
+							video: {
+								url: video,
+							},
 						},
-					},
-					{ quoted: message }
-				);
+						{ quoted: message }
+					);
 				for (const image of images) {
 					await socket.sendMessage(
 						jid,
 						{
-							image: {
-								url: image,
-							},
+							image: { url: image },
 						},
 						{ quoted: message }
 					);

@@ -23,6 +23,7 @@ export default class {
 			},
 			generateHighQualityLinkPreview: true,
 			printQRInTerminal: true,
+			syncFullHistory: true,
 		});
 		this.resolveClientConnection();
 		this.resolveCredentialSaver(saveCreds);
