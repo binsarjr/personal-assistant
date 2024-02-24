@@ -20,7 +20,6 @@
     "link-preview-js": "^3.0.4",
     "lodash": "^4.17.21",
     "lowdb": "^7.0.1",
-    "node-fetch": "^3.3.2",
     "p-queue": "^8.0.1",
     "pino": "^8.19.0",
     "pino-pretty": "^10.3.1",

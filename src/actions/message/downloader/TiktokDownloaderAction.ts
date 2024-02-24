@@ -1,5 +1,4 @@
 import { type WAMessage, type WASocket } from "@whiskeysockets/baileys";
-import fetch from "node-fetch";
 import BaseMessageHandlerAction from "../../../foundation/actions/BaseMessageHandlerAction.js";
 import { Queue } from "../../../services/queue.js";
 import { withSignRegex } from "../../../supports/flag.js";
