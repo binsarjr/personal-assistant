@@ -4,6 +4,10 @@ import type { EnvRule } from "../types/env.js";
 const createEnvRules = <T extends Record<string, EnvRule>>(rules: T) => rules;
 
 export const ENV_RULES = createEnvRules({
+	NODE_ENV: {
+		required: false,
+		default: "dev",
+	},
 	BOT_NAME: {
 		required: false,
 		default: "bangbin",
