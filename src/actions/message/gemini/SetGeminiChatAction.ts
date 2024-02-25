@@ -29,14 +29,14 @@ export default class extends BaseMessageHandlerAction {
 		const jid = getJid(message);
 		const caption = getMessageCaption(message.message!)
 			.toLowerCase()
-			.replace(new RegExp(`^${process.env.COMMAND_SIGN}`), "")
+			.replace(new RegExp(`^${process.env.COMMAND_SIGN}`, "i"), "")
 			.trim();
 
 		if (caption == "gemini")
 			this.resolveRegisterGeminiChat(socket, message, jid);
-		else if (caption == "gemini start")
+		else if (caption.includes("start"))
 			this.resolveGeminiStart(socket, message, jid);
-		else if (caption == "gemini stop")
+		else if (caption.includes("stop"))
 			this.resolveGeminiStop(socket, message, jid);
 		else {
 			await this.reactToInvalid(socket, message);
