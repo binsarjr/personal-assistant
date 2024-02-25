@@ -1,9 +1,17 @@
 import type { ENV_RULES } from "../configs/env.config.ts";
 
 export interface Data {
-	owner: string[];
 	// for baileys auth store
 	auths: { [sessionId: string]: any };
+
+	gemini: {
+		[sessionId: string]: {
+			[jid: string]: {
+				active: boolean;
+				rules: string[];
+			};
+		};
+	};
 }
 
 type EnvRulesDictionary = {

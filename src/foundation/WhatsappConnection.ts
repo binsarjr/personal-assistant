@@ -25,6 +25,10 @@ export default class {
 			printQRInTerminal: true,
 			syncFullHistory: true,
 		});
+
+		this.socket.ev.on("messaging-history.set", (data) => {
+			logger.debug("messaging-history.set", data);
+		});
 		this.resolveClientConnection();
 		this.resolveCredentialSaver(saveCreds);
 		this.resolveMessagesUpsert();

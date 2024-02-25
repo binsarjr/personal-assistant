@@ -8,7 +8,7 @@ class LowWithLodash<T> extends Low<T> {
 	chain: lodash.ExpChain<this["data"]> = lodash.chain(this).get("data");
 }
 
-const defaultData: Data = { owner: [], auths: {} };
+const defaultData: Data = { auths: {}, gemini: {} };
 
 const adapter = new DataFile<Data>(process.env.DATABASE_FILE!, {
 	parse: JSON.parse,
