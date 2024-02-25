@@ -26,7 +26,8 @@ export default class extends BaseMessageHandlerAction {
 		const jid = getJid(message);
 		return (
 			!message.key.fromMe &&
-			DB.data.gemini[process.env.BOT_NAME!][jid] !== undefined
+			DB.data.gemini[process.env.BOT_NAME!][jid] !== undefined &&
+			DB.data.gemini[process.env.BOT_NAME!][jid].active
 		);
 	}
 	getKey() {
