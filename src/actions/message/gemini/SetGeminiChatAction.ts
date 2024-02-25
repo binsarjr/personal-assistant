@@ -58,7 +58,9 @@ export default class extends BaseMessageHandlerAction {
 			.replace(process.env.COMMAND_SIGN + "gemini ", "")
 			.trim();
 		if (caption == "start" || caption == "stop") {
-			if (DB.data.gemini[getJid(message)] === undefined) {
+			if (
+				DB.data.gemini[process.env.BOT_NAME!][getJid(message)] === undefined
+			) {
 				throw new NotEligableToProcess();
 			}
 		}
