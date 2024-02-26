@@ -32,7 +32,7 @@ export default class extends BaseMessageHandlerAction {
 			.trim();
 		const quoted = getMessageQutoedCaption(message.message!);
 		if (quoted) {
-			caption += "\nquoted: " + quoted;
+			caption += "\n\n\n\n\n" + quoted;
 		}
 		if (caption?.length > 1) {
 			const key = this.getKey();
