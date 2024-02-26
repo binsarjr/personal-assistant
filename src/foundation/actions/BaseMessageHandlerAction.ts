@@ -1,14 +1,14 @@
-import type { WAMessage, WASocket } from "@whiskeysockets/baileys";
+import {
+	jidNormalizedUser,
+	type WAMessage,
+	type WASocket,
+} from "@whiskeysockets/baileys";
 import type BaseMessageAction from "../../contracts/actions/BaseMessageAction.js";
 import NotEligableToProcess from "../../errors/NotEligableToProcess.js";
 import logger from "../../services/logger.js";
 import { QueueMessage } from "../../services/queue.js";
 import { patternsAndTextIsMatch } from "../../supports/flag.js";
-import {
-	getJid,
-	getMessageCaption,
-	sendWithTyping,
-} from "../../supports/message.js";
+import { getMessageCaption, sendWithTyping } from "../../supports/message.js";
 import type { MessagePattern } from "../../types/MessagePattern.js";
 import MessageReactHandlerAction from "./MessageReactHandlerAction.js";
 
@@ -45,9 +45,14 @@ export default abstract class
 			this.reactToFailed(socket, message);
 			logger.error(err);
 			QueueMessage.add(() =>
-				sendWithTyping(socket, { text: err.message }, getJid(message), {
-					quoted: message,
-				})
+				sendWithTyping(
+					socket,
+					{ text: err.message },
+					jidNormalizedUser(socket.user?.id!),
+					{
+						quoted: message,
+					}
+				)
 			);
 		}
 	}

@@ -13,7 +13,7 @@ import type { MessagePattern } from "../../../types/MessagePattern.js";
 
 export default class extends BaseMessageHandlerAction {
 	patterns(): MessagePattern {
-		return [withSign("gemini"), withSignRegex("gemini start|stop")];
+		return [withSign("gemini"), withSignRegex("gemini on|off")];
 	}
 
 	async isEligibleToProcess(
@@ -34,9 +34,9 @@ export default class extends BaseMessageHandlerAction {
 
 		if (caption == "gemini")
 			this.resolveRegisterGeminiChat(socket, message, jid);
-		else if (caption.includes("start"))
+		else if (caption.includes("on"))
 			this.resolveGeminiStart(socket, message, jid);
-		else if (caption.includes("stop"))
+		else if (caption.includes("off"))
 			this.resolveGeminiStop(socket, message, jid);
 		else {
 			await this.reactToInvalid(socket, message);
@@ -57,7 +57,7 @@ export default class extends BaseMessageHandlerAction {
 		const caption = getMessageCaption(message.message!)
 			.replace(process.env.COMMAND_SIGN + "gemini ", "")
 			.trim();
-		if (caption == "start" || caption == "stop") {
+		if (caption == "on" || caption == "off") {
 			if (
 				DB.data.gemini[process.env.BOT_NAME!][getJid(message)] === undefined
 			) {
@@ -114,6 +114,7 @@ export default class extends BaseMessageHandlerAction {
 			DB.data.gemini[process.env.BOT_NAME!][jid] = {
 				active: false,
 				rules: [],
+				history: [],
 			};
 		}
 

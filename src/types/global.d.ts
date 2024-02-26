@@ -9,6 +9,11 @@ export interface Data {
 			[jid: string]: {
 				active: boolean;
 				rules: string[];
+				history: {
+					input?: string;
+					output?: string;
+					timestamp: number;
+				}[];
 			};
 		};
 	};
