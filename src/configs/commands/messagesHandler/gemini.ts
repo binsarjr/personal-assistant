@@ -1,3 +1,4 @@
+import GeminiAiAction from "../../../actions/message/gemini/GeminiAiAction.js";
 import GeminiChatAction from "../../../actions/message/gemini/GeminiChatAction.js";
 import ResetGeminiChatAction from "../../../actions/message/gemini/ResetGeminiChatAction.js";
 import RuleGeminiChatAction from "../../../actions/message/gemini/RuleGeminiChatAction.js";
@@ -11,4 +12,5 @@ export default <BaseMessageHandlerAction[]>[
 	new RuleGeminiChatAction(),
 	new GeminiChatAction(),
 	new ResetGeminiChatAction(),
+	new GeminiAiAction(),
 ];

@@ -1,11 +1,12 @@
 import {
 	downloadMediaMessage,
+	jidNormalizedUser,
 	type WAMessage,
 	type WASocket,
 } from "@whiskeysockets/baileys";
 import BaseMessageHandlerAction from "../../../foundation/actions/BaseMessageHandlerAction.js";
 import { QueueMessage } from "../../../services/queue.js";
-import { getJid, react, sendWithTyping } from "../../../supports/message.js";
+import { react, sendWithTyping } from "../../../supports/message.js";
 import type { MessagePattern } from "../../../types/MessagePattern.js";
 
 export default class extends BaseMessageHandlerAction {
@@ -44,7 +45,6 @@ export default class extends BaseMessageHandlerAction {
 			const media = await downloadMediaMessage(message, "buffer", {});
 
 			text = text.trim();
-			const jid = getJid(message);
 			if (image) {
 				QueueMessage.add(() =>
 					sendWithTyping(
@@ -53,7 +53,7 @@ export default class extends BaseMessageHandlerAction {
 							image: media as Buffer,
 							caption: text,
 						},
-						jid,
+						jidNormalizedUser(socket.user?.id!),
 
 						{ quoted: message }
 					)
@@ -66,7 +66,7 @@ export default class extends BaseMessageHandlerAction {
 							video: media as Buffer,
 							caption: text,
 						},
-						jid,
+						jidNormalizedUser(socket.user?.id!),
 
 						{ quoted: message }
 					)
