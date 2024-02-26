@@ -3,13 +3,18 @@ import {
 	HarmBlockThreshold,
 	HarmCategory,
 } from "@google/generative-ai";
-import type { WAMessage, WASocket } from "@whiskeysockets/baileys";
+import {
+	downloadMediaMessage,
+	type WAMessage,
+	type WASocket,
+} from "@whiskeysockets/baileys";
 import BaseMessageHandlerAction from "../../../foundation/actions/BaseMessageHandlerAction.js";
 import { QueueMessage } from "../../../services/queue.js";
 import { withSign, withSignRegex } from "../../../supports/flag.js";
 import {
 	getJid,
 	getMessageCaption,
+	getMessageFromViewOnce,
 	getMessageQutoedCaption,
 	sendWithTyping,
 } from "../../../supports/message.js";
@@ -30,6 +35,11 @@ export default class extends BaseMessageHandlerAction {
 		let caption = getMessageCaption(message.message!)
 			.replace(new RegExp(`^${process.env.COMMAND_SIGN}ai`), "")
 			.trim();
+
+		const viewOnce = getMessageFromViewOnce(message);
+		const image = viewOnce?.imageMessage || message?.message?.imageMessage;
+		const anyImage = !!image;
+
 		const quoted = getMessageQutoedCaption(message.message!);
 		if (quoted) {
 			caption += "\n\n\n\n\n" + quoted;
@@ -38,10 +48,8 @@ export default class extends BaseMessageHandlerAction {
 			const key = this.getKey();
 			const genAI = new GoogleGenerativeAI(key);
 			const model = genAI.getGenerativeModel({
-				model: "gemini-pro",
-				generationConfig: {
-					temperature: 1,
-				},
+				model: anyImage ? "gemini-pro-vision" : "gemini-pro",
+
 				safetySettings: [
 					{
 						category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
@@ -62,7 +70,24 @@ export default class extends BaseMessageHandlerAction {
 				],
 			});
 
-			const response = await model.generateContent(caption);
+			const prompts: any[] = [];
+			prompts.push(caption.trim());
+
+			if (anyImage) {
+				const media = (await downloadMediaMessage(
+					message,
+					"buffer",
+					{}
+				)) as Buffer;
+				prompts.push({
+					inlineData: {
+						data: Buffer.from(media).toString("base64"),
+						mimeType: "image/jpeg",
+					},
+				});
+			}
+
+			const response = await model.generateContent(prompts);
 
 			const text = response.response.text();
 
