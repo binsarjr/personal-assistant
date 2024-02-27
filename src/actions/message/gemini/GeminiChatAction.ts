@@ -2,9 +2,10 @@ import {
 	GoogleGenerativeAI,
 	HarmBlockThreshold,
 	HarmCategory,
+	type InputContent,
 } from "@google/generative-ai";
 import type { WAMessage, WASocket } from "@whiskeysockets/baileys";
-import BaseMessageHandlerAction from "../../../foundation/actions/BaseMessageHandlerAction.js";
+import GeminiMessageHandlerAction from "../../../foundation/actions/GeminiMessageHandlerAction.js";
 import DB from "../../../services/database.js";
 import { Queue, QueueMessage } from "../../../services/queue.js";
 import {
@@ -15,7 +16,7 @@ import {
 import type { MessagePattern } from "../../../types/MessagePattern.js";
 import ClearGeminiHistoryIfNeededAction from "./ClearGeminiHistoryIfNeededAction.js";
 
-export default class extends BaseMessageHandlerAction {
+export default class extends GeminiMessageHandlerAction {
 	patterns(): MessagePattern {
 		return true;
 	}
@@ -30,10 +31,6 @@ export default class extends BaseMessageHandlerAction {
 			DB.data.gemini[process.env.BOT_NAME!][jid] !== undefined &&
 			DB.data.gemini[process.env.BOT_NAME!][jid].active
 		);
-	}
-	getKey() {
-		const keys = (process.env.GEMINI_API_KEY || "").split(",");
-		return keys[Math.floor(Math.random() * keys.length)];
 	}
 
 	async process(socket: WASocket, message: WAMessage): Promise<void> {
@@ -70,11 +67,13 @@ export default class extends BaseMessageHandlerAction {
 				],
 			});
 
-			this.addHistory({ input: caption, jid });
+			const chat = model.startChat({
+				history: this.getHistory(jid),
+			});
 
-			const response = await model.generateContent(this.prompt(message));
+			const response = await chat.sendMessage(caption);
 
-			const text = response.response.text().replaceAll("output:", "").trim();
+			const text = response.response.text().trim();
 
 			QueueMessage.add(async () => {
 				await sendWithTyping(
@@ -85,30 +84,40 @@ export default class extends BaseMessageHandlerAction {
 					jid,
 					{ quoted: message }
 				);
-				this.addHistory({ output: text, jid });
+				await this.addHistory({ input: caption, jid });
+				await this.addHistory({ output: text, jid });
 			});
 		}
 	}
 
-	protected prompt(message: WAMessage) {
-		const jid = getJid(message);
+	protected getHistory(jid: string) {
 		const rules = DB.data.gemini[process.env.BOT_NAME!][jid].rules || [];
 
-		const prompts = [...rules];
+		const history: InputContent[] = rules.length
+			? [
+					{
+						role: "user",
+						parts: rules.join("\n\n\n"),
+					},
+			  ]
+			: [];
+		// jika ada rules, maka tambahkan pesan "okay, i will remember that." untuk role model
+		if (history.length > 0)
+			history.push({ role: "model", parts: "okay, i will remember that." });
 
-		DB.data.gemini[process.env.BOT_NAME!][jid].history.map((history) => {
-			if (history.input) {
-				prompts.push(`input: ${history.input}`);
+		DB.data.gemini[process.env.BOT_NAME!][jid].history.map(
+			({ input, output }) => {
+				history.push({
+					role: !!input ? "user" : "model",
+					parts: input || output || "",
+				});
 			}
-			if (history.output) {
-				prompts.push(`output: ${history.output}`);
-			}
-		});
+		);
 
-		return prompts;
+		return history;
 	}
 
-	protected addHistory({
+	protected async addHistory({
 		input,
 		jid,
 		output,
@@ -125,6 +134,6 @@ export default class extends BaseMessageHandlerAction {
 			output,
 			timestamp: Date.now(),
 		});
-		Queue.add(() => DB.write());
+		await Queue.add(() => DB.write());
 	}
 }

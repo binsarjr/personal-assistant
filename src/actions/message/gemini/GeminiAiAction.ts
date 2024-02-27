@@ -8,7 +8,7 @@ import {
 	type WAMessage,
 	type WASocket,
 } from "@whiskeysockets/baileys";
-import BaseMessageHandlerAction from "../../../foundation/actions/BaseMessageHandlerAction.js";
+import GeminiMessageHandlerAction from "../../../foundation/actions/GeminiMessageHandlerAction.js";
 import { QueueMessage } from "../../../services/queue.js";
 import { withSign, withSignRegex } from "../../../supports/flag.js";
 import {
@@ -21,15 +21,11 @@ import {
 } from "../../../supports/message.js";
 import type { MessagePattern } from "../../../types/MessagePattern.js";
 
-export default class extends BaseMessageHandlerAction {
+export default class extends GeminiMessageHandlerAction {
 	patterns(): MessagePattern {
 		return [withSignRegex("ai .*"), withSign("ai")];
 	}
 
-	getKey() {
-		const keys = (process.env.GEMINI_API_KEY || "").split(",");
-		return keys[Math.floor(Math.random() * keys.length)];
-	}
 	async process(socket: WASocket, message: WAMessage): Promise<void> {
 		this.reactToProcessing(socket, message);
 		const jid = getJid(message);
