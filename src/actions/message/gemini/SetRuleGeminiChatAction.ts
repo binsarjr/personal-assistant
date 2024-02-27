@@ -20,7 +20,6 @@ export default class extends BaseMessageHandlerAction {
 		message: WAMessage
 	): Promise<boolean> {
 		const jid = getJid(message);
-		console.log(DB.data.gemini[process.env.BOT_NAME!]);
 		return (
 			!!message.key.fromMe &&
 			DB.data.gemini[process.env.BOT_NAME!][jid] !== undefined

@@ -17,6 +17,9 @@ dependencies:
   jimp:
     specifier: ^0.16.1
     version: 0.16.13
+  libphonenumber-js:
+    specifier: ^1.10.57
+    version: 1.10.57
   link-preview-js:
     specifier: ^3.0.4
     version: 3.0.4
@@ -646,7 +649,7 @@ packages:
       cache-manager: 4.0.1
       futoin-hkdf: 1.5.1
       jimp: 0.16.13
-      libphonenumber-js: 1.10.56
+      libphonenumber-js: 1.10.57
       libsignal: github.com/adiwajshing/libsignal-node/11dbd962ea108187c79a7c46fe4d6f790e23da97
       link-preview-js: 3.0.4
       music-metadata: 7.13.3
@@ -1064,8 +1067,8 @@ packages:
     resolution: {integrity: sha512-WZzeDOEtTOBK4Mdsar0IqEU5sMr3vSV2RqkAIzUEV2BHnUfKGyswWFPFwK5EeDo93K3FohSHbLAjj0s1Wzd+dg==}
     dev: false
 
-  /libphonenumber-js@1.10.56:
-    resolution: {integrity: sha512-d0GdKshNnyfl5gM7kZ9rXjGiAbxT/zCXp0k+EAzh8H4zrb2R7GXtMCrULrX7UQxtfx6CLy/vz/lomvW79FAFdA==}
+  /libphonenumber-js@1.10.57:
+    resolution: {integrity: sha512-OjsEd9y4LgcX+Ig09SbxWqcGESxliDDFNVepFhB9KEsQZTrnk3UdEU+cO0sW1APvLprHstQpS23OQpZ3bwxy6Q==}
     dev: false
 
   /link-preview-js@3.0.4:

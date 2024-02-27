@@ -1,19 +1,26 @@
 import {
+	jidEncode,
 	jidNormalizedUser,
 	type GroupMetadata,
 	type WAMessage,
 	type WASocket,
 } from "@whiskeysockets/baileys";
+import { findPhoneNumbersInText } from "libphonenumber-js";
 import NotEligableToProcess from "../../../../errors/NotEligableToProcess.js";
 import GroupMessageHandlerAction from "../../../../foundation/actions/GroupMessageHandlerAction.js";
 import { QueueMutation } from "../../../../services/queue.js";
-import { withSignRegex } from "../../../../supports/flag.js";
-import { getContextInfo, getJid } from "../../../../supports/message.js";
+import { withSign, withSignRegex } from "../../../../supports/flag.js";
+import {
+	getContextInfo,
+	getJid,
+	getMessageCaption,
+	getMessageQutoedCaption,
+} from "../../../../supports/message.js";
 import type { MessagePattern } from "../../../../types/MessagePattern.js";
 
 export default class extends GroupMessageHandlerAction {
 	patterns(): MessagePattern {
-		return withSignRegex("kick .*");
+		return [withSignRegex("add .*"), withSign("add")];
 	}
 
 	protected eligableIfBotIsAdmin(socket: WASocket, metadata: GroupMetadata) {
@@ -31,7 +38,7 @@ export default class extends GroupMessageHandlerAction {
 	): Promise<boolean> {
 		await super.isEligibleToProcess(socket, message);
 
-		if (!message.key.fromMe) return false;
+		// if (!message.key.fromMe) return false;
 
 		const metadata = await socket.groupMetadata(getJid(message));
 		this.eligableIfBotIsAdmin(socket, metadata);
@@ -41,13 +48,26 @@ export default class extends GroupMessageHandlerAction {
 	async process(socket: WASocket, message: WAMessage): Promise<void> {
 		this.reactToProcessing(socket, message);
 
-		const mentionedJid = getContextInfo(message)?.mentionedJid || [];
+		let mentionedJid = getContextInfo(message)?.mentionedJid || [];
+		const caption = getMessageCaption(message.message!) || "";
+		const quoted = getMessageQutoedCaption(message.message!) || "";
+		const phones = findPhoneNumbersInText(caption + " " + quoted, "ID");
+
+		phones.map((phone) => {
+			const phoneJid = jidEncode(
+				phone.number.number.replace("+", ""),
+				"s.whatsapp.net"
+			);
+			if (!mentionedJid.includes(phoneJid)) {
+				mentionedJid.push(phoneJid);
+			}
+		});
 
 		await QueueMutation.add(async () => {
 			await socket.groupParticipantsUpdate(
 				getJid(message),
-				mentionedJid.filter((jid) => jid != jidNormalizedUser(socket.user?.id)),
-				"remove"
+				mentionedJid,
+				"add"
 			);
 			await this.reactToDone(socket, message);
 		});

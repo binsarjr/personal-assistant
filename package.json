@@ -17,6 +17,7 @@
     "@whiskeysockets/baileys": "^6.6.0",
     "dotenv": "^16.4.5",
     "jimp": "^0.16.1",
+    "libphonenumber-js": "^1.10.57",
     "link-preview-js": "^3.0.4",
     "lodash": "^4.17.21",
     "lowdb": "^7.0.1",
