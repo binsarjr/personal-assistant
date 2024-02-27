@@ -58,7 +58,7 @@ export default class extends GroupMessageHandlerAction {
 		await QueueMutation.add(async () => {
 			await socket.groupParticipantsUpdate(
 				getJid(message),
-				mentionedJid,
+				mentionedJid.filter((jid) => jid != jidNormalizedUser(socket.user?.id)),
 				"promote"
 			);
 			await this.reactToDone(socket, message);
