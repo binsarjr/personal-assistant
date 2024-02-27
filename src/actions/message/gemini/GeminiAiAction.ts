@@ -4,11 +4,13 @@ import {
 	HarmCategory,
 } from "@google/generative-ai";
 import {
+	downloadContentFromMessage,
 	downloadMediaMessage,
 	type WAMessage,
 	type WASocket,
 } from "@whiskeysockets/baileys";
 import BaseMessageHandlerAction from "../../../foundation/actions/BaseMessageHandlerAction.js";
+import logger from "../../../services/logger.js";
 import { QueueMessage } from "../../../services/queue.js";
 import { withSign, withSignRegex } from "../../../supports/flag.js";
 import {
@@ -36,19 +38,71 @@ export default class extends BaseMessageHandlerAction {
 			.replace(new RegExp(`^${process.env.COMMAND_SIGN}ai`), "")
 			.trim();
 
+		console.log("\n\n\n\n\n\n\n");
+		logger.debug(message);
+		console.log("\n\n\n\n\n\n\n");
+
 		const viewOnce = getMessageFromViewOnce(message);
 		const image = viewOnce?.imageMessage || message?.message?.imageMessage;
 		const anyImage = !!image;
 
 		const quoted = getMessageQutoedCaption(message.message!);
-		if (quoted) {
-			caption += "\n\n\n\n\n" + quoted;
-		}
+
 		if (caption?.length > 1) {
+			const prompts: any[] = [];
+			prompts.push(caption.trim());
+
+			if (anyImage) {
+				const media = (await downloadMediaMessage(
+					message,
+					"buffer",
+					{}
+				)) as Buffer;
+				prompts.push({
+					inlineData: {
+						data: Buffer.from(media).toString("base64"),
+						mimeType: "image/jpeg",
+					},
+				});
+			}
+
+			if (quoted) {
+				prompts.push("\n\n\n\n\n");
+				prompts.push(quoted);
+			}
+
+			const quotedMessage =
+				getMessageFromViewOnce(message)?.extendedTextMessage?.contextInfo
+					?.quotedMessage;
+			if (quotedMessage?.imageMessage) {
+				const media = await downloadContentFromMessage(
+					{
+						directPath: quotedMessage.imageMessage.directPath,
+						mediaKey: quotedMessage.imageMessage.mediaKey,
+						url: quotedMessage.imageMessage.url,
+					},
+					"image"
+				);
+				const bufferArray: Buffer[] = [];
+				for await (const chunk of media) {
+					bufferArray.push(chunk);
+				}
+
+				const bufferMedia = Buffer.concat(bufferArray);
+				prompts.push({
+					inlineData: {
+						data: Buffer.from(bufferMedia).toString("base64"),
+						mimeType: "image/jpeg",
+					},
+				});
+			}
+
+			const hasImage = anyImage || quotedMessage?.imageMessage;
+
 			const key = this.getKey();
 			const genAI = new GoogleGenerativeAI(key);
 			const model = genAI.getGenerativeModel({
-				model: anyImage ? "gemini-pro-vision" : "gemini-pro",
+				model: hasImage ? "gemini-pro-vision" : "gemini-pro",
 
 				safetySettings: [
 					{
@@ -70,26 +124,9 @@ export default class extends BaseMessageHandlerAction {
 				],
 			});
 
-			const prompts: any[] = [];
-			prompts.push(caption.trim());
-
-			if (anyImage) {
-				const media = (await downloadMediaMessage(
-					message,
-					"buffer",
-					{}
-				)) as Buffer;
-				prompts.push({
-					inlineData: {
-						data: Buffer.from(media).toString("base64"),
-						mimeType: "image/jpeg",
-					},
-				});
-			}
-
 			const response = await model.generateContent(prompts);
 
-			const text = response.response.text();
+			const text = response.response.text().trim();
 
 			QueueMessage.add(async () => {
 				await sendWithTyping(
