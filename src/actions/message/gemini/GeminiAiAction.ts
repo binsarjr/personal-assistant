@@ -4,16 +4,15 @@ import {
 	HarmCategory,
 } from "@google/generative-ai";
 import {
-	downloadContentFromMessage,
 	downloadMediaMessage,
 	type WAMessage,
 	type WASocket,
 } from "@whiskeysockets/baileys";
 import BaseMessageHandlerAction from "../../../foundation/actions/BaseMessageHandlerAction.js";
-import logger from "../../../services/logger.js";
 import { QueueMessage } from "../../../services/queue.js";
 import { withSign, withSignRegex } from "../../../supports/flag.js";
 import {
+	downloadContentBufferFromMessage,
 	getJid,
 	getMessageCaption,
 	getMessageFromViewOnce,
@@ -37,10 +36,6 @@ export default class extends BaseMessageHandlerAction {
 		let caption = getMessageCaption(message.message!)
 			.replace(new RegExp(`^${process.env.COMMAND_SIGN}ai`), "")
 			.trim();
-
-		console.log("\n\n\n\n\n\n\n");
-		logger.debug(message);
-		console.log("\n\n\n\n\n\n\n");
 
 		const viewOnce = getMessageFromViewOnce(message);
 		const image = viewOnce?.imageMessage || message?.message?.imageMessage;
@@ -72,10 +67,9 @@ export default class extends BaseMessageHandlerAction {
 			}
 
 			const quotedMessage =
-				getMessageFromViewOnce(message)?.extendedTextMessage?.contextInfo
-					?.quotedMessage;
+				viewOnce?.extendedTextMessage?.contextInfo?.quotedMessage;
 			if (quotedMessage?.imageMessage) {
-				const media = await downloadContentFromMessage(
+				const media = await downloadContentBufferFromMessage(
 					{
 						directPath: quotedMessage.imageMessage.directPath,
 						mediaKey: quotedMessage.imageMessage.mediaKey,
@@ -83,15 +77,9 @@ export default class extends BaseMessageHandlerAction {
 					},
 					"image"
 				);
-				const bufferArray: Buffer[] = [];
-				for await (const chunk of media) {
-					bufferArray.push(chunk);
-				}
-
-				const bufferMedia = Buffer.concat(bufferArray);
 				prompts.push({
 					inlineData: {
-						data: Buffer.from(bufferMedia).toString("base64"),
+						data: Buffer.from(media).toString("base64"),
 						mimeType: "image/jpeg",
 					},
 				});

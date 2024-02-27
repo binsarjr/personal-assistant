@@ -1,7 +1,11 @@
 import {
 	delay,
+	downloadContentFromMessage,
 	getContentType,
 	type AnyMessageContent,
+	type DownloadableMessage,
+	type MediaDownloadOptions,
+	type MediaType,
 	type MiscMessageGenerationOptions,
 	type WAMessage,
 	type WASocket,
@@ -123,4 +127,22 @@ export const sendWithTyping = async (
 	// 	await react(socket, "🤖", sendedMsg);
 	// }
 	return sendedMsg;
+};
+
+export const downloadContentBufferFromMessage = async (
+	{ mediaKey, directPath, url }: DownloadableMessage,
+	type: MediaType,
+	opts?: MediaDownloadOptions
+): Promise<Buffer> => {
+	const stream = await downloadContentFromMessage(
+		{ mediaKey, directPath, url },
+		type,
+		opts
+	);
+	const bufferArray: Buffer[] = [];
+	for await (const chunk of stream) {
+		bufferArray.push(chunk);
+	}
+
+	return Buffer.concat(bufferArray);
 };
