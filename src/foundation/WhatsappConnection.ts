@@ -23,7 +23,7 @@ export default class {
 			},
 			generateHighQualityLinkPreview: true,
 			printQRInTerminal: true,
-			syncFullHistory: true,
+			// syncFullHistory: true,
 		});
 
 		this.socket.ev.on("messaging-history.set", (data) => {
