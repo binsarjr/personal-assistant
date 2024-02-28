@@ -5,8 +5,11 @@ import {
 	type WASocket,
 	type proto,
 } from "@whiskeysockets/baileys";
+import got from "got";
 import BaseMessageHandlerAction from "../../../foundation/actions/BaseMessageHandlerAction.js";
-import BadanPemeriksaApk from "../../../services/external/BadanPemeriksaApk.js";
+import BadanPemeriksaApk, {
+	type ApkInfo,
+} from "../../../services/external/BadanPemeriksaApk.js";
 import { Queue } from "../../../services/queue.js";
 import { getJid, react, sendWithTyping } from "../../../supports/message.js";
 import type { MessagePattern } from "../../../types/MessagePattern.js";
@@ -41,8 +44,24 @@ export default class extends BaseMessageHandlerAction {
 			Date.now() + ".file";
 		const bpk = new BadanPemeriksaApk();
 		const result = await bpk.upload(buffer, filename);
+		if (result) this.checkVirus(socket, message, result);
+	}
+
+	async checkVirus(
+		socket: WASocket,
+		message: WAMessage,
+		apk: ApkInfo
+	): Promise<void> {
+		const bpk = new BadanPemeriksaApk();
+		const result = await bpk.findByHash(
+			apk!.hash,
+			await got.get(apk.link!).text()
+		);
+
 		if (result?.type == "MENUNGGU DIPROSES") {
-			Queue.add(() => setTimeout(() => this.process(socket, message), 5_000));
+			Queue.add(() =>
+				setTimeout(() => this.checkVirus(socket, message, result), 5_000)
+			);
 			return;
 		}
 
