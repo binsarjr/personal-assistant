@@ -20,13 +20,44 @@ export default class extends BaseMessageHandlerAction {
 		return !!message.key.fromMe;
 	}
 
+	protected downloadBraveDown = async (link: string) => {
+		const resp = await fetch(
+			"https://mediasaver.binsarjr.com/services/bravedown/tiktok-downloader?url=" +
+				link
+		);
+		const json = (await resp.json()) as {
+			data: {
+				links: {
+					url: string;
+					type: "video";
+					mute: boolean;
+					quality: string;
+				}[];
+			};
+		};
+
+		const video =
+			json.data.links.find(
+				(d) =>
+					d.type === "video" &&
+					d.quality.toLowerCase().includes("no watermark") &&
+					!d.mute
+			)?.url || "";
+		return { video, images: [] };
+	};
+
 	protected download = async (
 		link: string
 	): Promise<{ video: string; images: string[] }> => {
+		const bravedown = this.downloadBraveDown(link);
 		const resp = await fetch(
-			"https://mediasaver.vercel.app/services/tiktok/snaptik?url=" + link
+			"https://mediasaver.binsarjr.com/services/tiktok/snaptik?url=" + link
 		);
-		const json = (await resp.json()) as { video: string; images: string[] };
+		let json = (await resp.json()) as { video: string; images: string[] };
+
+		if (!json.video && json.images.length == 0) {
+			json = await bravedown;
+		}
 		return json;
 	};
 
@@ -55,9 +86,11 @@ export default class extends BaseMessageHandlerAction {
 			return;
 		}
 
+		let anyError = false;
 		await Promise.all(
 			urls.map(async (url) => {
 				const { video, images } = await this.download(url.toString());
+				if (!video && images.length === 0) anyError = true;
 				if (video)
 					await socket.sendMessage(
 						jid,
@@ -79,6 +112,8 @@ export default class extends BaseMessageHandlerAction {
 				}
 			})
 		);
-		this.reactToDone(socket, message);
+		anyError
+			? this.reactToFailed(socket, message)
+			: this.reactToDone(socket, message);
 	}
 }
