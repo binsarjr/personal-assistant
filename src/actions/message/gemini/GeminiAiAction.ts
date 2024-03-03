@@ -1,128 +1,134 @@
 import {
-	GoogleGenerativeAI,
-	HarmBlockThreshold,
-	HarmCategory,
+  GoogleGenerativeAI,
+  HarmBlockThreshold,
+  HarmCategory,
 } from "@google/generative-ai";
 import {
-	downloadMediaMessage,
-	type WAMessage,
-	type WASocket,
+  downloadMediaMessage,
+  type WAMessage,
+  type WASocket,
 } from "@whiskeysockets/baileys";
 import GeminiMessageHandlerAction from "../../../foundation/actions/GeminiMessageHandlerAction.js";
 import { QueueMessage } from "../../../services/queue.js";
 import { withSign, withSignRegex } from "../../../supports/flag.js";
 import {
-	downloadContentBufferFromMessage,
-	getJid,
-	getMessageCaption,
-	getMessageFromViewOnce,
-	getMessageQutoedCaption,
-	sendWithTyping,
+  downloadContentBufferFromMessage,
+  getJid,
+  getMessageCaption,
+  getMessageFromViewOnce,
+  getMessageQutoedCaption,
+  sendWithTyping,
 } from "../../../supports/message.js";
 import type { MessagePattern } from "../../../types/MessagePattern.js";
 
 export default class extends GeminiMessageHandlerAction {
-	patterns(): MessagePattern {
-		return [withSignRegex("ai .*"), withSign("ai")];
-	}
+  commandSign = "ai";
+  patterns(): MessagePattern {
+    return [
+      withSignRegex(this.commandSign + " .*"),
+      withSign(this.commandSign),
+    ];
+  }
 
-	async process(socket: WASocket, message: WAMessage): Promise<void> {
-		this.reactToProcessing(socket, message);
-		const jid = getJid(message);
-		let caption = getMessageCaption(message.message!)
-			.replace(new RegExp(`^${process.env.COMMAND_SIGN}ai`), "")
-			.trim();
+  async process(socket: WASocket, message: WAMessage): Promise<void> {
+    this.reactToProcessing(socket, message);
+    const jid = getJid(message);
+    let caption = getMessageCaption(message.message!)
+      .replace(new RegExp(`^${process.env.COMMAND_SIGN}ai`), "")
+      .trim();
 
-		const viewOnce = getMessageFromViewOnce(message);
-		const image = viewOnce?.imageMessage || message?.message?.imageMessage;
-		const anyImage = !!image;
+    const viewOnce = getMessageFromViewOnce(message);
+    const image = viewOnce?.imageMessage || message?.message?.imageMessage;
+    const anyImage = !!image;
 
-		const quoted = getMessageQutoedCaption(message.message!);
+    const quoted = getMessageQutoedCaption(message.message!);
 
-		if (caption?.length > 1) {
-			const prompts: any[] = [];
-			prompts.push(caption.trim());
+    const prompts: any[] = [];
+    prompts.push(caption.trim());
 
-			if (anyImage) {
-				const media = (await downloadMediaMessage(
-					message,
-					"buffer",
-					{}
-				)) as Buffer;
-				prompts.push({
-					inlineData: {
-						data: Buffer.from(media).toString("base64"),
-						mimeType: "image/jpeg",
-					},
-				});
-			}
+    if (anyImage) {
+      const media = (await downloadMediaMessage(
+        message,
+        "buffer",
+        {},
+      )) as Buffer;
+      prompts.push({
+        inlineData: {
+          data: Buffer.from(media).toString("base64"),
+          mimeType: "image/jpeg",
+        },
+      });
+    }
 
-			if (quoted) {
-				prompts.push("\n\n\n\n\n");
-				prompts.push(quoted);
-			}
+    if (quoted) {
+      prompts.push("\n\n\n\n\n");
+      prompts.push(quoted);
+    }
 
-			const quotedMessage =
-				viewOnce?.extendedTextMessage?.contextInfo?.quotedMessage;
-			if (quotedMessage?.imageMessage) {
-				const media = await downloadContentBufferFromMessage(
-					{
-						directPath: quotedMessage.imageMessage.directPath,
-						mediaKey: quotedMessage.imageMessage.mediaKey,
-						url: quotedMessage.imageMessage.url,
-					},
-					"image"
-				);
-				prompts.push({
-					inlineData: {
-						data: Buffer.from(media).toString("base64"),
-						mimeType: "image/jpeg",
-					},
-				});
-			}
+    const quotedMessage =
+      viewOnce?.extendedTextMessage?.contextInfo?.quotedMessage;
+    if (quotedMessage?.imageMessage) {
+      const media = await downloadContentBufferFromMessage(
+        {
+          directPath: quotedMessage.imageMessage.directPath,
+          mediaKey: quotedMessage.imageMessage.mediaKey,
+          url: quotedMessage.imageMessage.url,
+        },
+        "image",
+      );
+      prompts.push({
+        inlineData: {
+          data: Buffer.from(media).toString("base64"),
+          mimeType: "image/jpeg",
+        },
+      });
+    }
 
-			const hasImage = anyImage || quotedMessage?.imageMessage;
+    const hasImage = anyImage || quotedMessage?.imageMessage;
 
-			const key = this.getKey();
-			const genAI = new GoogleGenerativeAI(key);
-			const model = genAI.getGenerativeModel({
-				model: hasImage ? "gemini-pro-vision" : "gemini-pro",
+    const key = this.getKey();
+    const genAI = new GoogleGenerativeAI(key);
+    const model = genAI.getGenerativeModel({
+      model: hasImage ? "gemini-pro-vision" : "gemini-pro",
 
-				safetySettings: [
-					{
-						category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-						threshold: HarmBlockThreshold.BLOCK_NONE,
-					},
-					{
-						category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-						threshold: HarmBlockThreshold.BLOCK_NONE,
-					},
-					{
-						category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-						threshold: HarmBlockThreshold.BLOCK_NONE,
-					},
-					{
-						category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-						threshold: HarmBlockThreshold.BLOCK_NONE,
-					},
-				],
-			});
+      safetySettings: [
+        {
+          category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+          threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+          threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+          threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+          threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+      ],
+    });
 
-			const response = await model.generateContent(prompts);
+    const response = await model.generateContent(prompts);
 
-			const text = response.response.text().trim();
+    let text = response.response.text().trim();
 
-			QueueMessage.add(async () => {
-				await sendWithTyping(
-					socket,
-					{
-						text: text,
-					},
-					jid,
-					{ quoted: message }
-				);
-				this.reactToDone(socket, message);
-			});
-		}
-	}
+    if (withSignRegex("\\w+").test(text)) {
+      text = text.replace(withSignRegex("\\w+"), "").trim();
+    }
+
+    QueueMessage.add(async () => {
+      await sendWithTyping(
+        socket,
+        {
+          text: text,
+        },
+        jid,
+        { quoted: message },
+      );
+      this.reactToDone(socket, message);
+    });
+  }
 }
