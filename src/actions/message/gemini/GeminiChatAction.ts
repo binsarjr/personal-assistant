@@ -1,18 +1,18 @@
 import {
-    GoogleGenerativeAI,
-    HarmBlockThreshold,
-    HarmCategory,
-    type InputContent
+  GoogleGenerativeAI,
+  HarmBlockThreshold,
+  HarmCategory,
+  type InputContent,
 } from "@google/generative-ai";
 import type { WAMessage, WASocket } from "@whiskeysockets/baileys";
-import { withSignRegex } from "supports/flag.js";
 import GeminiMessageHandlerAction from "../../../foundation/actions/GeminiMessageHandlerAction.js";
 import DB from "../../../services/database.js";
 import { Queue, QueueMessage } from "../../../services/queue.js";
+import { withSignRegex } from "../../../supports/flag.js";
 import {
-    getJid,
-    getMessageCaption,
-    sendWithTyping
+  getJid,
+  getMessageCaption,
+  sendWithTyping,
 } from "../../../supports/message.js";
 import type { MessagePattern } from "../../../types/MessagePattern.js";
 import ClearGeminiHistoryIfNeededAction from "./ClearGeminiHistoryIfNeededAction.js";
