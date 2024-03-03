@@ -17,6 +17,8 @@ export interface Data {
 			};
 		};
 	};
+
+	geminiMessageResponseIds: { [id: string]: number };
 }
 
 type EnvRulesDictionary = {
