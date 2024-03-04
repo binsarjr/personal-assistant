@@ -12,6 +12,7 @@ const defaultData: Data = {
 	auths: {},
 	gemini: {},
 	geminiMessageResponseIds: {},
+	messages: {},
 };
 
 const adapter = new DataFile<Data>(process.env.DATABASE_FILE!, {

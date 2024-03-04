@@ -1,3 +1,4 @@
+import { type DownloadableMessage } from "@whiskeysockets/baileys";
 import type { ENV_RULES } from "../configs/env.config.ts";
 
 export interface Data {
@@ -19,6 +20,23 @@ export interface Data {
 	};
 
 	geminiMessageResponseIds: { [id: string]: number };
+
+	messages: {
+		[jid: string]: {
+			[messageId: string]:
+				| {
+						type: "text";
+						text: string;
+						timestamp: number;
+				  }
+				| {
+						type: "image" | "video";
+						caption?: string;
+						media: DownloadableMessage;
+						timestamp: number;
+				  };
+		};
+	};
 }
 
 type EnvRulesDictionary = {
