@@ -1,5 +1,6 @@
 import {
 	getContentType,
+	isJidGroup,
 	jidNormalizedUser,
 	proto,
 	type AnyMessageContent,
@@ -129,8 +130,14 @@ export default class extends BaseMessageHandlerAction {
 			timeStyle: "long",
 		}).format(new Date(data.timestamp));
 
-		let text = `
-Pesan dihapus oleh *${message?.pushName}*
+		let text = "";
+		if (isJidGroup(jid)) {
+			const metadata = await socket.groupMetadata(jid);
+			text += "Grup: *" + metadata.subject + "*\n";
+		}
+
+		text += `
+User: *${message?.pushName}*
 Waktu: ${formattedDate}
     `.trim();
 
