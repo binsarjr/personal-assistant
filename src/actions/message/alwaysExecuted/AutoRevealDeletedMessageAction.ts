@@ -1,6 +1,7 @@
 import {
 	getContentType,
 	isJidGroup,
+	isJidStatusBroadcast,
 	jidNormalizedUser,
 	proto,
 	type AnyMessageContent,
@@ -134,6 +135,8 @@ export default class extends BaseMessageHandlerAction {
 		if (isJidGroup(jid)) {
 			const metadata = await socket.groupMetadata(jid);
 			text += "Grup: *" + metadata.subject + "*\n";
+		} else if (isJidStatusBroadcast(jid)) {
+			text += "Story Whatsapp";
 		}
 
 		text += `
