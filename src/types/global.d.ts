@@ -30,9 +30,11 @@ export interface Data {
 						timestamp: number;
 				  }
 				| {
-						type: "image" | "video";
+						type: "image" | "video" | "document" | "audio";
 						caption?: string;
 						media: DownloadableMessage;
+						mimetype?: string;
+						fileName?: string;
 						timestamp: number;
 				  };
 		};
