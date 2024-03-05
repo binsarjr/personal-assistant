@@ -31,7 +31,7 @@ export default class extends BaseMessageHandlerAction {
 		socket: WASocket,
 		message: WAMessage
 	): Promise<boolean> {
-		this.removeIfMoreThen4Hours();
+		this.removeIfMoreThen24Hours();
 		return !message.key.fromMe;
 	}
 
@@ -114,13 +114,13 @@ export default class extends BaseMessageHandlerAction {
 		}
 	}
 
-	removeIfMoreThen4Hours() {
+	removeIfMoreThen24Hours() {
 		const now = Date.now();
 		for (const jid in DB.data.messages) {
 			for (const messageId in DB.data.messages[jid]) {
 				if (
 					now - DB.data.messages[jid][messageId].timestamp >
-					4 * 60 * 60 * 1000
+					24 * 60 * 60 * 1000
 				) {
 					delete DB.data.messages[jid][messageId];
 				}
