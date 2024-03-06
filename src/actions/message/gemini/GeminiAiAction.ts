@@ -66,6 +66,11 @@ export default class extends GeminiMessageHandlerAction {
 			prompts.push(quoted);
 		}
 
+		if (caption.length == 0 && quoted.length == 0) {
+			this.reactToInvalid(socket, message);
+			return;
+		}
+
 		const quotedMessage =
 			viewOnce?.extendedTextMessage?.contextInfo?.quotedMessage;
 		if (quotedMessage?.imageMessage) {
