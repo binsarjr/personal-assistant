@@ -15,6 +15,7 @@ export default class extends BaseMessageHandlerAction {
 		socket: WASocket,
 		message: WAMessage
 	): Promise<boolean> {
+		DB.data.gemini[process.env.BOT_NAME!] ||= {};
 		const jid = getJid(message);
 		return (
 			!!message.key.fromMe &&
@@ -25,6 +26,7 @@ export default class extends BaseMessageHandlerAction {
 	async process(socket: WASocket, message: WAMessage): Promise<void> {
 		this.reactToProcessing(socket, message);
 		const jid = getJid(message);
+		DB.data.gemini[process.env.BOT_NAME!] ||= {};
 		DB.data.gemini[process.env.BOT_NAME!][jid].history = [];
 
 		QueueMessage.add(async () => {

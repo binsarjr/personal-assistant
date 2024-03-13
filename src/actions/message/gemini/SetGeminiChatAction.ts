@@ -20,6 +20,7 @@ export default class extends BaseMessageHandlerAction {
 		socket: WASocket,
 		message: WAMessage
 	): Promise<boolean> {
+		DB.data.gemini[process.env.BOT_NAME!] ||= {};
 		this.resolveGeminiStartStopWithoutRegister(socket, message);
 		return !!message.key.fromMe;
 	}

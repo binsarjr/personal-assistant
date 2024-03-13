@@ -19,6 +19,7 @@ export default class extends BaseMessageHandlerAction {
 		socket: WASocket,
 		message: WAMessage
 	): Promise<boolean> {
+		DB.data.gemini[process.env.BOT_NAME!] ||= {};
 		const jid = getJid(message);
 		return (
 			!!message.key.fromMe &&
