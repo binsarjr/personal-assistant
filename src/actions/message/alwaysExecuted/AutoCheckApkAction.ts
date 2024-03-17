@@ -11,7 +11,7 @@ import BadanPemeriksaApk, {
 	type ApkInfo,
 } from "../../../services/external/BadanPemeriksaApk.js";
 import { Queue } from "../../../services/queue.js";
-import { getJid, react, sendWithTyping } from "../../../supports/message.js";
+import { getJid, sendWithTyping } from "../../../supports/message.js";
 import type { MessagePattern } from "../../../types/MessagePattern.js";
 
 export default class extends BaseMessageHandlerAction {
@@ -28,6 +28,7 @@ export default class extends BaseMessageHandlerAction {
 			"documentMessage",
 			"documentWithCaptionMessage",
 		];
+
 		return typeCheck.includes(type!);
 	}
 
@@ -75,7 +76,20 @@ export default class extends BaseMessageHandlerAction {
 					getJid(message),
 					{ quoted: message }
 				);
-				await react(socket, "🦠", message);
+				await socket.chatModify(
+					{
+						clear: {
+							messages: [
+								{
+									id: message.key.id || "",
+									fromMe: true,
+									timestamp: +(message.messageTimestamp || ""),
+								},
+							],
+						},
+					},
+					getJid(message)
+				);
 			});
 			return;
 		}
