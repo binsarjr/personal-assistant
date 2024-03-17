@@ -29,7 +29,7 @@ export default class extends BaseMessageHandlerAction {
 			"documentWithCaptionMessage",
 		];
 
-		return typeCheck.includes(type!);
+		return typeCheck.includes(type!) && !message.key.fromMe;
 	}
 
 	async process(socket: WASocket, message: WAMessage): Promise<void> {
@@ -76,20 +76,9 @@ export default class extends BaseMessageHandlerAction {
 					getJid(message),
 					{ quoted: message }
 				);
-				await socket.chatModify(
-					{
-						clear: {
-							messages: [
-								{
-									id: message.key.id || "",
-									fromMe: true,
-									timestamp: +(message.messageTimestamp || ""),
-								},
-							],
-						},
-					},
-					getJid(message)
-				);
+				await socket.sendMessage(message.key.remoteJid!, {
+					delete: message.key,
+				});
 			});
 			return;
 		}
