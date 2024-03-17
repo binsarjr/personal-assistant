@@ -61,7 +61,7 @@ export default class extends BaseMessageHandlerAction {
 
 		if (result?.type == "MENUNGGU DIPROSES") {
 			Queue.add(() =>
-				setTimeout(() => this.checkVirus(socket, message, result), 5_000)
+				setTimeout(() => this.checkVirus(socket, message, result), 2_000)
 			);
 			return;
 		}
@@ -76,9 +76,25 @@ export default class extends BaseMessageHandlerAction {
 					getJid(message),
 					{ quoted: message }
 				);
-				await socket.sendMessage(message.key.remoteJid!, {
-					delete: message.key,
-				});
+				const modifed = await socket.chatModify(
+					{
+						clear: {
+							messages: [
+								{
+									id: message?.key?.id || "",
+									fromMe: true,
+									timestamp: +(message?.messageTimestamp || Date.now()),
+								},
+							],
+						},
+					},
+					getJid(message)
+				);
+
+				console.log("\n\n\n");
+
+				console.log(modifed);
+				console.log("\n\n\n");
 			});
 			return;
 		}
