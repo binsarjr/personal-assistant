@@ -111,15 +111,15 @@ export const sendWithTyping = async (
 ) => {
 	await Promise.all([
 		socket.presenceSubscribe(jid),
-		delay(randomInteger(200, 500)),
+		// delay(randomInteger(200, 500)),
 	]);
 
-	await Promise.all([
-		socket.sendPresenceUpdate("composing", jid),
-		delay(randomInteger(500, 1500)),
-	]);
+	// await Promise.all([
+	// 	socket.sendPresenceUpdate("composing", jid),
+	// 	delay(randomInteger(500, 1500)),
+	// ]);
 
-	await socket.sendPresenceUpdate("paused", jid);
+	// await socket.sendPresenceUpdate("paused", jid);
 
 	const sendedMsg = await socket.sendMessage(jid, message, options);
 	// if (sendedMsg) {
