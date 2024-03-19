@@ -1,13 +1,18 @@
 import { type WAMessage, type WASocket } from "@whiskeysockets/baileys";
 import BaseMessageHandlerAction from "../../../foundation/actions/BaseMessageHandlerAction.js";
 import { QueueMessage } from "../../../services/queue.js";
-import { withSign } from "../../../supports/flag.js";
+import { withSign, withSignRegex } from "../../../supports/flag.js";
 import { getJid, sendWithTyping } from "../../../supports/message.js";
 import type { MessagePattern } from "../../../types/MessagePattern.js";
 
 export default class extends BaseMessageHandlerAction {
 	patterns(): MessagePattern {
-		return [withSign("tagmem"), withSign("tagmember")];
+		return [
+			withSign("tagmem"),
+			withSign("tagmember"),
+			withSignRegex("tagmem .*"),
+			withSignRegex("tagmember .*"),
+		];
 	}
 
 	async isEligibleToProcess(
