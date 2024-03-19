@@ -1,0 +1,21 @@
+name: deploy production
+on:
+  push:
+    branches:
+      - main
+jobs:
+  cd:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:githubdeploy
+
+      - name: Deploy Using Tailscale SSH
+        run: |
+          tailscale ssh ${{ secrets.HOSTNAME }} "{cd ${{ secrets.SERVER_CWD }} && git restore pnpm-lock.yaml && git pull origin main && pnpm i && pnpm build && source .env && pm2 restart ecosystem.config.cjs --update-env && pm2 save} > /dev/null 2>&1"
