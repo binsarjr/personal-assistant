@@ -71,7 +71,7 @@ export default class extends BaseMessageHandlerAction {
 				await sendWithTyping(
 					socket,
 					{
-						text: "File terdeteksi sebagai virus",
+						text: `File terdeteksi sebagai virus\n\n\n${result.description}`,
 					},
 					getJid(message),
 					{ quoted: message }
