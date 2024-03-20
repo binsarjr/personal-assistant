@@ -6,6 +6,7 @@ import {
 	type DownloadableMessage,
 	type MediaDownloadOptions,
 	type MediaType,
+	type MessageType,
 	type MiscMessageGenerationOptions,
 	type WAMessage,
 	type WASocket,
@@ -145,4 +146,22 @@ export const downloadContentBufferFromMessage = async (
 	}
 
 	return Buffer.concat(bufferArray);
+};
+
+export const downloadQuotedMessageMedia = async (
+	message: proto.IMessage
+): Promise<Buffer> => {
+	const type = Object.keys(message)[0] as MessageType;
+	const msg = message[type as keyof typeof message];
+
+	const stream = await downloadContentFromMessage(
+		msg as DownloadableMessage,
+		type.replace("Message", "") as MediaType
+	);
+	let buffer = Buffer.from([]);
+	for await (const chunk of stream) {
+		buffer = Buffer.concat([buffer, chunk]);
+	}
+
+	return buffer;
 };
