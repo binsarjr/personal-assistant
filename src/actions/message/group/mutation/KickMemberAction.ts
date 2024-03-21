@@ -13,7 +13,7 @@ import type { MessagePattern } from "../../../../types/MessagePattern.js";
 
 export default class extends GroupMessageHandlerAction {
 	patterns(): MessagePattern {
-		return withSignRegex("kick .*");
+		return [withSignRegex("kick .*"), withSignRegex("rm .*")];
 	}
 
 	protected eligableIfBotIsAdmin(socket: WASocket, metadata: GroupMetadata) {
