@@ -64,12 +64,18 @@ export default class extends GroupMessageHandlerAction {
 		});
 
 		await QueueMutation.add(async () => {
-			await socket.groupParticipantsUpdate(
-				getJid(message),
-				mentionedJid.filter((jid) => jid != jidNormalizedUser(socket.user?.id)),
-				"add"
-			);
-			await this.reactToDone(socket, message);
+			try {
+				await socket.groupParticipantsUpdate(
+					getJid(message),
+					mentionedJid.filter(
+						(jid) => jid != jidNormalizedUser(socket.user?.id)
+					),
+					"add"
+				);
+				await this.reactToDone(socket, message);
+			} catch (error) {
+				await this.reactToFailed(socket, message);
+			}
 		});
 	}
 }
