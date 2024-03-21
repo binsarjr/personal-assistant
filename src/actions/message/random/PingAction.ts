@@ -123,6 +123,7 @@ export default class extends BaseMessageHandlerAction {
 
 		return serverInfo;
 	}
+
 	bytesToGB(bytes: number) {
 		return (bytes / (1024 * 1024 * 1024)).toFixed(2) + " GB";
 	}
@@ -169,9 +170,9 @@ ${this.getPing(message.messageTimestamp! as number)}
 *CPU:* ${serverInfo.cpu.model} ${serverInfo.cpu.speed} MHz ${
 						serverInfo.cpu.cores
 					} cores
-*Virtual Memory:* ${this.bytesToGB(usedMemory)} GB / ${this.bytesToGB(
+*Virtual Memory:* ${this.bytesToGB(usedMemory)} / ${this.bytesToGB(
 						totalMemory
-					)} GB (${Math.round((usedMemory / totalMemory) * 100)}%)
+					)} (${Math.round((usedMemory / totalMemory) * 100)}%)
 
 *Disk:* 
 ${textDisk.join("\n\n")}
