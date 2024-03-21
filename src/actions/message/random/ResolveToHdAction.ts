@@ -1,6 +1,6 @@
 import type { WAMessage, WASocket } from "@whiskeysockets/baileys";
 import FormData from "form-data";
-import got from "got";
+import got, { RequestError } from "got";
 import BaseMessageHandlerAction from "../../../foundation/actions/BaseMessageHandlerAction.js";
 import { Queue } from "../../../services/queue.js";
 import { withSign } from "../../../supports/flag.js";
@@ -44,6 +44,7 @@ export default class extends BaseMessageHandlerAction {
 			directPath = message!.imageMessage!.directPath;
 			url = message!.imageMessage!.url;
 		} else {
+			this.resetReact(socket, _message);
 			return;
 		}
 
@@ -56,34 +57,55 @@ export default class extends BaseMessageHandlerAction {
 		data.append("image", photoBuffer, "image.jpg");
 		data.append("scale", "4");
 
-		const result = await got
-			.post("https://api2.pixelcut.app/image/upscale/v1", {
-				body: data,
-				headers: {
-					accept: "application/json",
-					"user-agent":
-						"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" +
-						Date.now(),
-				},
-			})
-			.json<{ result_url: string }>();
+		try {
+			const result = await got
+				.post("https://api2.pixelcut.app/image/upscale/v1", {
+					body: data,
+					headers: {
+						accept: "application/json",
+						"user-agent":
+							"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" +
+							Date.now(),
+					},
+				})
+				.json<{ result_url: string }>();
 
-		Queue.add(async () => {
-			if (!result.result_url) {
-				this.reactToFailed(socket, _message);
+			Queue.add(async () => {
+				if (!result.result_url) {
+					this.reactToFailed(socket, _message);
+
+					return;
+				}
+
+				await socket.sendMessage(
+					getJid(_message),
+					{
+						image: {
+							url: result.result_url,
+						},
+					},
+					{ quoted: _message }
+				);
+				await this.reactToDone(socket, _message);
+			});
+		} catch (err) {
+			if (err instanceof RequestError) {
+				const { error, error_code } = JSON.parse(err.response!.body) as {
+					error: string;
+					error_code: string;
+				};
+				await socket.sendMessage(
+					getJid(_message),
+					{
+						text: `Error Code ${error_code}: ${error}`,
+					},
+					{ quoted: _message }
+				);
+				await this.reactToFailed(socket, _message);
+
 				return;
 			}
-
-			await socket.sendMessage(
-				getJid(_message),
-				{
-					image: {
-						url: result.result_url,
-					},
-				},
-				{ quoted: _message }
-			);
-			await this.reactToDone(socket, _message);
-		});
+			throw err;
+		}
 	}
 }
