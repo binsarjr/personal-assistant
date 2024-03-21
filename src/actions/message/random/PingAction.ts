@@ -14,7 +14,7 @@ export default class extends BaseMessageHandlerAction {
 		return withSign("ping");
 	}
 
-	getPing(messageTimestamp: number | Long) {
+	getPing(messageTimestamp: number) {
 		const rtf = new Intl.RelativeTimeFormat("id-ID", { numeric: "auto" });
 
 		let timestamp = messageTimestamp.toString().padEnd(13, "0");
@@ -158,7 +158,7 @@ Mount: ${disk.mount}
 					text: `
 
           
-${this.getPing(message.messageTimestamp!)}
+${this.getPing(message.messageTimestamp! as number)}
 
 *Hostname:* ${serverInfo.hostname}
 *Uptime:* ${serverInfo.uptime}
