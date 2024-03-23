@@ -42,7 +42,7 @@ export default abstract class
 		} catch (err: any) {
 			if (err instanceof NotEligableToProcess) return;
 
-			// this.reactToFailed(socket, message);
+			this.resetReact(socket, message);
 			logger.error(err);
 			QueueMessage.add(() =>
 				sendWithTyping(
