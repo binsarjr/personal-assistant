@@ -18,4 +18,4 @@ jobs:
 
       - name: Deploy Using Tailscale SSH
         run: |
-          tailscale ssh ${{ secrets.HOSTNAME }} "cd ${{ secrets.SERVER_CWD }} && git pull origin main && bun i && bun run build && source .env && pm2 restart ecosystem.config.cjs --update-env > /dev/null 2>&1 && pm2 save > /dev/null 2>&1"
+          tailscale ssh ${{ secrets.HOSTNAME }} "cd ${{ secrets.SERVER_CWD }} && git pull origin main && /root/.bun/bin/bun i && /root/.bun/bin/bun run build && source .env && pm2 restart ecosystem.config.cjs --update-env > /dev/null 2>&1 && pm2 save > /dev/null 2>&1"
