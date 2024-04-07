@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
-import { HelloWorldCommand } from './hello-world-command/hello-world-command';
-import { QrcodeConnectionModule } from './qrcode-connection/qrcode-connection.module';
+import { PrismaModule } from '../libs/prisma/src';
 
 @Module({
-  imports: [QrcodeConnectionModule],
-  providers: [HelloWorldCommand],
+  imports: [PrismaModule.forRoot()],
+  providers: [],
 })
 export class AppModule {}
