@@ -24,9 +24,11 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "@prisma/client": "^5.12.1",
+    "@whiskeysockets/baileys": "^6.6.0",
     "nest-commander": "^3.12.5",
     "pino": "^8.20.0",
     "pino-pretty": "^11.0.0",
+    "qrcode-terminal": "^0.12.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
   },
@@ -74,7 +76,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/prisma(|/.*)$": "<rootDir>/libs/prisma/src/$1"
+      "^@app/prisma(|/.*)$": "<rootDir>/libs/prisma/src/$1",
+      "^@app/whatsapp-api(|/.*)$": "<rootDir>/libs/whatsapp-api/src/$1"
     }
   }
 }

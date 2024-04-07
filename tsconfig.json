@@ -29,6 +29,12 @@
       ],
       "@services/*": [
         "services/*"
+      ],
+      "@app/whatsapp-api": [
+        "libs/whatsapp-api/src"
+      ],
+      "@app/whatsapp-api/*": [
+        "libs/whatsapp-api/src/*"
       ]
     }
   }

@@ -15,9 +15,7 @@ datasource db {
 
 model Device {
   id                String             @id @default(cuid())
-  phoneNumber       String
   name              String
-  userId            String
   AuthSessionStores AuthSessionStore[]
 }
 

@@ -12,6 +12,8 @@
   },
   "moduleNameMapper": {
     "@app/prisma/(.*)": "<rootDir>/../libs/prisma/src/$1",
-    "@app/prisma": "<rootDir>/../libs/prisma/src"
+    "@app/prisma": "<rootDir>/../libs/prisma/src",
+    "@app/whatsapp-api/(.*)": "<rootDir>/../libs/whatsapp-api/src/$1",
+    "@app/whatsapp-api": "<rootDir>/../libs/whatsapp-api/src"
   }
 }
