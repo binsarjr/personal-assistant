@@ -1,4 +1,5 @@
 import { type DynamicModule } from '@nestjs/common';
+import { WhatsappAuthPrismaAdapter } from './adapter/auth-prisma-adapter';
 import { WhatsappApiService } from './whatsapp-api.service';
 
 export class WhatsappApiModule {
@@ -6,8 +7,8 @@ export class WhatsappApiModule {
     return {
       global: true,
       module: WhatsappApiModule,
-      providers: [WhatsappApiService],
-      exports: [WhatsappApiService],
+      providers: [WhatsappApiService, WhatsappAuthPrismaAdapter],
+      exports: [WhatsappApiService, WhatsappAuthPrismaAdapter],
     };
   }
 }

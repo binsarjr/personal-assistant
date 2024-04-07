@@ -25,10 +25,10 @@
         "libs/prisma/src/*"
       ],
       "@services": [
-        "services"
+        "src/services"
       ],
       "@services/*": [
-        "services/*"
+        "src/services/*"
       ],
       "@app/whatsapp-api": [
         "libs/whatsapp-api/src"

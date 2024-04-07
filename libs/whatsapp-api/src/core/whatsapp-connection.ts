@@ -24,10 +24,11 @@ export class WhatsappConnection {
         creds: state.creds,
         keys: state.keys,
       },
-      browser: ['OtoHub', 'Chrome', '0.0.0'],
+      browser: ['PersonalAsistant', 'Chrome', '0.0.0'],
       // @ts-ignore
       logger: this.logger,
       generateHighQualityLinkPreview: true,
+      printQRInTerminal: true,
     });
 
     this.socket.ev.on('creds.update', saveCreds);
