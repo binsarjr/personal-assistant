@@ -1,10 +1,15 @@
 import * as baileys from '@whiskeysockets/baileys';
 
 import type { P } from 'pino';
+import {
+  MyDisconnectReason,
+  WhatsappError,
+} from '../../../../src/errors/WhatsappError';
 
 export class WhatsappConnection {
   public socket!: baileys.WASocket;
   public status: baileys.WAConnectionState = 'close';
+  private onSockets: ((socket: baileys.WASocket) => void)[] = [];
 
   constructor(
     private readonly authStore: {
@@ -13,6 +18,10 @@ export class WhatsappConnection {
     },
     private readonly logger: P.Logger,
   ) {}
+
+  onSocket(cb: (socket: baileys.WASocket) => void) {
+    this.onSockets.push(cb);
+  }
 
   async connectToWhatsapp() {
     const { saveCreds, state } = this.authStore;
@@ -29,7 +38,10 @@ export class WhatsappConnection {
       logger: this.logger,
       generateHighQualityLinkPreview: true,
       printQRInTerminal: true,
+      syncFullHistory: false,
     });
+
+    this.onSockets.map((callback) => callback(this.socket));
 
     this.socket.ev.on('creds.update', saveCreds);
     this.socket.ev.on('messages.upsert', (update) => {
@@ -43,13 +55,24 @@ export class WhatsappConnection {
       const { connection, lastDisconnect } = update;
 
       if (connection) this.status = connection;
-
-      const shouldReconnect: boolean =
+      let shouldReconnect: boolean =
         connection === 'close' &&
         (lastDisconnect?.error as any)?.output?.statusCode !==
           baileys.DisconnectReason.loggedOut;
 
+      if (lastDisconnect?.error instanceof WhatsappError) {
+        const { message, statusCode }: { message: string; statusCode: string } =
+          JSON.parse(lastDisconnect.error.message);
+        this.logger.error(message, 'WhatsappError');
+
+        if (statusCode === MyDisconnectReason.exitApp) {
+          this.logger.info('Exiting...');
+          shouldReconnect = false;
+        }
+      }
+
       if (shouldReconnect) {
+        this.logger.info('Reconnecting...');
         return this.connectToWhatsapp();
       }
 
