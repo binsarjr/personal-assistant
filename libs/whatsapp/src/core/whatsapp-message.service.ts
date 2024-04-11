@@ -44,10 +44,13 @@ export class WhatsappMessageService {
 
         if (!isEligible) continue;
 
-        if (typeof meta.flags !== 'undefined')
+        if (typeof meta.flags !== 'undefined') {
           if (patternsAndTextIsMatch(meta.flags, caption)) {
             instance.execute(socket, message);
           }
+        } else {
+          instance.execute(socket, message);
+        }
       }
     });
   }

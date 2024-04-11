@@ -13,6 +13,6 @@ export interface WhatsappMessageActionOptions {
 }
 
 export const WhatsappMessage = (
-  options?: WhatsappMessageActionOptions,
+  options: Partial<WhatsappMessageActionOptions> = {},
 ): WhatsappMessageDecorator =>
   applyClassMetadata(options, WhatsappMessageActionMetadataKey);

@@ -29,3 +29,12 @@ model AuthSessionStore {
   @@unique([deviceId, type], map: "unique_type_per_device_id")
   @@index([deviceId])
 }
+
+model WhatsappMessage {
+  jid            String
+  messageId      String
+  messageTimeUtc DateTime
+  meta           String   @default("{}")
+
+  @@id([jid, messageId])
+}

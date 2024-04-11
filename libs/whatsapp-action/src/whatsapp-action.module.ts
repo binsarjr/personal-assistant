@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
+import { AntiDeletedMessageAction } from './always-executed/anti-deleted-message.action';
 import { AntiViewOnceAction } from './always-executed/anti-view-once.action';
+import { SaveMessageAction } from './always-executed/save-message.action';
 import { AddMemberAction } from './group/add-member.action';
 import { DemoteMemberAction } from './group/demote-member.action';
 import { KickMemberAction } from './group/kick-member.action';
@@ -31,6 +33,8 @@ import { ScanQrCodeAction } from './scan-qr-code.action';
     DemoteMemberAction,
 
     AntiViewOnceAction,
+    SaveMessageAction,
+    AntiDeletedMessageAction,
   ],
 })
 export class WhatsappActionModule {}
