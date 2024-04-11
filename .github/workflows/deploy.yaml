@@ -5,9 +5,17 @@ on:
       - main
 jobs:
   cd:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2204
     steps:
       - uses: actions/checkout@v2
+      - uses: oven-sh/setup-bun@v1
+
+      # run any `bun` or `bunx` command
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build app
+        run: bun run build
 
       - name: Tailscale
         uses: tailscale/github-action@v2
@@ -16,6 +24,9 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:githubdeploy
 
-      - name: Deploy Using Tailscale SSH
-        run: |
-          tailscale ssh ${{ secrets.HOSTNAME }} "cd ${{ secrets.SERVER_CWD }} && git pull origin main && /root/.bun/bin/bun i && /root/.bun/bin/bun run build && source .env && pm2 restart ecosystem.config.cjs --update-env > /dev/null 2>&1 && pm2 save > /dev/null 2>&1"
+      - name: Copy build files to Server
+        run: rsync -avzrhcP --delete-after -e "tailscale ssh " ./dist ${{ secrets.HOSTNAME }}:${{ secrets.SERVER_CWD }}/ > /dev/null 2>&1
+
+      # - name: Deploy Using Tailscale SSH
+      #   run: |
+      #     tailscale ssh ${{ secrets.HOSTNAME }} "cd ${{ secrets.SERVER_CWD }} && git pull origin main && /root/.bun/bin/bun i && /root/.bun/bin/bun run build && source .env && pm2 restart ecosystem.config.cjs --update-env > /dev/null 2>&1 && pm2 save > /dev/null 2>&1"
