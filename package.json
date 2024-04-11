@@ -29,6 +29,7 @@
     "form-data": "^4.0.0",
     "got": "^11",
     "inquirer": "^8.0.0",
+    "libphonenumber-js": "^1.10.60",
     "pino": "^8.20.0",
     "pino-pretty": "^11.0.0",
     "qrcode-terminal": "^0.12.0",
