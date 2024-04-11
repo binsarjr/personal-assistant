@@ -31,7 +31,8 @@
     "pino-pretty": "^11.0.0",
     "qrcode-terminal": "^0.12.0",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "wa-sticker-formatter": "^4.4.4"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
