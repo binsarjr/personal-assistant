@@ -13,6 +13,7 @@ import {
   getMessageCaption,
   WhatsappMessageAction,
 } from '../../../whatsapp/src';
+import { ReadMoreUnicode } from '../../../whatsapp/src/constants';
 import { IsEligible } from '../../../whatsapp/src/decorators/is-eligible.decorator';
 import { WhatsappMessage } from '../../../whatsapp/src/decorators/whatsapp-message.decorator';
 
@@ -85,6 +86,7 @@ export class AntiDeletedMessageAction extends WhatsappMessageAction {
         timeStyle: 'long',
       });
 
+      response.push(ReadMoreUnicode);
       response.push(
         'Waktu Dibuat: ' +
           formatterDate.format(new Date(+message.messageTimestamp * 1000)),
