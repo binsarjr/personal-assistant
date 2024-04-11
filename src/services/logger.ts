@@ -1,5 +1,11 @@
-import P from "pino";
-import pretty from "pino-pretty";
-const logger = P.default({ level: "debug" }, pretty.default());
+import P from 'pino';
+import PinoPretty from 'pino-pretty';
 
-export default logger;
+export const Logger = (options: P.LoggerOptions = {}) => {
+  return P(
+    options,
+    PinoPretty({
+      singleLine: true,
+    }),
+  );
+};

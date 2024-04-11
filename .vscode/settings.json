@@ -1,5 +1,5 @@
 {
-  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
   "yaml.schemas": {
     "https://json.schemastore.org/github-workflow.json": "file:///Users/mymac/Workspace/binsar/personal-assistant/.github/workflows/deploy.yaml"
   }

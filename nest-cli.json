@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true
+  },
+  "projects": {
+    "prisma": {
+      "type": "library",
+      "root": "libs/prisma",
+      "entryFile": "index",
+      "sourceRoot": "libs/prisma/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/prisma/tsconfig.lib.json"
+      }
+    },
+    "whatsapp-api": {
+      "type": "library",
+      "root": "libs/whatsapp-api",
+      "entryFile": "index",
+      "sourceRoot": "libs/whatsapp-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/whatsapp-api/tsconfig.lib.json"
+      }
+    },
+    "whatsapp": {
+      "type": "library",
+      "root": "libs/whatsapp",
+      "entryFile": "index",
+      "sourceRoot": "libs/whatsapp/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/whatsapp/tsconfig.lib.json"
+      }
+    },
+    "whatsapp-action": {
+      "type": "library",
+      "root": "libs/whatsapp-action",
+      "entryFile": "index",
+      "sourceRoot": "libs/whatsapp-action/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/whatsapp-action/tsconfig.lib.json"
+      }
+    }
+  }
+}
