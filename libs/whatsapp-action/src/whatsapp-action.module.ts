@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ViewOnceAutoRevealAction } from './always-executed/view-once-reveal.action';
 import { AddMemberAction } from './group/add-member.action';
 import { DemoteMemberAction } from './group/demote-member.action';
 import { KickMemberAction } from './group/kick-member.action';
@@ -28,6 +29,8 @@ import { ScanQrCodeAction } from './scan-qr-code.action';
     KickMemberAction,
     PromoteMemberAction,
     DemoteMemberAction,
+
+    ViewOnceAutoRevealAction,
   ],
 })
 export class WhatsappActionModule {}
