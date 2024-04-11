@@ -1,12 +1,11 @@
+import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
+import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
+import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support';
 import {
   downloadContentBufferFromMessage,
   getJid,
   getMessageCaption,
-  WhatsappMessage,
-  WhatsappMessageAction,
-  withSign,
-  withSignRegex,
-} from '@app/whatsapp';
+} from '@app/whatsapp/supports/message.support';
 import type { WAMessage } from '@whiskeysockets/baileys';
 import { Sticker, StickerTypes } from 'wa-sticker-formatter';
 import telegraph from '../../../../src/services/telegraph';

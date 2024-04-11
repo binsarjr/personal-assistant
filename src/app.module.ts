@@ -1,8 +1,9 @@
 import { DiscoveryModule } from '@golevelup/nestjs-discovery';
 import { Module } from '@nestjs/common';
-import { PrismaModule } from '../libs/prisma/src';
-import { WhatsappActionModule } from '../libs/whatsapp-action/src';
-import { WhatsappModule } from '../libs/whatsapp/src';
+
+import { PrismaModule } from '@app/prisma';
+import { WhatsappActionModule } from '@app/whatsapp-action';
+import { WhatsappModule } from '@app/whatsapp/whatsapp.module';
 
 @Module({
   imports: [

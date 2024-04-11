@@ -1,11 +1,11 @@
 import {
   EligibleMetadataKey,
-  WhatsappMessageAction,
   WhatsappMessageActionMetadataKey,
-  WhatsappMessageActionOptions,
-  getMessageCaption,
-  patternsAndTextIsMatch,
-} from '@app/whatsapp';
+} from '@app/whatsapp/constants';
+import type { WhatsappMessageActionOptions } from '@app/whatsapp/decorators/whatsapp-message.decorator';
+import type { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
+import { patternsAndTextIsMatch } from '@app/whatsapp/supports/flag.support';
+import { getMessageCaption } from '@app/whatsapp/supports/message.support';
 import {
   DiscoveryService,
   type DiscoveredClassWithMeta,

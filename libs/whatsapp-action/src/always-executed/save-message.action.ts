@@ -1,5 +1,7 @@
 import { PrismaService } from '@app/prisma';
-import { WhatsappMessage, WhatsappMessageAction } from '@app/whatsapp';
+import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
+import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
+
 import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
 
 @WhatsappMessage()

@@ -1,8 +1,8 @@
+import { WhatsappAuthService } from '@app/whatsapp/core/whatsapp-auth.service';
+import { WhatsappConnectionService } from '@app/whatsapp/core/whatsapp-connection.service';
+import { WhatsappMessageService } from '@app/whatsapp/core/whatsapp-message.service';
+import { WhatsappStoreService } from '@app/whatsapp/core/whatsapp-store.service';
 import { Module, type DynamicModule } from '@nestjs/common';
-import { WhatsappAuthService } from './core/whatsapp-auth.service';
-import { WhatsappConnectionService } from './core/whatsapp-connection.service';
-import { WhatsappMessageService } from './core/whatsapp-message.service';
-import { WhatsappStoreService } from './core/whatsapp-store.service';
 
 @Module({})
 export class WhatsappModule {

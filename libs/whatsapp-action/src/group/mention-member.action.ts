@@ -1,16 +1,10 @@
-import {
-  getJid,
-  IsEligible,
-  WhatsappMessage,
-  WhatsappMessageAction,
-  withSign,
-  withSignRegex,
-} from '@app/whatsapp';
-import {
-  isJidGroup,
-  type WAMessage,
-  type WASocket,
-} from '@whiskeysockets/baileys';
+import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
+import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
+import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
+import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support';
+import { getJid } from '@app/whatsapp/supports/message.support';
+import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
+import { isJidGroup } from '@whiskeysockets/baileys';
 
 @WhatsappMessage({
   flags: [

@@ -1,8 +1,6 @@
-import {
-  IsEligible,
-  WhatsappMessage,
-  WhatsappMessageAction,
-} from '@app/whatsapp';
+import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
+import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
+import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
 import {
   downloadMediaMessage,
   jidNormalizedUser,

@@ -1,17 +1,18 @@
-import { PrismaService } from '@app/prisma';
-import {
-  MyDisconnectReason,
-  WhatsappAuthService,
-  WhatsappError,
-  WhatsappMessageService,
-  WhatsappStoreService,
-} from '@app/whatsapp';
+import { WhatsappStoreService } from '@app/whatsapp/core/whatsapp-store.service';
 import { Injectable } from '@nestjs/common';
-import { Logger } from '@services/logger';
 import makeWASocket, {
   DisconnectReason,
   fetchLatestBaileysVersion,
 } from '@whiskeysockets/baileys';
+
+import { PrismaService } from '@app/prisma';
+import { WhatsappAuthService } from '@app/whatsapp/core/whatsapp-auth.service';
+import { WhatsappMessageService } from '@app/whatsapp/core/whatsapp-message.service';
+import {
+  MyDisconnectReason,
+  WhatsappError,
+} from '@app/whatsapp/errors/WhatsappError';
+import { Logger } from '@services/logger';
 
 @Injectable()
 export class WhatsappConnectionService {

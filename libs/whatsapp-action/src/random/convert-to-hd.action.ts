@@ -1,11 +1,11 @@
+import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
+import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
+import { withSign } from '@app/whatsapp/supports/flag.support';
 import {
   downloadContentBufferFromMessage,
   getJid,
   getMessageFromViewOnce,
-  WhatsappMessage,
-  WhatsappMessageAction,
-  withSign,
-} from '@app/whatsapp';
+} from '@app/whatsapp/supports/message.support';
 import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
 import * as FormData from 'form-data';
 import got, { RequestError } from 'got';

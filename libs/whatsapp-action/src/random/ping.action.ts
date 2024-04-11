@@ -1,8 +1,7 @@
-import {
-  WhatsappMessage,
-  WhatsappMessageAction,
-  withSign,
-} from '@app/whatsapp';
+import { ReadMoreUnicode } from '@app/whatsapp/constants';
+import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
+import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
+import { withSign } from '@app/whatsapp/supports/flag.support';
 import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
 import { exec } from 'child_process';
 import * as os from 'os';
@@ -76,7 +75,7 @@ ${textDisk.join('\n\n')}
 
     let timestamp = messageTimestamp.toString().padEnd(13, '0');
     const ping = Date.now() - (+timestamp || Date.now());
-    return `Pong! ${rtf.format(+ping / 1_000, 'seconds')}`;
+    return `Pong! ${rtf.format(+ping / 1_000, 'seconds')}${ReadMoreUnicode}`;
   }
 
   async getServerInformation() {

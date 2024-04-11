@@ -1,5 +1,6 @@
 import { PrismaService } from '@app/prisma';
-import { WhatsappConnectionService } from '@app/whatsapp';
+import { WhatsappConnectionService } from '@app/whatsapp/core/whatsapp-connection.service';
+
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

@@ -1,19 +1,18 @@
+import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
+import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
+import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
+import { withSignRegex } from '@app/whatsapp/supports/flag.support';
 import {
   getContextInfo,
   getJid,
   getMessageCaption,
   getMessageQutoedCaption,
-  IsEligible,
-  WhatsappMessage,
-  WhatsappMessageAction,
-  withSignRegex,
-} from '@app/whatsapp';
+} from '@app/whatsapp/supports/message.support';
+import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
 import {
   isJidGroup,
   jidEncode,
   jidNormalizedUser,
-  type WAMessage,
-  type WASocket,
 } from '@whiskeysockets/baileys';
 import { findPhoneNumbersInText } from 'libphonenumber-js';
 

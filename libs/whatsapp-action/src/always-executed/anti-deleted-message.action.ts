@@ -1,13 +1,13 @@
 import { PrismaService } from '@app/prisma';
+import { ReadMoreUnicode } from '@app/whatsapp/constants';
+import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
+import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
+import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
 import {
   downloadContentBufferFromMessage,
   getJid,
   getMessageCaption,
-  WhatsappMessageAction,
-} from '@app/whatsapp';
-import { ReadMoreUnicode } from '@app/whatsapp/constants';
-import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
-import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
+} from '@app/whatsapp/supports/message.support';
 import {
   getContentType,
   isJidGroup,
