@@ -9,8 +9,17 @@ export class SaveMessageAction extends WhatsappMessageAction {
     super();
   }
   async execute(socket: WASocket, message: WAMessage) {
-    await this.prisma.whatsappMessage.create({
-      data: {
+    await this.prisma.whatsappMessage.upsert({
+      where: {
+        jid_messageId: {
+          jid: message.key.remoteJid,
+          messageId: message.key.id,
+        },
+      },
+      update: {
+        meta: JSON.stringify(message),
+      },
+      create: {
         jid: message.key.remoteJid,
         messageId: message.key.id,
         messageTimeUtc: new Date(+message.messageTimestamp * 1000),
