@@ -41,6 +41,12 @@
       ],
       "@app/whatsapp/*": [
         "libs/whatsapp/src/*"
+      ],
+      "@app/whatsapp-action": [
+        "libs/whatsapp-action/src"
+      ],
+      "@app/whatsapp-action/*": [
+        "libs/whatsapp-action/src/*"
       ]
     }
   }

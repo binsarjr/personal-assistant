@@ -8,9 +8,11 @@ type WhatsappMessageDecorator = <TFunction extends Type<WhatsappMessageAction>>(
   target: TFunction,
 ) => void | TFunction;
 
-interface Options {
+export interface WhatsappMessageActionOptions {
   flags: Flags;
 }
 
-export const WhatsappMessage = (options?: Options): WhatsappMessageDecorator =>
-  applyClassMetadata({}, WhatsappMessageActionMetadataKey);
+export const WhatsappMessage = (
+  options?: WhatsappMessageActionOptions,
+): WhatsappMessageDecorator =>
+  applyClassMetadata(options, WhatsappMessageActionMetadataKey);

@@ -16,6 +16,8 @@
     "@app/whatsapp-api/(.*)": "<rootDir>/../libs/whatsapp-api/src/$1",
     "@app/whatsapp-api": "<rootDir>/../libs/whatsapp-api/src",
     "@app/whatsapp/(.*)": "<rootDir>/../libs/whatsapp/src/$1",
-    "@app/whatsapp": "<rootDir>/../libs/whatsapp/src"
+    "@app/whatsapp": "<rootDir>/../libs/whatsapp/src",
+    "@app/whatsapp-action/(.*)": "<rootDir>/../libs/whatsapp-action/src/$1",
+    "@app/whatsapp-action": "<rootDir>/../libs/whatsapp-action/src"
   }
 }

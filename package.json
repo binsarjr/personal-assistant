@@ -80,7 +80,8 @@
     "moduleNameMapper": {
       "^@app/prisma(|/.*)$": "<rootDir>/libs/prisma/src/$1",
       "^@app/whatsapp-api(|/.*)$": "<rootDir>/libs/whatsapp-api/src/$1",
-      "^@app/whatsapp(|/.*)$": "<rootDir>/libs/whatsapp/src/$1"
+      "^@app/whatsapp(|/.*)$": "<rootDir>/libs/whatsapp/src/$1",
+      "^@app/whatsapp-action(|/.*)$": "<rootDir>/libs/whatsapp-action/src/$1"
     }
   }
 }
