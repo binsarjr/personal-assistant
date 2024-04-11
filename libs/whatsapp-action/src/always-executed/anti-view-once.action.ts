@@ -10,7 +10,7 @@ import { IsEligible } from '../../../whatsapp/src/decorators/is-eligible.decorat
 import { WhatsappMessage } from '../../../whatsapp/src/decorators/whatsapp-message.decorator';
 
 @WhatsappMessage()
-export class ViewOnceAutoRevealAction extends WhatsappMessageAction {
+export class AntiViewOnceAction extends WhatsappMessageAction {
   @IsEligible()
   notFromMe(socket: WASocket, message: WAMessage) {
     return !message.key.fromMe;
