@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { HelloWorldAction } from './hello-world.action';
+import { PingAction } from './random/ping.action';
 import { ScanQrCodeAction } from './scan-qr-code.action';
 
 @Module({
-  providers: [ScanQrCodeAction, HelloWorldAction],
+  providers: [ScanQrCodeAction, PingAction],
 })
 export class WhatsappActionModule {}
