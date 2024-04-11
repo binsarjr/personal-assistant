@@ -1,5 +1,6 @@
 import { AntiDeletedMessageAction } from '@app/whatsapp-action/always-executed/anti-deleted-message.action';
 import { AntiViewOnceAction } from '@app/whatsapp-action/always-executed/anti-view-once.action';
+import { DeleteSavedMessage } from '@app/whatsapp-action/always-executed/delete-saved-message.action';
 import { SaveMessageAction } from '@app/whatsapp-action/always-executed/save-message.action';
 import { AddMemberAction } from '@app/whatsapp-action/group/add-member.action';
 import { DemoteMemberAction } from '@app/whatsapp-action/group/demote-member.action';
@@ -35,6 +36,8 @@ import { Module } from '@nestjs/common';
     AntiViewOnceAction,
     SaveMessageAction,
     AntiDeletedMessageAction,
+
+    DeleteSavedMessage,
   ],
 })
 export class WhatsappActionModule {}
