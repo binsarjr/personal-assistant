@@ -12,7 +12,7 @@ import {
   type WASocket,
   type proto,
 } from '@whiskeysockets/baileys';
-import { randomInteger } from '../../../../src/supports/number.support';
+import { randomInteger } from 'src/supports/number.support';
 
 export const getJid = (message: WAMessage): string => {
   return message.key.remoteJid ?? '';

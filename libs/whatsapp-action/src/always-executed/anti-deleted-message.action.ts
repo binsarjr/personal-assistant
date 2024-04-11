@@ -1,3 +1,13 @@
+import { PrismaService } from '@app/prisma';
+import {
+  downloadContentBufferFromMessage,
+  getJid,
+  getMessageCaption,
+  WhatsappMessageAction,
+} from '@app/whatsapp';
+import { ReadMoreUnicode } from '@app/whatsapp/constants';
+import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
+import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
 import {
   getContentType,
   isJidGroup,
@@ -6,16 +16,6 @@ import {
   type WAMessage,
   type WASocket,
 } from '@whiskeysockets/baileys';
-import { PrismaService } from '../../../prisma/src';
-import {
-  downloadContentBufferFromMessage,
-  getJid,
-  getMessageCaption,
-  WhatsappMessageAction,
-} from '../../../whatsapp/src';
-import { ReadMoreUnicode } from '../../../whatsapp/src/constants';
-import { IsEligible } from '../../../whatsapp/src/decorators/is-eligible.decorator';
-import { WhatsappMessage } from '../../../whatsapp/src/decorators/whatsapp-message.decorator';
 
 @WhatsappMessage()
 export class AntiDeletedMessageAction extends WhatsappMessageAction {

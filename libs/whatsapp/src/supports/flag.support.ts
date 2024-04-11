@@ -1,4 +1,4 @@
-import type { Flags } from '../types/flags.type';
+import type { Flags } from '@app/whatsapp/types/flags.type';
 
 export const withSign = (command: string): string =>
   (process.env.COMMAND_SIGN || '') + command;

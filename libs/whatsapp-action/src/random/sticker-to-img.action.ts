@@ -1,11 +1,11 @@
-import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
 import {
   downloadContentBufferFromMessage,
   getJid,
+  WhatsappMessage,
   WhatsappMessageAction,
   withSign,
-} from '../../../whatsapp/src';
-import { WhatsappMessage } from '../../../whatsapp/src/decorators/whatsapp-message.decorator';
+} from '@app/whatsapp';
+import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
 
 @WhatsappMessage({
   flags: [withSign('toimg'), withSign('img')],

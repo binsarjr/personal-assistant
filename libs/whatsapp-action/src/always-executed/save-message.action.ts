@@ -1,7 +1,6 @@
+import { PrismaService } from '@app/prisma';
+import { WhatsappMessage, WhatsappMessageAction } from '@app/whatsapp';
 import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
-import { PrismaService } from '../../../prisma/src';
-import { WhatsappMessageAction } from '../../../whatsapp/src';
-import { WhatsappMessage } from '../../../whatsapp/src/decorators/whatsapp-message.decorator';
 
 @WhatsappMessage()
 export class SaveMessageAction extends WhatsappMessageAction {

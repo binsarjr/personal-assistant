@@ -1,9 +1,9 @@
+import { WhatsappConnectionService } from '@app/whatsapp';
+import { WhatsappActionModule } from '@app/whatsapp-action';
+import { ScanQrCodeAction } from '@app/whatsapp-action/scan-qr-code.action';
 import { NestFactory } from '@nestjs/core';
 import * as inquirer from 'inquirer';
-import { WhatsappActionModule } from '../libs/whatsapp-action/src';
-import { ScanQrCodeAction } from '../libs/whatsapp-action/src/scan-qr-code.action';
-import { WhatsappConnectionService } from '../libs/whatsapp/src/core/whatsapp-connection.service';
-import { AppModule } from './app.module';
+import { AppModule } from 'src/app.module';
 
 async function bootstrap() {
   // const app = await NestFactory.create(AppModule);

@@ -1,6 +1,6 @@
+import { PrismaService } from '@app/prisma';
+import { WhatsappConnectionService } from '@app/whatsapp';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/src';
-import { WhatsappConnectionService } from '../../whatsapp/src/core/whatsapp-connection.service';
 
 @Injectable()
 export class ScanQrCodeAction {

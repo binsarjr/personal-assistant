@@ -1,4 +1,12 @@
 import {
+  EligibleMetadataKey,
+  WhatsappMessageAction,
+  WhatsappMessageActionMetadataKey,
+  WhatsappMessageActionOptions,
+  getMessageCaption,
+  patternsAndTextIsMatch,
+} from '@app/whatsapp';
+import {
   DiscoveryService,
   type DiscoveredClassWithMeta,
 } from '@golevelup/nestjs-discovery';
@@ -8,14 +16,6 @@ import type {
   WAMessage,
   WASocket,
 } from '@whiskeysockets/baileys';
-import {
-  EligibleMetadataKey,
-  WhatsappMessageActionMetadataKey,
-} from '../constants';
-import type { WhatsappMessageActionOptions } from '../decorators/whatsapp-message.decorator';
-import type { WhatsappMessageAction } from '../interfaces/whatsapp.interface';
-import { patternsAndTextIsMatch } from '../supports/flag.support';
-import { getMessageCaption } from '../supports/message.support';
 
 @Injectable()
 export class WhatsappMessageService {

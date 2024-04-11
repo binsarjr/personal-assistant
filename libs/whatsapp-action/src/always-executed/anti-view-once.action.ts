@@ -1,13 +1,15 @@
 import {
+  IsEligible,
+  WhatsappMessage,
+  WhatsappMessageAction,
+} from '@app/whatsapp';
+import {
   downloadMediaMessage,
   jidNormalizedUser,
   type AnyMessageContent,
   type WAMessage,
   type WASocket,
 } from '@whiskeysockets/baileys';
-import { WhatsappMessageAction } from '../../../whatsapp/src';
-import { IsEligible } from '../../../whatsapp/src/decorators/is-eligible.decorator';
-import { WhatsappMessage } from '../../../whatsapp/src/decorators/whatsapp-message.decorator';
 
 @WhatsappMessage()
 export class AntiViewOnceAction extends WhatsappMessageAction {

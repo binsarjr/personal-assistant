@@ -1,8 +1,8 @@
+import { WhatsappMessageActionMetadataKey } from '@app/whatsapp/constants';
+import type { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
+import type { Flags } from '@app/whatsapp/types/flags.type';
 import type { Type } from '@nestjs/common';
-import { applyClassMetadata } from '../../../../src/supports/decorator.support';
-import { WhatsappMessageActionMetadataKey } from '../constants';
-import type { WhatsappMessageAction } from '../interfaces/whatsapp.interface';
-import type { Flags } from '../types/flags.type';
+import { applyClassMetadata } from 'src/supports/decorator.support';
 
 type WhatsappMessageDecorator = <TFunction extends Type<WhatsappMessageAction>>(
   target: TFunction,

@@ -1,4 +1,15 @@
 import {
+  getContextInfo,
+  getJid,
+  getMessageCaption,
+  getMessageQutoedCaption,
+  IsEligible,
+  WhatsappMessage,
+  WhatsappMessageAction,
+  withSign,
+  withSignRegex,
+} from '@app/whatsapp';
+import {
   isJidGroup,
   jidEncode,
   jidNormalizedUser,
@@ -6,17 +17,6 @@ import {
   type WASocket,
 } from '@whiskeysockets/baileys';
 import { findPhoneNumbersInText } from 'libphonenumber-js';
-import {
-  getContextInfo,
-  getJid,
-  getMessageCaption,
-  getMessageQutoedCaption,
-  WhatsappMessageAction,
-  withSign,
-  withSignRegex,
-} from '../../../whatsapp/src';
-import { IsEligible } from '../../../whatsapp/src/decorators/is-eligible.decorator';
-import { WhatsappMessage } from '../../../whatsapp/src/decorators/whatsapp-message.decorator';
 
 @WhatsappMessage({
   flags: [withSignRegex('add .*'), withSign('add')],

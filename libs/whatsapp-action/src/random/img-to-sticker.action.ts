@@ -1,15 +1,15 @@
-import type { WAMessage } from '@whiskeysockets/baileys';
-import { Sticker, StickerTypes } from 'wa-sticker-formatter';
-import telegraph from '../../../../src/services/telegraph';
 import {
   downloadContentBufferFromMessage,
   getJid,
   getMessageCaption,
+  WhatsappMessage,
   WhatsappMessageAction,
   withSign,
   withSignRegex,
-} from '../../../whatsapp/src';
-import { WhatsappMessage } from '../../../whatsapp/src/decorators/whatsapp-message.decorator';
+} from '@app/whatsapp';
+import type { WAMessage } from '@whiskeysockets/baileys';
+import { Sticker, StickerTypes } from 'wa-sticker-formatter';
+import telegraph from '../../../../src/services/telegraph';
 
 @WhatsappMessage({
   flags: [withSign('s'), withSignRegex('stic?ker')],

@@ -1,9 +1,12 @@
+import {
+  WhatsappMessage,
+  WhatsappMessageAction,
+  withSign,
+} from '@app/whatsapp';
 import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
 import { exec } from 'child_process';
 import * as os from 'os';
 import * as util from 'util';
-import { WhatsappMessageAction, withSign } from '../../../whatsapp/src';
-import { WhatsappMessage } from '../../../whatsapp/src/decorators/whatsapp-message.decorator';
 
 @WhatsappMessage({
   flags: withSign('ping'),

@@ -1,3 +1,4 @@
+import { PrismaService } from '@app/prisma';
 import { Injectable } from '@nestjs/common';
 import {
   BufferJSON,
@@ -5,7 +6,6 @@ import {
   proto,
   type AuthenticationCreds,
 } from '@whiskeysockets/baileys';
-import { PrismaService } from '../../../prisma/src';
 
 @Injectable()
 export class WhatsappAuthService {

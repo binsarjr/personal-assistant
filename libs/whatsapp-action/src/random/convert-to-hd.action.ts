@@ -1,14 +1,14 @@
-import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
-import * as FormData from 'form-data';
-import got, { RequestError } from 'got';
 import {
   downloadContentBufferFromMessage,
   getJid,
   getMessageFromViewOnce,
+  WhatsappMessage,
   WhatsappMessageAction,
   withSign,
-} from '../../../whatsapp/src';
-import { WhatsappMessage } from '../../../whatsapp/src/decorators/whatsapp-message.decorator';
+} from '@app/whatsapp';
+import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
+import * as FormData from 'form-data';
+import got, { RequestError } from 'got';
 
 @WhatsappMessage({
   flags: withSign('hd'),
