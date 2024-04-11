@@ -16,7 +16,7 @@ export class WhatsappModule {
         WhatsappStoreService,
         WhatsappMessageService,
       ],
-      exports: [],
+      exports: [WhatsappConnectionService],
     };
   }
 }

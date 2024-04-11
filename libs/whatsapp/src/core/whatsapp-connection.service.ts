@@ -1,20 +1,17 @@
-import { Injectable, type OnModuleInit } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import makeWASocket, {
   DisconnectReason,
   fetchLatestBaileysVersion,
 } from '@whiskeysockets/baileys';
-import {
-  MyDisconnectReason,
-  WhatsappError,
-} from '../../../../src/errors/WhatsappError';
 import { Logger } from '../../../../src/services/logger';
 import { PrismaService } from '../../../prisma/src';
+import { MyDisconnectReason, WhatsappError } from '../errors/WhatsappError';
 import { WhatsappAuthService } from './whatsapp-auth.service';
 import { WhatsappMessageService } from './whatsapp-message.service';
 import { WhatsappStoreService } from './whatsapp-store.service';
 
 @Injectable()
-export class WhatsappConnectionService implements OnModuleInit {
+export class WhatsappConnectionService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly store: WhatsappStoreService,
@@ -22,7 +19,7 @@ export class WhatsappConnectionService implements OnModuleInit {
     private readonly whatsappMessageService: WhatsappMessageService,
   ) {}
 
-  async onModuleInit() {
+  async connectingAllDevice() {
     const devices = await this.prisma.device.findMany();
     devices.map((device) => {
       this.connectToWhatsapp(device.id);
