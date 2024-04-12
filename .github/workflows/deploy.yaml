@@ -26,9 +26,6 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:githubdeploy
 
-      - name: Copy build files to Server
-        run: rsync -avzrhcP --delete-after ./dist ${{ secrets.HOSTNAME }}:${{ secrets.SERVER_CWD }}/
-
-      # - name: Deploy Using Tailscale SSH
-      #   run: |
-      #     tailscale ssh ${{ secrets.HOSTNAME }} "cd ${{ secrets.SERVER_CWD }} && git pull origin main && /root/.bun/bin/bun i && /root/.bun/bin/bun run build && source .env && pm2 restart ecosystem.config.cjs --update-env > /dev/null 2>&1 && pm2 save > /dev/null 2>&1"
+      - name: Deploy Using Tailscale SSH
+        run: |
+          tailscale ssh ${{ secrets.HOSTNAME }} "cd ${{ secrets.SERVER_CWD }} && git pull origin main && /root/.bun/bin/bun i && /root/.bun/bin/bun run build && source .env && pm2 restart ecosystem.config.cjs --update-env > /dev/null 2>&1 && pm2 save > /dev/null 2>&1"
