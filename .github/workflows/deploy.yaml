@@ -27,7 +27,7 @@ jobs:
           tags: tag:githubdeploy
 
       - name: Copy build files to Server
-        run: rsync -avzrhcP --delete-after -e "ssh " ./dist ${{ secrets.HOSTNAME }}:${{ secrets.SERVER_CWD }}/
+        run: rsync -avzrhcP --delete-after --rsh="tailscale ssh " ./dist ${{ secrets.HOSTNAME }}:${{ secrets.SERVER_CWD }}/
 
       # - name: Deploy Using Tailscale SSH
       #   run: |
