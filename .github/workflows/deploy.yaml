@@ -15,7 +15,9 @@ jobs:
         run: bun install
 
       - name: Build app
-        run: bun run build
+        run: |
+          bunx prisma generate
+          bun run build
 
       - name: Tailscale
         uses: tailscale/github-action@v2
