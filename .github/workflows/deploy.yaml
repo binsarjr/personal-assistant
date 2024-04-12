@@ -25,6 +25,8 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:githubdeploy
+      - name: tailscale testing
+        run: tailscale status
 
       - name: Copy build files to Server
         run: rsync -avzrhcP --delete-after ./dist ${{ secrets.HOSTNAME }}:${{ secrets.SERVER_CWD }}/
