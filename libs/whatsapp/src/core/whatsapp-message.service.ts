@@ -36,6 +36,12 @@ export class WhatsappMessageService {
       for (const message of messages) {
         const caption = getMessageCaption(message.message);
 
+        if (typeof meta.flags !== 'undefined') {
+          if (!patternsAndTextIsMatch(meta.flags, caption)) {
+            continue;
+          }
+        }
+
         const isEligible = await this.eligibleMapInstance(
           provider,
           socket,
@@ -44,13 +50,7 @@ export class WhatsappMessageService {
 
         if (!isEligible) continue;
 
-        if (typeof meta.flags !== 'undefined') {
-          if (patternsAndTextIsMatch(meta.flags, caption)) {
-            instance.execute(socket, message);
-          }
-        } else {
-          instance.execute(socket, message);
-        }
+        instance.execute(socket, message);
       }
     });
   }
