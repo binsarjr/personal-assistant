@@ -2,8 +2,6 @@ import { AntiDeletedMessageAction } from '@app/whatsapp-action/always-executed/a
 import { AntiViewOnceAction } from '@app/whatsapp-action/always-executed/anti-view-once.action';
 import { DeleteSavedMessage } from '@app/whatsapp-action/always-executed/delete-saved-message.action';
 import { SaveMessageAction } from '@app/whatsapp-action/always-executed/save-message.action';
-import { InstagramDownloaderAction } from '@app/whatsapp-action/downloader/instagram-downloader.action';
-import { TiktokDownloaderAction } from '@app/whatsapp-action/downloader/tiktok-downloader.action';
 import { AddMemberAction } from '@app/whatsapp-action/group/add-member.action';
 import { DemoteMemberAction } from '@app/whatsapp-action/group/demote-member.action';
 import { KickMemberAction } from '@app/whatsapp-action/group/kick-member.action';
@@ -11,10 +9,7 @@ import { MentionAdminAction } from '@app/whatsapp-action/group/mention-admin.act
 import { MentionAllAction } from '@app/whatsapp-action/group/mention-all.action';
 import { MentionMemberAction } from '@app/whatsapp-action/group/mention-member.action';
 import { PromoteMemberAction } from '@app/whatsapp-action/group/promote-member.action';
-import { ConvertToHDAction } from '@app/whatsapp-action/random/convert-to-hd.action';
-import { ImgToStickerAction } from '@app/whatsapp-action/random/img-to-sticker.action';
 import { PingAction } from '@app/whatsapp-action/random/ping.action';
-import { StickerToImgAction } from '@app/whatsapp-action/random/sticker-to-img.action';
 import { ScanQrCodeAction } from '@app/whatsapp-action/scan-qr-code.action';
 import { Module } from '@nestjs/common';
 
@@ -22,9 +17,9 @@ import { Module } from '@nestjs/common';
   providers: [
     ScanQrCodeAction,
     PingAction,
-    ImgToStickerAction,
-    StickerToImgAction,
-    ConvertToHDAction,
+    // ImgToStickerAction,
+    // StickerToImgAction,
+    // ConvertToHDAction,
     MentionAdminAction,
     MentionAllAction,
     MentionMemberAction,
@@ -42,8 +37,8 @@ import { Module } from '@nestjs/common';
     DeleteSavedMessage,
 
     // downloader
-    InstagramDownloaderAction,
-    TiktokDownloaderAction,
+    // InstagramDownloaderAction,
+    // TiktokDownloaderAction,
   ],
 })
 export class WhatsappActionModule {}
