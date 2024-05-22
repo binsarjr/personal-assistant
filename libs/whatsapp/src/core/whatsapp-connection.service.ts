@@ -7,6 +7,7 @@ import makeWASocket, {
 
 import { PrismaService } from '@app/prisma';
 import { WhatsappAuthService } from '@app/whatsapp/core/whatsapp-auth.service';
+import { WhatsappEventService } from '@app/whatsapp/core/whatsapp-event.service';
 import { WhatsappMessageService } from '@app/whatsapp/core/whatsapp-message.service';
 import {
   MyDisconnectReason,
@@ -21,6 +22,7 @@ export class WhatsappConnectionService {
     private readonly store: WhatsappStoreService,
     private readonly authService: WhatsappAuthService,
     private readonly whatsappMessageService: WhatsappMessageService,
+    private readonly whatsappEventService: WhatsappEventService,
   ) {}
 
   async connectingAllDevice() {
@@ -57,6 +59,7 @@ export class WhatsappConnectionService {
     socket.ev.on('messages.upsert', (update) => {
       this.whatsappMessageService.execute(socket, update);
     });
+    this.whatsappEventService.bind(socket);
 
     this.resolveClientConnection(deviceId);
   }

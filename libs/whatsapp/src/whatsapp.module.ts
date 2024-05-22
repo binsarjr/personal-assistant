@@ -1,5 +1,6 @@
 import { WhatsappAuthService } from '@app/whatsapp/core/whatsapp-auth.service';
 import { WhatsappConnectionService } from '@app/whatsapp/core/whatsapp-connection.service';
+import { WhatsappEventService } from '@app/whatsapp/core/whatsapp-event.service';
 import { WhatsappMessageService } from '@app/whatsapp/core/whatsapp-message.service';
 import { WhatsappStoreService } from '@app/whatsapp/core/whatsapp-store.service';
 import { Module, type DynamicModule } from '@nestjs/common';
@@ -15,6 +16,7 @@ export class WhatsappModule {
         WhatsappConnectionService,
         WhatsappStoreService,
         WhatsappMessageService,
+        WhatsappEventService,
       ],
       exports: [WhatsappConnectionService],
     };
