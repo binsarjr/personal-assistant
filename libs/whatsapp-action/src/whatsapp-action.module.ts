@@ -11,6 +11,7 @@ import { MentionMemberAction } from '@app/whatsapp-action/group/mention-member.a
 import { PromoteMemberAction } from '@app/whatsapp-action/group/promote-member.action';
 import { PingAction } from '@app/whatsapp-action/random/ping.action';
 import { ScanQrCodeAction } from '@app/whatsapp-action/scan-qr-code.action';
+import { ContactUpsertAction } from '@app/whatsapp-action/wa-event/contact-upsert.action';
 import { Module } from '@nestjs/common';
 
 @Module({
@@ -39,6 +40,7 @@ import { Module } from '@nestjs/common';
     // downloader
     // InstagramDownloaderAction,
     // TiktokDownloaderAction,
+    ContactUpsertAction,
   ],
 })
 export class WhatsappActionModule {}

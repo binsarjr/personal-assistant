@@ -38,3 +38,8 @@ model WhatsappMessage {
 
   @@id([jid, messageId])
 }
+
+model WhatsappContact {
+  id   String @id
+  name String
+}
