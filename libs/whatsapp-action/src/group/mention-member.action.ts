@@ -29,10 +29,12 @@ export class MentionMemberAction extends WhatsappMessageAction {
   async execute(socket: WASocket, message: WAMessage) {
     this.reactToProcessing(socket, message);
     const metadata = await socket.groupMetadata(getJid(message));
-    const mentions = metadata.participants
+    let mentions = metadata.participants
       .filter((participant) => !participant.admin)
       .map((participant) => participant.id);
 
+    // shuffle mentions
+    mentions = mentions.sort(() => Math.random() - 0.5);
     const messages = ['PING!!'];
 
     messages.push(

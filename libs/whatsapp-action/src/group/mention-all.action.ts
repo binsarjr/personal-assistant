@@ -26,7 +26,9 @@ export class MentionAllAction extends WhatsappMessageAction {
     this.reactToProcessing(socket, message);
     const metadata = await socket.groupMetadata(getJid(message));
 
-    const mentions = metadata.participants.map((participant) => participant.id);
+    let mentions = metadata.participants.map((participant) => participant.id);
+    // shuffle mentions
+    mentions = mentions.sort(() => Math.random() - 0.5);
 
     const messages = ['PING!!'];
 
