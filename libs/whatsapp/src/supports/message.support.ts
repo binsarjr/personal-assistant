@@ -65,13 +65,13 @@ export const getMessageCaption = (message: proto.IMessage) => {
       : message[type];
 
   return (
-    message.conversation ||
-    (msg as proto.Message.IVideoMessage).caption ||
-    (msg as proto.Message.IExtendedTextMessage).text ||
+    message?.conversation ||
+    (msg as proto.Message.IVideoMessage)?.caption ||
+    (msg as proto.Message.IExtendedTextMessage)?.text ||
     message.ephemeralMessage?.message?.extendedTextMessage?.text ||
     message.extendedTextMessage?.text ||
     (type == 'viewOnceMessage' &&
-      (msg as proto.Message.IVideoMessage).caption) ||
+      (msg as proto.Message.IVideoMessage)?.caption) ||
     ''
   );
 };

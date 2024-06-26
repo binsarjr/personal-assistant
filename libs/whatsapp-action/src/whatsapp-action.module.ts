@@ -10,6 +10,7 @@ import { MentionAllAction } from '@app/whatsapp-action/group/mention-all.action'
 import { MentionMemberAction } from '@app/whatsapp-action/group/mention-member.action';
 import { PromoteMemberAction } from '@app/whatsapp-action/group/promote-member.action';
 import { PingAction } from '@app/whatsapp-action/random/ping.action';
+import { SendStoryAction } from '@app/whatsapp-action/random/send-story.action';
 import { ScanQrCodeAction } from '@app/whatsapp-action/scan-qr-code.action';
 import { ContactUpsertAction } from '@app/whatsapp-action/wa-event/contact-upsert.action';
 import { Module } from '@nestjs/common';
@@ -41,6 +42,7 @@ import { Module } from '@nestjs/common';
     // InstagramDownloaderAction,
     // TiktokDownloaderAction,
     ContactUpsertAction,
+    SendStoryAction,
   ],
 })
 export class WhatsappActionModule {}

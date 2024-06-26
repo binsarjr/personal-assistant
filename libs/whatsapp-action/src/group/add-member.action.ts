@@ -27,20 +27,21 @@ export class AddMemberAction extends WhatsappMessageAction {
 
   @IsEligible()
   async isAdmin(socket: WASocket, message: WAMessage) {
-    const metadata = await socket.groupMetadata(getJid(message));
+    return !!message.key.fromMe;
+    // const metadata = await socket.groupMetadata(getJid(message));
 
-    const me = metadata.participants.find(
-      (participant) =>
-        jidNormalizedUser(participant.id) ===
-        jidNormalizedUser(socket.user?.id),
-    );
-    if (!me.admin) return false;
+    // const me = metadata.participants.find(
+    //   (participant) =>
+    //     jidNormalizedUser(participant.id) ===
+    //     jidNormalizedUser(socket.user?.id),
+    // );
+    // if (!me.admin) return false;
 
-    const fromJid = jidNormalizedUser(getJid(message));
-    return !!metadata.participants.find(
-      (participant) =>
-        participant.admin && fromJid === jidNormalizedUser(participant.id),
-    );
+    // const fromJid = jidNormalizedUser(getJid(message));
+    // return !!metadata.participants.find(
+    //   (participant) =>
+    //     participant.admin && fromJid === jidNormalizedUser(participant.id),
+    // );
   }
 
   async execute(socket: WASocket, message: WAMessage) {
