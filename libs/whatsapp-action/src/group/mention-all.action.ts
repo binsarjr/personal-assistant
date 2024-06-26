@@ -4,7 +4,11 @@ import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decor
 import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
 import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support';
 import { getJid } from '@app/whatsapp/supports/message.support';
-import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
+import type {
+  MiscMessageGenerationOptions,
+  WAMessage,
+  WASocket,
+} from '@whiskeysockets/baileys';
 
 import { isJidGroup, jidDecode } from '@whiskeysockets/baileys';
 
@@ -25,6 +29,23 @@ export class MentionAllAction extends WhatsappMessageAction {
   async execute(socket: WASocket, message: WAMessage) {
     this.reactToProcessing(socket, message);
     const metadata = await socket.groupMetadata(getJid(message));
+    const quoted = message?.message?.extendedTextMessage?.contextInfo;
+    const options: MiscMessageGenerationOptions = {};
+
+    if (quoted) {
+      quoted['key'] = {
+        remoteJid: message.key.remoteJid,
+        fromMe: null,
+        id: quoted!.stanzaId,
+        participant: quoted!.participant,
+      };
+
+      quoted['message'] = quoted.quotedMessage;
+      // @ts-expect-error: quotedMessage is not in type
+      options['quoted'] = quoted;
+    } else {
+      options['quoted'] = message;
+    }
 
     let mentions = metadata.participants.map((participant) => participant.id);
     // shuffle mentions
@@ -32,17 +53,6 @@ export class MentionAllAction extends WhatsappMessageAction {
 
     const messages = ['PING!!'];
 
-    messages.push(
-      `
-
-Jika kamu tertarik membuat whatsapp bot. bisa hubungi saya di:
-
-https://www.linkedin.com/in/binsarjr/
-http://github.com/binsarjr/
-
-
-`.trim(),
-    );
     messages.push(
       'cc: ' +
         mentions
@@ -56,7 +66,7 @@ http://github.com/binsarjr/
         text: messages.join(`\n${ReadMoreUnicode}\n`),
         mentions,
       },
-      { quoted: message },
+      options,
     );
     this.reactToDone(socket, message);
   }
