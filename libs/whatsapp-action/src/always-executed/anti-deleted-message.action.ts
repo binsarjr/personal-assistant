@@ -28,6 +28,10 @@ export class AntiDeletedMessageAction extends WhatsappMessageAction {
   }
 
   async execute(socket: WASocket, message: WAMessage) {
+    if (!message.message) {
+      console.log('message.message is null from AntiDeletedMessageAction');
+      return;
+    }
     const protocol = JSON.parse(JSON.stringify(message.message)) as {
       protocolMessage: {
         key: {
@@ -52,7 +56,7 @@ export class AntiDeletedMessageAction extends WhatsappMessageAction {
     if (deleted) {
       const message = JSON.parse(deleted.meta) as WAMessage;
       const jid = getJid(message);
-      let type = getContentType(message.message!);
+      const type = getContentType(message.message!);
 
       // tidak butuh karena sudah ada fitur anti view once message
       if (
@@ -63,7 +67,7 @@ export class AntiDeletedMessageAction extends WhatsappMessageAction {
         return;
       }
 
-      let response = [];
+      const response = [];
 
       if (isJidStatusBroadcast(jid)) {
         response.push('Story Whatsapp');

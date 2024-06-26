@@ -1,3 +1,4 @@
+import { ReadMoreUnicode } from '@app/whatsapp/constants';
 import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
 import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
 import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
@@ -5,7 +6,7 @@ import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support';
 import { getJid } from '@app/whatsapp/supports/message.support';
 import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
 
-import { isJidGroup } from '@whiskeysockets/baileys';
+import { isJidGroup, jidDecode } from '@whiskeysockets/baileys';
 
 @WhatsappMessage({
   flags: [withSign('tagall'), withSignRegex('tagall .*')],
@@ -24,11 +25,34 @@ export class MentionAllAction extends WhatsappMessageAction {
   async execute(socket: WASocket, message: WAMessage) {
     this.reactToProcessing(socket, message);
     const metadata = await socket.groupMetadata(getJid(message));
+
+    const mentions = metadata.participants.map((participant) => participant.id);
+
+    const messages = ['PING!!'];
+
+    messages.push(
+      `
+
+Jika kamu tertarik membuat whatsapp bot. bisa hubungi saya di:
+
+https://www.linkedin.com/in/binsarjr/
+http://github.com/binsarjr/
+
+
+`.trim(),
+    );
+    messages.push(
+      'cc: ' +
+        mentions
+          .map((participant) => `@${jidDecode(participant).user}`)
+          .join(' '),
+    );
+
     await socket.sendMessage(
       getJid(message),
       {
-        text: 'PING!!',
-        mentions: metadata.participants.map((participant) => participant.id),
+        text: messages.join(`\n${ReadMoreUnicode}\n`),
+        mentions,
       },
       { quoted: message },
     );
