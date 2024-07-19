@@ -22,8 +22,7 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ecdsa
           chmod 600 ~/.ssh/id_ecdsa
           eval $(ssh-agent -s)
-          ssh-add ~/.ssh/id_ecdsa
-          ssh-keyscan -H ${{ secrets.HOSTNAME }} >> ~/.ssh/known_hosts
+          echo -e "Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null\n" > ~/.ssh/config
 
       - name: Deploy Using Tailscale SSH
         run: |
