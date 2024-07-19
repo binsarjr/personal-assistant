@@ -15,7 +15,15 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:githubdeploy
+      - name: Add SSH key
+        id: ssh
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ecdsa
+          chmod 600 ~/.ssh/id_ecdsa
+          eval $(ssh-agent -s)
+          ssh-add ~/.ssh/id_ecdsa
 
       - name: Deploy Using Tailscale SSH
         run: |
-          tailscale ssh ${{ secrets.HOSTNAME }} "cd ${{ secrets.SERVER_CWD }} && git pull origin main && /root/.bun/bin/bun i --no-save && /root/.bun/bin/bunx prisma db push && /root/.bun/bin/bun run build && supervisorctl restart personal-whatsapp-bot"
+          ssh  ${{ secrets.HOSTNAME }} "cd ${{ secrets.SERVER_CWD }} && git pull origin main && /root/.bun/bin/bun i --no-save && /root/.bun/bin/bunx prisma db push && /root/.bun/bin/bun run build && supervisorctl restart personal-whatsapp-bot"
