@@ -15,7 +15,6 @@ import telegraph from '../../../../src/services/telegraph';
 })
 export class ImgToStickerAction extends WhatsappMessageAction {
   async execute(socket: any, message: any) {
-    console.log(message);
     this.reactToProcessing(socket, message);
 
     let photoBuffer: Buffer | null = null;
