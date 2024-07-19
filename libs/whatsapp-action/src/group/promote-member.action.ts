@@ -8,7 +8,12 @@ import {
   getMessageCaption,
   getMessageQutoedCaption,
 } from '@app/whatsapp/supports/message.support';
-import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
+import { LIMITIED_QUEUE } from '@services/queue';
+import type {
+  GroupMetadata,
+  WAMessage,
+  WASocket,
+} from '@whiskeysockets/baileys';
 import {
   isJidGroup,
   jidEncode,
@@ -27,7 +32,9 @@ export class PromoteMemberAction extends WhatsappMessageAction {
 
   @IsEligible()
   async isAdmin(socket: WASocket, message: WAMessage) {
-    const metadata = await socket.groupMetadata(getJid(message));
+    const metadata = (await LIMITIED_QUEUE.add(() =>
+      socket.groupMetadata(getJid(message)),
+    )) as GroupMetadata;
 
     const me = metadata.participants.find(
       (participant) =>

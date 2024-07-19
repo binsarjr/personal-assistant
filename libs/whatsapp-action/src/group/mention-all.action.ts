@@ -4,7 +4,9 @@ import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decor
 import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
 import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support';
 import { getJid } from '@app/whatsapp/supports/message.support';
+import { LIMITIED_QUEUE } from '@services/queue';
 import type {
+  GroupMetadata,
   MiscMessageGenerationOptions,
   WAMessage,
   WASocket,
@@ -28,7 +30,9 @@ export class MentionAllAction extends WhatsappMessageAction {
 
   async execute(socket: WASocket, message: WAMessage) {
     this.reactToProcessing(socket, message);
-    const metadata = await socket.groupMetadata(getJid(message));
+    const metadata = (await LIMITIED_QUEUE.add(() =>
+      socket.groupMetadata(getJid(message)),
+    )) as GroupMetadata;
     const quoted = message?.message?.extendedTextMessage?.contextInfo;
     const options: MiscMessageGenerationOptions = {};
 

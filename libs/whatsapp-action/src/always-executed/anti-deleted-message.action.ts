@@ -8,11 +8,13 @@ import {
   getJid,
   getMessageCaption,
 } from '@app/whatsapp/supports/message.support';
+import { LIMITIED_QUEUE } from '@services/queue';
 import {
   getContentType,
   isJidGroup,
   isJidStatusBroadcast,
   jidDecode,
+  type GroupMetadata,
   type WAMessage,
   type WASocket,
 } from '@whiskeysockets/baileys';
@@ -72,7 +74,9 @@ export class AntiDeletedMessageAction extends WhatsappMessageAction {
       if (isJidStatusBroadcast(jid)) {
         response.push('Story Whatsapp');
       } else if (isJidGroup(jid)) {
-        const metadata = await socket.groupMetadata(jid);
+        const metadata = (await LIMITIED_QUEUE.add(() =>
+          socket.groupMetadata(jid),
+        )) as GroupMetadata;
         response.push('Grup: *' + metadata.subject + '*');
       }
 
