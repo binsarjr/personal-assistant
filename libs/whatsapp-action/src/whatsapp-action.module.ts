@@ -9,6 +9,8 @@ import { MentionAdminAction } from '@app/whatsapp-action/group/mention-admin.act
 import { MentionAllAction } from '@app/whatsapp-action/group/mention-all.action';
 import { MentionMemberAction } from '@app/whatsapp-action/group/mention-member.action';
 import { PromoteMemberAction } from '@app/whatsapp-action/group/promote-member.action';
+import { TurnOffAction } from '@app/whatsapp-action/group/turn-off.action';
+import { TurnOnAction } from '@app/whatsapp-action/group/turn-on.action';
 import { PingAction } from '@app/whatsapp-action/random/ping.action';
 import { SendStoryAction } from '@app/whatsapp-action/random/send-story.action';
 import { ScanQrCodeAction } from '@app/whatsapp-action/scan-qr-code.action';
@@ -43,6 +45,9 @@ import { Module } from '@nestjs/common';
     // TiktokDownloaderAction,
     ContactUpsertAction,
     SendStoryAction,
+
+    TurnOnAction,
+    TurnOffAction,
   ],
 })
 export class WhatsappActionModule {}

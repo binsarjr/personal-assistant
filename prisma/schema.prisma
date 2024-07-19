@@ -43,3 +43,8 @@ model WhatsappContact {
   id   String @id
   name String
 }
+
+model GroupStatus {
+  jid    String  @id
+  active Boolean @default(false)
+}
