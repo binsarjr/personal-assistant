@@ -26,4 +26,4 @@ jobs:
 
       - name: Deploy Using Tailscale SSH
         run: |
-          ssh  ${{ secrets.HOSTNAME }} "cd ${{ secrets.SERVER_CWD }} && git pull origin main && /root/.bun/bin/bun i --no-save && /root/.bun/bin/bunx prisma db push && /root/.bun/bin/bun run build && supervisorctl restart personal-whatsapp-bot"
+          ssh -i  ~/.ssh/id_ecdsa  ${{ secrets.HOSTNAME }} "cd ${{ secrets.SERVER_CWD }} && git pull origin main && /root/.bun/bin/bun i --no-save && /root/.bun/bin/bunx prisma db push && /root/.bun/bin/bun run build && supervisorctl restart personal-whatsapp-bot"
