@@ -16,6 +16,11 @@ import type {
   WAMessage,
   WASocket,
 } from '@whiskeysockets/baileys';
+function cloneClassInstance<T>(instance: T): T {
+  const clonedInstance = Object.create(Object.getPrototypeOf(instance));
+  Object.assign(clonedInstance, instance);
+  return clonedInstance;
+}
 
 @Injectable()
 export class WhatsappMessageService {
@@ -28,7 +33,7 @@ export class WhatsappMessageService {
     const providers = await this.discoveryService.providersWithMetaAtKey(
       WhatsappMessageActionMetadataKey,
     );
-    providers.map(async (provider) => {
+    for (const provider of providers) {
       const instance = provider.discoveredClass
         .instance as WhatsappMessageAction;
       const meta = provider.meta as WhatsappMessageActionOptions;
@@ -52,7 +57,7 @@ export class WhatsappMessageService {
 
         instance.execute(socket, message);
       }
-    });
+    }
   }
 
   protected async eligibleMapInstance(
@@ -62,17 +67,21 @@ export class WhatsappMessageService {
   ) {
     const eligibles = await this.discoveryService.providerMethodsWithMetaAtKey(
       EligibleMetadataKey,
-      (found) => found.name === provider.discoveredClass.name,
+      (found) => {
+        return found.name === provider.discoveredClass.name;
+      },
     );
 
     let result = true;
 
     await Promise.all(
       eligibles.map(async (eligible) => {
-        const instance = await eligible.discoveredMethod.handler(
-          socket,
-          message,
+        const classIntance = eligible.discoveredMethod.parentClass.instance;
+        const instance = await eligible.discoveredMethod.handler.apply(
+          classIntance,
+          [socket, message],
         );
+
         if (!instance) result = false;
       }),
     );
