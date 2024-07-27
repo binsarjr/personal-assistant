@@ -7,3 +7,4 @@ database.json
 dist
 dev.db
 bun.lockb
+.idea
