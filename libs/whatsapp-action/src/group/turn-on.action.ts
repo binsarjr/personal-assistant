@@ -8,9 +8,9 @@ import {
 } from '@whiskeysockets/baileys';
 import { WhatsappGroupAction } from '@app/whatsapp/interfaces/whatsapp.group.interface';
 import { FromMe } from '@app/whatsapp/traits/FromMe.trait';
-import { Trait } from '../../../../src/decorators/trait.decorator';
+import { TraitEligible } from '../../../../src/decorators/trait.decorator';
 
-@Trait(FromMe)
+@TraitEligible(FromMe)
 @WhatsappMessage({
   flags: [withSign('on')],
 })

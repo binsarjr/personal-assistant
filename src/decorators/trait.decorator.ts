@@ -14,3 +14,5 @@ export function Trait(traitClass: new (...args: any[]) => any) {
     });
   };
 }
+
+export const TraitEligible = Trait;

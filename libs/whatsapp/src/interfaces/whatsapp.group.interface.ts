@@ -6,10 +6,10 @@ import {
 } from '@whiskeysockets/baileys';
 import { getJid } from '@app/whatsapp/supports/message.support';
 import { LIMITIED_QUEUE } from '@services/queue';
-import { Trait } from '../../../../src/decorators/trait.decorator';
 import { IsGroup } from '@app/whatsapp/traits/IsGroup.trait';
+import { TraitEligible } from '../../../../src/decorators/trait.decorator';
 
-@Trait(IsGroup)
+@TraitEligible(IsGroup)
 export abstract class WhatsappGroupAction extends WhatsappMessageAction {
   protected async isAdmin(socket: WASocket, message: WAMessage) {
     const metadata = await LIMITIED_QUEUE.add(() =>
