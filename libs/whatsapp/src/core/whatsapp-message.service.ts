@@ -7,8 +7,8 @@ import type { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.in
 import { patternsAndTextIsMatch } from '@app/whatsapp/supports/flag.support';
 import { getMessageCaption } from '@app/whatsapp/supports/message.support';
 import {
-  DiscoveryService,
   type DiscoveredClassWithMeta,
+  DiscoveryService,
 } from '@golevelup/nestjs-discovery';
 import { Injectable } from '@nestjs/common';
 import type {
@@ -16,6 +16,7 @@ import type {
   WAMessage,
   WASocket,
 } from '@whiskeysockets/baileys';
+
 function cloneClassInstance<T>(instance: T): T {
   const clonedInstance = Object.create(Object.getPrototypeOf(instance));
   Object.assign(clonedInstance, instance);
@@ -65,20 +66,25 @@ export class WhatsappMessageService {
     socket: WASocket,
     message: WAMessage,
   ) {
-    const eligibles = await this.discoveryService.providerMethodsWithMetaAtKey(
+    const eligible = await this.discoveryService.providerMethodsWithMetaAtKey(
       EligibleMetadataKey,
       (found) => {
-        return found.name === provider.discoveredClass.name;
+        // Include both the class itself and its superclass methods.
+        return (
+          found.name === provider.discoveredClass.name ||
+          Object.getPrototypeOf(found.name).name ===
+            provider.discoveredClass.name
+        );
       },
     );
 
     let result = true;
 
     await Promise.all(
-      eligibles.map(async (eligible) => {
-        const classIntance = eligible.discoveredMethod.parentClass.instance;
+      eligible.map(async (eligible) => {
+        const classInstance = eligible.discoveredMethod.parentClass.instance;
         const instance = await eligible.discoveredMethod.handler.apply(
-          classIntance,
+          classInstance,
           [socket, message],
         );
 
