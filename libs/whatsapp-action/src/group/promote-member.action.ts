@@ -1,6 +1,5 @@
 import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
 import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
-import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
 import { withSignRegex } from '@app/whatsapp/supports/flag.support';
 import {
   getContextInfo,
@@ -14,22 +13,14 @@ import type {
   WAMessage,
   WASocket,
 } from '@whiskeysockets/baileys';
-import {
-  isJidGroup,
-  jidEncode,
-  jidNormalizedUser,
-} from '@whiskeysockets/baileys';
+import { jidEncode, jidNormalizedUser } from '@whiskeysockets/baileys';
 import { findPhoneNumbersInText } from 'libphonenumber-js';
+import { WhatsappGroupAction } from '@app/whatsapp/interfaces/whatsapp.group.interface';
 
 @WhatsappMessage({
   flags: [withSignRegex('promote .*')],
 })
-export class PromoteMemberAction extends WhatsappMessageAction {
-  @IsEligible()
-  async onlyGroup(socket: WASocket, message: WAMessage) {
-    return isJidGroup(getJid(message));
-  }
-
+export class PromoteMemberAction extends WhatsappGroupAction {
   @IsEligible()
   async isAdmin(socket: WASocket, message: WAMessage) {
     const metadata = (await LIMITIED_QUEUE.add(() =>
@@ -53,7 +44,7 @@ export class PromoteMemberAction extends WhatsappMessageAction {
   async execute(socket: WASocket, message: WAMessage) {
     this.reactToProcessing(socket, message);
 
-    let mentionedJid = getContextInfo(message)?.mentionedJid || [];
+    const mentionedJid = getContextInfo(message)?.mentionedJid || [];
     const caption = getMessageCaption(message.message!) || '';
     const quoted = getMessageQutoedCaption(message.message!) || '';
     const phones = findPhoneNumbersInText(caption + ' ' + quoted, 'ID');

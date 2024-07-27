@@ -2,7 +2,6 @@ import { PrismaService } from '@app/prisma';
 import { ReadMoreUnicode } from '@app/whatsapp/constants';
 import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
 import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
-import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
 import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support';
 import { getJid } from '@app/whatsapp/supports/message.support';
 import { LIMITIED_QUEUE } from '@services/queue';
@@ -12,11 +11,8 @@ import type {
   WAMessage,
   WASocket,
 } from '@whiskeysockets/baileys';
-import {
-  isJidGroup,
-  jidDecode,
-  jidNormalizedUser,
-} from '@whiskeysockets/baileys';
+import { jidDecode, jidNormalizedUser } from '@whiskeysockets/baileys';
+import { WhatsappGroupAction } from '@app/whatsapp/interfaces/whatsapp.group.interface';
 
 @WhatsappMessage({
   flags: [
@@ -26,14 +22,9 @@ import {
     withSignRegex('admin .*'),
   ],
 })
-export class MentionAdminAction extends WhatsappMessageAction {
+export class MentionAdminAction extends WhatsappGroupAction {
   constructor(private readonly prisma: PrismaService) {
     super();
-  }
-
-  @IsEligible()
-  async onlyGroup(socket: WASocket, message: WAMessage) {
-    return isJidGroup(getJid(message));
   }
 
   @IsEligible()
@@ -46,20 +37,7 @@ export class MentionAdminAction extends WhatsappMessageAction {
     // TODO: jika tidak ada settingan maka set default sebagai hanya saya
     if (!groupStatus?.active) return !!message.key.fromMe;
 
-    const metadata = await LIMITIED_QUEUE.add(() =>
-      socket.groupMetadata(getJid(message)),
-    );
-
-    const admins = metadata.participants.filter(
-      (participant) => !!participant.admin,
-    );
-    return (
-      admins.findIndex(
-        (participant) =>
-          jidNormalizedUser(participant.id) ===
-          jidNormalizedUser(message.key.participant),
-      ) > -1
-    );
+    return await this.isAdmin(socket, message);
   }
 
   async execute(socket: WASocket, message: WAMessage) {

@@ -1,30 +1,24 @@
 import { PrismaService } from '@app/prisma';
-import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
 import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
-import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
 import { withSign } from '@app/whatsapp/supports/flag.support';
 import {
-  isJidGroup,
   jidNormalizedUser,
   type WAMessage,
   type WASocket,
 } from '@whiskeysockets/baileys';
+import { WhatsappGroupAction } from '@app/whatsapp/interfaces/whatsapp.group.interface';
+import { FromMe } from '@app/whatsapp/traits/FromMe.trait';
+import { Trait } from '../../../../src/decorators/trait.decorator';
 
+@Trait(FromMe)
 @WhatsappMessage({
   flags: [withSign('on')],
 })
-export class TurnOnAction extends WhatsappMessageAction {
+export class TurnOnAction extends WhatsappGroupAction {
   constructor(private readonly prisma: PrismaService) {
     super();
   }
-  @IsEligible()
-  async onlyGroup(socket: WASocket, message: WAMessage) {
-    return isJidGroup(message.key.remoteJid);
-  }
 
-  async onlyMe(socket: WASocket, message: WAMessage) {
-    return !!message.key.fromMe;
-  }
   async execute(socket: WASocket, message: WAMessage) {
     this.reactToProcessing(socket, message);
     await this.prisma.groupStatus.upsert({

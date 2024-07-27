@@ -17,18 +17,13 @@ import type {
   WASocket,
 } from '@whiskeysockets/baileys';
 
-function cloneClassInstance<T>(instance: T): T {
-  const clonedInstance = Object.create(Object.getPrototypeOf(instance));
-  Object.assign(clonedInstance, instance);
-  return clonedInstance;
-}
-
 @Injectable()
 export class WhatsappMessageService {
   constructor(private readonly discoveryService: DiscoveryService) {}
 
   async execute(
     socket: WASocket,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     { messages, type }: BaileysEventMap['messages.upsert'],
   ) {
     const providers = await this.discoveryService.providersWithMetaAtKey(

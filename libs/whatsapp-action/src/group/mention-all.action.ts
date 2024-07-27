@@ -1,39 +1,31 @@
 import { PrismaService } from '@app/prisma/prisma.service';
 import { ReadMoreUnicode } from '@app/whatsapp/constants';
-import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
 import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
-import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
 import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support';
 import { getJid } from '@app/whatsapp/supports/message.support';
 import { LIMITIED_QUEUE } from '@services/queue';
-import type {
+import {
   GroupMetadata,
+  jidDecode,
+  jidNormalizedUser,
   MiscMessageGenerationOptions,
   WAMessage,
   WASocket,
 } from '@whiskeysockets/baileys';
-
-import {
-  isJidGroup,
-  jidDecode,
-  jidNormalizedUser,
-} from '@whiskeysockets/baileys';
+import { WhatsappGroupAction } from '@app/whatsapp/interfaces/whatsapp.group.interface';
+import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
 
 @WhatsappMessage({
   flags: [withSign('tagall'), withSignRegex('tagall .*')],
 })
-export class MentionAllAction extends WhatsappMessageAction {
+export class MentionAllAction extends WhatsappGroupAction {
   constructor(private readonly prisma: PrismaService) {
     super();
   }
 
   @IsEligible()
-  onlyGroup(socket: WASocket, message: WAMessage) {
-    return isJidGroup(getJid(message));
-  }
-
-  @IsEligible()
   async canMention(socket: WASocket, message: WAMessage) {
+    if (!!message.key.fromMe) return true;
     const groupStatus = await this.prisma.groupStatus.findFirst({
       where: {
         jid: jidNormalizedUser(getJid(message)),
@@ -42,21 +34,7 @@ export class MentionAllAction extends WhatsappMessageAction {
     // TODO: jika tidak ada settingan maka set default sebagai hanya saya
     if (!groupStatus?.active) return !!message.key.fromMe;
 
-    const metadata = await LIMITIED_QUEUE.add(() =>
-      socket.groupMetadata(getJid(message)),
-    );
-
-    const admins = metadata.participants.filter(
-      (participant) => !!participant.admin,
-    );
-
-    return (
-      admins.findIndex(
-        (participant) =>
-          jidNormalizedUser(participant.id) ===
-          jidNormalizedUser(message.key.participant),
-      ) > -1
-    );
+    return await this.isAdmin(socket, message);
   }
 
   async execute(socket: WASocket, message: WAMessage) {
