@@ -16,13 +16,15 @@ import { SendStoryAction } from '@app/whatsapp-action/random/send-story.action';
 import { ScanQrCodeAction } from '@app/whatsapp-action/scan-qr-code.action';
 import { ContactUpsertAction } from '@app/whatsapp-action/wa-event/contact-upsert.action';
 import { Module } from '@nestjs/common';
+import { ImgToStickerAction } from './random/img-to-sticker.action';
+import { StickerToImgAction } from './random/sticker-to-img.action';
 
 @Module({
   providers: [
     ScanQrCodeAction,
     PingAction,
-    // ImgToStickerAction,
-    // StickerToImgAction,
+    ImgToStickerAction,
+    StickerToImgAction,
     // ConvertToHDAction,
     MentionAdminAction,
     MentionAllAction,
