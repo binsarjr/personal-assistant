@@ -87,10 +87,13 @@ export const getMessageQutoedCaption = (message: proto.IMessage) => {
     message?.ephemeralMessage?.message?.extendedTextMessage?.contextInfo
       ?.quotedMessage?.conversation ||
     message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation ||
+    message?.extendedTextMessage?.contextInfo?.quotedMessage?.imageMessage
+      ?.caption ||
     message?.extendedTextMessage?.contextInfo?.quotedMessage
       ?.extendedTextMessage?.text ||
     (msg as proto.Message.IVideoMessage)?.contextInfo?.quotedMessage
       ?.conversation ||
+    (msg as proto.IMessage)?.imageMessage?.caption ||
     ''
   );
 };

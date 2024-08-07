@@ -18,6 +18,7 @@ import { ContactUpsertAction } from '@app/whatsapp-action/wa-event/contact-upser
 import { Module } from '@nestjs/common';
 import { ImgToStickerAction } from './random/img-to-sticker.action';
 import { StickerToImgAction } from './random/sticker-to-img.action';
+import { AiChatgptAction } from './ai/ai-chatgpt.action';
 
 @Module({
   providers: [
@@ -50,6 +51,8 @@ import { StickerToImgAction } from './random/sticker-to-img.action';
 
     TurnOnAction,
     TurnOffAction,
+
+    AiChatgptAction,
   ],
 })
 export class WhatsappActionModule {}

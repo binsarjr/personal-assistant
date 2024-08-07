@@ -26,6 +26,7 @@
   ],
   "dependencies": {
     "@golevelup/nestjs-discovery": "^4.0.1",
+    "@google/generative-ai": "^0.16.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@prisma/client": "^5.12.1",
@@ -35,6 +36,7 @@
     "inquirer": "^8.0.0",
     "libphonenumber-js": "^1.10.60",
     "link-preview-js": "^3.0.5",
+    "openai": "^4.55.0",
     "p-queue": "^6.*",
     "pino": "^8.20.0",
     "pino-pretty": "^11.0.0",
