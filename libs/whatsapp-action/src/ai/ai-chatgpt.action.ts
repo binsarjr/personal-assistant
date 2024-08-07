@@ -11,6 +11,7 @@ import {
 import { Part } from '@google/generative-ai';
 import { Gemini } from '@services/gemini';
 import { WAMessage, WASocket, proto } from '@whiskeysockets/baileys';
+import { whatsappFormat } from 'src/supports/str.support';
 
 @WhatsappMessage({
   flags: [withSignRegex('ai .*')],
@@ -107,7 +108,7 @@ answer with use text below language, don't use english for each text. Please to 
     await sendWithTyping(
       socket,
       {
-        text: response.response.text(),
+        text: whatsappFormat(response.response.text()),
       },
       message.key.remoteJid,
       {
