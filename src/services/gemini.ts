@@ -19,9 +19,12 @@ export class Gemini {
   constructor(private readonly gemini: GoogleGenerativeAI) {}
 
   public static make(apiKey?: string): Gemini {
-    return new Gemini(
-      new GoogleGenerativeAI(apiKey || process.env.GEMINI_API_KEY!),
-    );
+    if (!apiKey) {
+      apiKey = process.env.GEMINI_API_KEY || '';
+      const apiKeys = apiKey.split(',');
+      apiKey = apiKeys[Math.floor(Math.random() * apiKeys.length)];
+    }
+    return new Gemini(new GoogleGenerativeAI(apiKey));
   }
 
   public setModel(model: GenerativeModelName) {
