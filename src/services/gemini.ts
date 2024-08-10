@@ -1,5 +1,7 @@
 import {
   Content,
+  FunctionCallingMode,
+  FunctionDeclarationSchemaType,
   GenerativeModel,
   GoogleGenerativeAI,
   HarmBlockThreshold,
@@ -9,6 +11,7 @@ import {
 export type GenerativeModelName =
   | 'gemini-pro-vision'
   | 'gemini-pro'
+  | 'gemini-1.5-flash-latest'
   | 'gemini-1.5-flash';
 
 export class Gemini {
@@ -50,6 +53,51 @@ export class Gemini {
           threshold: HarmBlockThreshold.BLOCK_NONE,
         },
       ],
+      generationConfig: {
+        temperature: 0.4,
+      },
+      tools: [
+        {
+          functionDeclarations: [
+            {
+              name: 'getCurrentTime',
+              description: 'ketika saya meminta waktu saat ini',
+            },
+            {
+              name: 'github_roaster',
+              description:
+                'Ketika ada yang meminta untuk meroasting github profile',
+              parameters: {
+                type: FunctionDeclarationSchemaType.OBJECT,
+                description: 'username dan language',
+                required: ['username', 'language'],
+                properties: {
+                  username: {
+                    type: FunctionDeclarationSchemaType.STRING,
+                    description: 'username',
+                  },
+                  language: {
+                    type: FunctionDeclarationSchemaType.STRING,
+                    description: `
+Language
+default: indonesian
+supported: english,france,indonesian,javanese,hindi,korean,sundanese,japanese,chinese,traditional-chinese,german,arabic,vietnamese,finnish,portuguese,polish,italian
+
+
+`.trim(),
+                  },
+                },
+              },
+            },
+          ],
+        },
+      ],
+      // toolConfig: {
+      //
+      //   // functionCallingConfig: {
+      //   //   allowedFunctionNames: ['get_current_time'],
+      //   // },
+      // },
     });
     return this;
   }
