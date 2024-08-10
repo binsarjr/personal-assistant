@@ -141,7 +141,7 @@ answer using the text below language, do not use English for every text. Please 
     switch (functionName) {
       case 'getCurrentTime':
         return new Date().toLocaleDateString();
-      case 'github_roaster':
+      case 'roast_github':
         return this.githubRoast(args.username, args.language);
     }
   }

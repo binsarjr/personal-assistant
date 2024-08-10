@@ -64,9 +64,8 @@ export class Gemini {
               description: 'ketika saya meminta waktu saat ini',
             },
             {
-              name: 'github_roaster',
-              description:
-                'Ketika ada yang meminta untuk meroasting github profile',
+              name: 'roast_github',
+              description: ' untuk meroasting github profile',
               parameters: {
                 type: FunctionDeclarationSchemaType.OBJECT,
                 description: 'username dan language',
@@ -78,10 +77,28 @@ export class Gemini {
                   },
                   language: {
                     type: FunctionDeclarationSchemaType.STRING,
+                    enum: [
+                      'indonesian',
+                      'english',
+                      'france',
+                      'javanese',
+                      'hindi',
+                      'korean',
+                      'sundanese',
+                      'japanese',
+                      'chinese',
+                      'traditional-chinese',
+                      'german',
+                      'arabic',
+                      'vietnamese',
+                      'finnish',
+                      'portuguese',
+                      'polish',
+                      'italian',
+                    ],
                     description: `
 Language
 default: indonesian
-supported: english,france,indonesian,javanese,hindi,korean,sundanese,japanese,chinese,traditional-chinese,german,arabic,vietnamese,finnish,portuguese,polish,italian
 
 
 `.trim(),
