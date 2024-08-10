@@ -36,6 +36,7 @@
     "inquirer": "^8.0.0",
     "libphonenumber-js": "^1.10.60",
     "link-preview-js": "^3.0.5",
+    "moment": "^2.30.1",
     "openai": "^4.55.0",
     "p-queue": "^6.*",
     "pino": "^8.20.0",

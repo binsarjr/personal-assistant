@@ -11,6 +11,8 @@ import {
 import { Part } from '@google/generative-ai';
 import { Gemini } from '@services/gemini';
 import { WAMessage, WASocket, proto } from '@whiskeysockets/baileys';
+import * as moment from 'moment';
+import 'moment/locale/id';
 import { whatsappFormat } from 'src/supports/str.support';
 
 @WhatsappMessage({
@@ -140,7 +142,7 @@ answer using the text below language, do not use English for every text. Please 
     console.log('executeFunction', functionName, args);
     switch (functionName) {
       case 'getCurrentTime':
-        return new Date().toLocaleDateString();
+        return moment().format('lll');
       case 'roast_github':
         return this.githubRoast(args.username, args.language);
     }
