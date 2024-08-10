@@ -139,7 +139,7 @@ answer using the text below language, do not use English for every text. Please 
   async executeFunction(functionName: string, args: any) {
     console.log('executeFunction', functionName, args);
     switch (functionName) {
-      case 'getC':
+      case 'getCurrentTime':
         return new Date().toLocaleDateString();
       case 'github_roaster':
         return this.githubRoast(args.username, args.language);
