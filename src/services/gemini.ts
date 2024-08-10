@@ -53,9 +53,6 @@ export class Gemini {
           threshold: HarmBlockThreshold.BLOCK_NONE,
         },
       ],
-      generationConfig: {
-        temperature: 0.4,
-      },
       tools: [
         {
           functionDeclarations: [
@@ -65,15 +62,16 @@ export class Gemini {
             },
             {
               name: 'roast_github',
-              description: ' untuk meroasting github profile',
+              description:
+                `As a GitHub Profile Roaster, your job is to analyze users' GitHub profiles and provide honest, incisive, and entertaining feedback. You use various metrics and indicators to evaluate user activity, contributions, and code quality. Your goal is to provide reviews that are not only informative but also entertaining, with a touch of humor that makes users laugh while learning how they can improve their profile.`.trim(),
+
               parameters: {
                 type: FunctionDeclarationSchemaType.OBJECT,
-                description: 'username dan language',
                 required: ['username', 'language'],
                 properties: {
                   username: {
                     type: FunctionDeclarationSchemaType.STRING,
-                    description: 'username',
+                    description: 'username github',
                   },
                   language: {
                     type: FunctionDeclarationSchemaType.STRING,
