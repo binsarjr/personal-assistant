@@ -18,8 +18,9 @@ import { ContactUpsertAction } from '@app/whatsapp-action/wa-event/contact-upser
 import { Module } from '@nestjs/common';
 import { ImgToStickerAction } from './random/img-to-sticker.action';
 import { StickerToImgAction } from './random/sticker-to-img.action';
-import { AiChatgptAction } from './ai/ai-gemini.action';
+import { AiGeminiAction } from './ai/ai-gemini.action';
 import { GeminiToolsModule } from '@app/gemini-tools';
+import { AiLearnGeminiAction } from './ai/ai-learn-gemini.action';
 
 @Module({
   providers: [
@@ -53,7 +54,8 @@ import { GeminiToolsModule } from '@app/gemini-tools';
     TurnOnAction,
     TurnOffAction,
 
-    AiChatgptAction,
+    AiGeminiAction,
+    AiLearnGeminiAction,
   ],
   imports: [GeminiToolsModule],
 })
