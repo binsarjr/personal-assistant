@@ -1,7 +1,6 @@
 import {
   Content,
-  FunctionCallingMode,
-  FunctionDeclarationSchemaType,
+  FunctionDeclaration,
   GenerativeModel,
   GoogleGenerativeAI,
   HarmBlockThreshold,
@@ -20,6 +19,7 @@ export class Gemini {
   protected modelName?: GenerativeModelName;
   protected model?: GenerativeModel;
   protected prompts?: Content[] = [];
+  protected __functionCalls: FunctionDeclaration[] = [];
   constructor(private readonly gemini: GoogleGenerativeAI) {}
 
   public static make(apiKey?: string): Gemini {
@@ -29,6 +29,10 @@ export class Gemini {
       apiKey = apiKeys[Math.floor(Math.random() * apiKeys.length)];
     }
     return new Gemini(new GoogleGenerativeAI(apiKey));
+  }
+
+  public addFunctionCall(functionCall: FunctionDeclaration) {
+    this.__functionCalls.push(functionCall);
   }
 
   public setModel(model: GenerativeModelName) {
@@ -54,73 +58,6 @@ export class Gemini {
           threshold: HarmBlockThreshold.BLOCK_NONE,
         },
       ],
-      tools: [
-        {
-          functionDeclarations: [
-            {
-              name: 'getCurrentTime',
-              description: 'ketika saya meminta waktu saat ini',
-            },
-            {
-              name: 'roast_github',
-              description:
-                `As a GitHub Profile Roaster, your job is to analyze users' GitHub profiles and provide honest, incisive, and entertaining feedback. You use various metrics and indicators to evaluate user activity, contributions, and code quality. Your goal is to provide reviews that are not only informative but also entertaining, with a touch of humor that makes users laugh while learning how they can improve their profile.
-
-## Example Input
-- roasting githubnya binsarjr
-- roasting github binsarjr
-- roasting github nya binsarjr
-
-`.trim(),
-
-              parameters: {
-                type: FunctionDeclarationSchemaType.OBJECT,
-                required: ['username', 'language'],
-                properties: {
-                  username: {
-                    type: FunctionDeclarationSchemaType.STRING,
-                    description: 'username github',
-                  },
-                  language: {
-                    type: FunctionDeclarationSchemaType.STRING,
-                    enum: [
-                      'indonesian',
-                      'english',
-                      'france',
-                      'javanese',
-                      'hindi',
-                      'korean',
-                      'sundanese',
-                      'japanese',
-                      'chinese',
-                      'traditional-chinese',
-                      'german',
-                      'arabic',
-                      'vietnamese',
-                      'finnish',
-                      'portuguese',
-                      'polish',
-                      'italian',
-                    ],
-                    description: `
-Language
-default: indonesian
-
-
-`.trim(),
-                  },
-                },
-              },
-            },
-          ],
-        },
-      ],
-      // toolConfig: {
-      //
-      //   // functionCallingConfig: {
-      //   //   allowedFunctionNames: ['get_current_time'],
-      //   // },
-      // },
     });
     return this;
   }
@@ -141,6 +78,11 @@ default: indonesian
     return await this.model.generateContent({
       systemInstruction: this.systemInstruction,
       contents: this.prompts,
+      tools: [
+        {
+          functionDeclarations: this.__functionCalls,
+        },
+      ],
     });
   }
 }

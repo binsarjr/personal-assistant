@@ -47,6 +47,12 @@
       ],
       "@app/whatsapp-action/*": [
         "libs/whatsapp-action/src/*"
+      ],
+      "@app/gemini-tools": [
+        "libs/gemini-tools/src"
+      ],
+      "@app/gemini-tools/*": [
+        "libs/gemini-tools/src/*"
       ]
     }
   }

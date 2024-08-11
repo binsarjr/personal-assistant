@@ -19,6 +19,7 @@ import { Module } from '@nestjs/common';
 import { ImgToStickerAction } from './random/img-to-sticker.action';
 import { StickerToImgAction } from './random/sticker-to-img.action';
 import { AiChatgptAction } from './ai/ai-gemini.action';
+import { GeminiToolsModule } from '@app/gemini-tools';
 
 @Module({
   providers: [
@@ -54,5 +55,6 @@ import { AiChatgptAction } from './ai/ai-gemini.action';
 
     AiChatgptAction,
   ],
+  imports: [GeminiToolsModule],
 })
 export class WhatsappActionModule {}

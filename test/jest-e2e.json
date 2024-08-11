@@ -18,6 +18,8 @@
     "@app/whatsapp/(.*)": "<rootDir>/../libs/whatsapp/src/$1",
     "@app/whatsapp": "<rootDir>/../libs/whatsapp/src",
     "@app/whatsapp-action/(.*)": "<rootDir>/../libs/whatsapp-action/src/$1",
-    "@app/whatsapp-action": "<rootDir>/../libs/whatsapp-action/src"
+    "@app/whatsapp-action": "<rootDir>/../libs/whatsapp-action/src",
+    "@app/gemini-tools/(.*)": "<rootDir>/../libs/gemini-tools/src/$1",
+    "@app/gemini-tools": "<rootDir>/../libs/gemini-tools/src"
   }
 }

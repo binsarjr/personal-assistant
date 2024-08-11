@@ -42,6 +42,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/whatsapp-action/tsconfig.lib.json"
       }
+    },
+    "gemini-tools": {
+      "type": "library",
+      "root": "libs/gemini-tools",
+      "entryFile": "index",
+      "sourceRoot": "libs/gemini-tools/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/gemini-tools/tsconfig.lib.json"
+      }
     }
   }
 }
