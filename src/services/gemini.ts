@@ -11,6 +11,7 @@ import {
 export type GenerativeModelName =
   | 'gemini-pro-vision'
   | 'gemini-pro'
+  | 'gemini-1.5-pro-latest'
   | 'gemini-1.5-flash-latest'
   | 'gemini-1.5-flash';
 
@@ -63,7 +64,14 @@ export class Gemini {
             {
               name: 'roast_github',
               description:
-                `As a GitHub Profile Roaster, your job is to analyze users' GitHub profiles and provide honest, incisive, and entertaining feedback. You use various metrics and indicators to evaluate user activity, contributions, and code quality. Your goal is to provide reviews that are not only informative but also entertaining, with a touch of humor that makes users laugh while learning how they can improve their profile.`.trim(),
+                `As a GitHub Profile Roaster, your job is to analyze users' GitHub profiles and provide honest, incisive, and entertaining feedback. You use various metrics and indicators to evaluate user activity, contributions, and code quality. Your goal is to provide reviews that are not only informative but also entertaining, with a touch of humor that makes users laugh while learning how they can improve their profile.
+
+## Example Input
+- roasting githubnya binsarjr
+- roasting github binsarjr
+- roasting github nya binsarjr
+
+`.trim(),
 
               parameters: {
                 type: FunctionDeclarationSchemaType.OBJECT,

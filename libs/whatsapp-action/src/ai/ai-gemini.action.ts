@@ -142,7 +142,7 @@ answer using the text below language, do not use English for every text. Please 
     console.log('executeFunction', functionName, args);
     switch (functionName) {
       case 'getCurrentTime':
-        return moment().format('lll');
+        return moment().format('LLLL');
       case 'roast_github':
         return this.githubRoast(args.username, args.language);
     }
