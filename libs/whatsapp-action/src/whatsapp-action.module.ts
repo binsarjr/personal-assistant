@@ -21,6 +21,8 @@ import { StickerToImgAction } from './random/sticker-to-img.action';
 import { AiGeminiAction } from './ai/ai-gemini.action';
 import { GeminiToolsModule } from '@app/gemini-tools';
 import { AiLearnGeminiAction } from './ai/ai-learn-gemini.action';
+import { TiktokDownloaderAction } from './downloader/tiktok-downloader.action';
+import { InstagramDownloaderAction } from './downloader/instagram-downloader.action';
 
 @Module({
   providers: [
@@ -46,8 +48,8 @@ import { AiLearnGeminiAction } from './ai/ai-learn-gemini.action';
     DeleteSavedMessage,
 
     // downloader
-    // InstagramDownloaderAction,
-    // TiktokDownloaderAction,
+    InstagramDownloaderAction,
+    TiktokDownloaderAction,
     ContactUpsertAction,
     SendStoryAction,
 

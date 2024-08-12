@@ -30,6 +30,12 @@ disini saya mencontohkan menggunakna `bun`.
 bun install
 ```
 
+Install nest cli
+
+```bash
+npm install -g @nestjs/cli
+```
+
 ### Setup Environment
 
 copy file `.env.example` ke file `.env` dan edit sesuai keinginan.
@@ -72,4 +78,3 @@ lalu jalankan perintah berikut
 ```
 node --env-file=.env dist/main.js
 ```
-
