@@ -121,6 +121,8 @@ export class AiGeminiAction extends WhatsappMessageAction {
 
     if (typeof functionIncomingCall == 'string') text = functionIncomingCall;
 
+    text = text.replace(withSignRegex('ai'), '').trim();
+
     await sendWithTyping(
       socket,
       {
