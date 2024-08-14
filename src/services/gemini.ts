@@ -58,6 +58,11 @@ export class Gemini {
           threshold: HarmBlockThreshold.BLOCK_NONE,
         },
       ],
+      generationConfig: {
+        temperature: 1,
+        topP: 0.95,
+        topK: 64,
+      },
     });
     return this;
   }
