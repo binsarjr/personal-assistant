@@ -29,19 +29,19 @@ export const injectRandomHiddenText = (text: string) => {
   const stego = new UnicodeSteganographer();
   stego.setUseChars(
     [
-      // CHARS['COMBINING GRAPHEME JOINER'],
-      // CHARS['ZERO WIDTH SPACE'],
+      CHARS['COMBINING GRAPHEME JOINER'],
+      CHARS['ZERO WIDTH SPACE'],
       CHARS['ZERO WIDTH NON-JOINER'],
       CHARS['ZERO WIDTH JOINER'],
       CHARS['LEFT-TO-RIGHT MARK'],
-      // CHARS['LINE SEPARATOR'],
-      // CHARS['PARAGRAPH SEPARATOR'],
-      // CHARS['LEFT-TO-RIGHT EMBEDDING'],
+      CHARS['LINE SEPARATOR'],
+      CHARS['PARAGRAPH SEPARATOR'],
+      CHARS['LEFT-TO-RIGHT EMBEDDING'],
       CHARS['POP DIRECTIONAL FORMATTING'],
-      // CHARS['LEFT-TO-RIGHT OVERRIDE'],
+      CHARS['LEFT-TO-RIGHT OVERRIDE'],
       // CHARS['FUNCTION APPLICATION'],
-      // CHARS['INVISIBLE TIMES'],
-      // CHARS['INVISIBLE SEPARATOR'],
+      CHARS['INVISIBLE TIMES'],
+      CHARS['INVISIBLE SEPARATOR'],
       CHARS['ZERO WIDTH NO-BREAK SPACE'],
     ].join(''),
   );
