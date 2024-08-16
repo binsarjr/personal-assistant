@@ -41,6 +41,7 @@ export class Gemini {
 
     this.model = this.gemini.getGenerativeModel({
       model: model,
+      systemInstruction: this.systemInstruction,
       safetySettings: [
         {
           category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
@@ -59,8 +60,17 @@ export class Gemini {
           threshold: HarmBlockThreshold.BLOCK_NONE,
         },
       ],
+      generationConfig: {
+        temperature: 1,
+        topP: 0.95,
+        topK: 64,
+      },
     });
     return this;
+  }
+
+  public getModel() {
+    return this.model;
   }
 
   public async setSystemInstruction(instruction: string) {
