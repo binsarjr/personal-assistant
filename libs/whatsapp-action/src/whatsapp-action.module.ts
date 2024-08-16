@@ -24,7 +24,7 @@ import { AiLearnGeminiAction } from './ai/ai-learn-gemini.action';
 import { TiktokDownloaderAction } from './downloader/tiktok-downloader.action';
 import { InstagramDownloaderAction } from './downloader/instagram-downloader.action';
 import { ExtractPhoneNumber } from './group/extract-phoneNumber.action';
-import { AiGeminiCopywritingAction } from './ai/ai-gemini-copywriting.action';
+import { AiGeminiProofReaderAction } from './ai/ai-gemini-copywriting.action';
 
 @Module({
   providers: [
@@ -62,7 +62,7 @@ import { AiGeminiCopywritingAction } from './ai/ai-gemini-copywriting.action';
 
     AiGeminiAction,
     AiLearnGeminiAction,
-    AiGeminiCopywritingAction,
+    AiGeminiProofReaderAction,
   ],
   imports: [GeminiToolsModule],
 })

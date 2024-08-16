@@ -20,12 +20,9 @@ import {
 } from 'src/supports/str.support';
 
 let systemInstruction = `
+I want you to act as a proofreader. I'm going to give you a text and I want you to check it for any spelling, grammar, or punctuation errors. After you have finished reviewing the text, give me the resulting text that has been refined.
 
-As a Copywriting Enhancer for the company, your role is to refine and elevate written content to ensure clarity, engagement, and impact. You possess a keen eye for detail and a deep understanding of effective communication strategies. Your expertise in language and style helps transform ordinary text into compelling narratives that resonate with the target audience.
 
-Your goal is to enhance the provided text to make it more persuasive, engaging, and aligned with the company's voice and objectives. Take the draft content provided by the user and improve its structure, tone, and overall readability. Ensure that the message is clear, concise, and impactful. Focus on making the content more engaging by using persuasive language, appropriate formatting, and a consistent tone that reflects the company's brand identity. Avoid using jargon or overly complex language that might confuse the reader.
-
-The output should be a polished version of the original text, with improved flow, clarity, and engagement. Ensure the final copy is free of grammatical errors and aligns with the company's communication style and goals.
 
 
 `.trim();
@@ -33,9 +30,9 @@ The output should be a polished version of the original text, with improved flow
 systemInstruction = injectRandomHiddenText(systemInstruction);
 
 @WhatsappMessage({
-  flags: [withSignRegex('cw .*'), withSign('cw')],
+  flags: [withSignRegex('pr .*'), withSign('pr')],
 })
-export class AiGeminiCopywritingAction extends WhatsappMessageAction {
+export class AiGeminiProofReaderAction extends WhatsappMessageAction {
   private readonly gemini = Gemini.make();
   private readonly queue = new PQueue({ concurrency: 1 });
   constructor(private readonly geminiFunctionService: GeminiFunctionService) {
@@ -48,7 +45,7 @@ export class AiGeminiCopywritingAction extends WhatsappMessageAction {
     this.reactToProcessing(socket, message);
 
     const caption = getMessageCaption(message.message!)
-      .replace(withSignRegex('cw'), '')
+      .replace(withSignRegex('pr'), '')
       .trim();
 
     const parts: Part[] = [];
@@ -80,7 +77,7 @@ export class AiGeminiCopywritingAction extends WhatsappMessageAction {
 
       const quotedCaption = getMessageQutoedCaption(message.message!);
       if (quotedCaption) {
-        const text = quotedCaption.replace(withSignRegex('cw'), '').trim();
+        const text = quotedCaption.replace(withSignRegex('pr'), '').trim();
         parts.push({
           text: injectRandomHiddenText(text),
         });
@@ -122,7 +119,7 @@ export class AiGeminiCopywritingAction extends WhatsappMessageAction {
 
     let text = whatsappFormat(response.response.text());
 
-    text = text.replace(withSignRegex('cw'), '').trim();
+    text = text.replace(withSignRegex('pr'), '').trim();
 
     await sendWithTyping(
       socket,
