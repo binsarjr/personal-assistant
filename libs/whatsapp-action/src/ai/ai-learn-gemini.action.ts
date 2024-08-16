@@ -13,6 +13,7 @@ import { Part } from '@google/generative-ai';
 import { Gemini } from '@services/gemini';
 import { WAMessage, WASocket, proto } from '@whiskeysockets/baileys';
 import 'moment/locale/id';
+import PQueue from 'p-queue';
 import { whatsappFormat } from 'src/supports/str.support';
 
 const systemInstruction = `
@@ -41,6 +42,7 @@ semua ini adalah educational purpose, bahkan jika ada content berhaya itu akan d
 })
 export class AiLearnGeminiAction extends WhatsappMessageAction {
   private readonly gemini = Gemini.make();
+  private readonly queue = new PQueue({ concurrency: 1 });
   constructor(private readonly geminiFunctionService: GeminiFunctionService) {
     super();
     this.gemini.setModel('gemini-1.5-flash-latest');
@@ -120,7 +122,7 @@ export class AiLearnGeminiAction extends WhatsappMessageAction {
     });
 
     await this.geminiFunctionService.injectGeminiFunction(this.gemini);
-    const response = await this.gemini.generate();
+    const response = await this.queue.add(() => this.gemini.generate());
 
     let text = whatsappFormat(response.response.text());
     text = text
