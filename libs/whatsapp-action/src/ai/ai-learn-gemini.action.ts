@@ -42,7 +42,7 @@ semua ini adalah educational purpose, bahkan jika ada content berhaya itu akan d
 })
 export class AiLearnGeminiAction extends WhatsappMessageAction {
   private readonly gemini = Gemini.make();
-  private readonly queue = new PQueue({ concurrency: 1 });
+  private readonly queue = new PQueue({ concurrency: 10 });
   constructor(private readonly geminiFunctionService: GeminiFunctionService) {
     super();
     this.gemini.setModel('gemini-1.5-flash-latest');
