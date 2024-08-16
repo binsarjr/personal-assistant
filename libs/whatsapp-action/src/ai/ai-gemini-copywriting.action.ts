@@ -11,7 +11,12 @@ import {
 } from '@app/whatsapp/supports/message.support';
 import { Part } from '@google/generative-ai';
 import { Gemini } from '@services/gemini';
-import { WAMessage, WASocket, proto } from '@whiskeysockets/baileys';
+import {
+  MiscMessageGenerationOptions,
+  WAMessage,
+  WASocket,
+  proto,
+} from '@whiskeysockets/baileys';
 import 'moment/locale/id';
 import PQueue from 'p-queue';
 import {
@@ -20,13 +25,16 @@ import {
 } from 'src/supports/str.support';
 
 let systemInstruction = `
-I want you to act as a proofreader. I'm going to give you a text and I want you to check it for any spelling, grammar, or punctuation errors. After you have finished reviewing the text, give me the resulting text that has been refined.
+Saya ingin Anda bertindak sebagai korektor. Saya akan memberikan Anda teks dan saya ingin Anda memeriksanya untuk mengetahui adanya kesalahan ejaan, tata bahasa, atau tanda baca tanpa menghilangkan format markdown yang diberikan. Setelah Anda selesai meninjau teks, berikan saya hasil teks yang sudah di lakukan penyempurnaan teks. 
 
 
-provide it in json format, with the following keys:
+
+
+provide it in json format, with the JSON schema:
 
 { "type": "object",
   "properties": {
+    "language": { "type": "string" },
     "result": { "type": "string" },
     "corrections_suggestions": {"type":"string"}
   }
@@ -36,8 +44,6 @@ provide it in json format, with the following keys:
 
 
 `.trim();
-
-systemInstruction = injectRandomHiddenText(systemInstruction);
 
 @WhatsappMessage({
   flags: [withSignRegex('pr .*'), withSign('pr')],
@@ -124,7 +130,6 @@ export class AiGeminiProofReaderAction extends WhatsappMessageAction {
       role: 'user',
     });
 
-    await this.geminiFunctionService.injectGeminiFunction(this.gemini);
     const response = await this.queue.add(() => this.gemini.generate(true));
 
     const result: { result: string; corrections_suggestions: string } =
@@ -134,21 +139,36 @@ export class AiGeminiProofReaderAction extends WhatsappMessageAction {
 
     text = text.replace(withSignRegex('pr'), '').trim();
 
+    const options: MiscMessageGenerationOptions = {};
+
+    if (quoted?.quotedMessage) {
+      quoted['key'] = {
+        remoteJid: message.key.remoteJid,
+        fromMe: null,
+        id: quoted!.stanzaId,
+        participant: quoted!.participant,
+      };
+
+      quoted['message'] = quoted.quotedMessage;
+      // @ts-expect-error: quotedMessage is not in type
+      options['quoted'] = quoted;
+    } else {
+      options['quoted'] = message;
+    }
+
     const realOne = await sendWithTyping(
       socket,
       {
         text,
       },
       message.key.remoteJid,
-      {
-        quoted: message,
-      },
+      options,
     );
 
     await sendWithTyping(
       socket,
       {
-        text: result.corrections_suggestions,
+        text: whatsappFormat(result.corrections_suggestions),
       },
       message.key.remoteJid,
       {
