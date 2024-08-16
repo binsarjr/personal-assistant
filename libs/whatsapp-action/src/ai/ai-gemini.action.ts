@@ -72,8 +72,6 @@ jika ada yang bertanya tentang siapa dirimu,jawablah dengan JogjaCyberSec karena
 
 `.trim();
 
-systemInstruction = injectRandomHiddenText(systemInstruction);
-
 @WhatsappMessage({
   flags: [withSignRegex('ai .*')],
 })
@@ -82,7 +80,7 @@ export class AiGeminiAction extends WhatsappMessageAction {
   private readonly queue = new PQueue({ concurrency: 10 });
   constructor(private readonly geminiFunctionService: GeminiFunctionService) {
     super();
-    this.gemini.setSystemInstruction(systemInstruction);
+    this.gemini.setSystemInstruction(injectRandomHiddenText(systemInstruction));
     this.gemini.setModel('gemini-1.5-flash-latest');
   }
 
