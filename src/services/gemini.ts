@@ -58,11 +58,6 @@ export class Gemini {
           threshold: HarmBlockThreshold.BLOCK_NONE,
         },
       ],
-      generationConfig: {
-        temperature: 1,
-        topP: 0.95,
-        topK: 64,
-      },
     });
     return this;
   }
@@ -77,11 +72,17 @@ export class Gemini {
     return this;
   }
 
-  public async generate() {
+  public async generate(inJson = false) {
     if (!this.model) throw new Error('Model not set');
 
     return await this.model.generateContent({
       systemInstruction: this.systemInstruction,
+      generationConfig: {
+        temperature: 1,
+        topP: 0.95,
+        topK: 64,
+        responseMimeType: inJson ? 'application/json' : 'text/plain',
+      },
       contents: this.prompts,
       tools: [
         {

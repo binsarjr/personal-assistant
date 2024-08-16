@@ -23,6 +23,16 @@ let systemInstruction = `
 I want you to act as a proofreader. I'm going to give you a text and I want you to check it for any spelling, grammar, or punctuation errors. After you have finished reviewing the text, give me the resulting text that has been refined.
 
 
+provide it in json format, with the following keys:
+
+{ "type": "object",
+  "properties": {
+    "result": { "type": "string" },
+    "corrections_suggestions": {"type":"string"}
+  }
+}
+
+
 
 
 `.trim();
@@ -115,13 +125,16 @@ export class AiGeminiProofReaderAction extends WhatsappMessageAction {
     });
 
     await this.geminiFunctionService.injectGeminiFunction(this.gemini);
-    const response = await this.queue.add(() => this.gemini.generate());
+    const response = await this.queue.add(() => this.gemini.generate(true));
 
-    let text = whatsappFormat(response.response.text());
+    const result: { result: string; corrections_suggestions: string } =
+      JSON.parse(response.response.text());
+
+    let text = whatsappFormat(result.result);
 
     text = text.replace(withSignRegex('pr'), '').trim();
 
-    await sendWithTyping(
+    const realOne = await sendWithTyping(
       socket,
       {
         text,
@@ -129,6 +142,17 @@ export class AiGeminiProofReaderAction extends WhatsappMessageAction {
       message.key.remoteJid,
       {
         quoted: message,
+      },
+    );
+
+    await sendWithTyping(
+      socket,
+      {
+        text: result.corrections_suggestions,
+      },
+      message.key.remoteJid,
+      {
+        quoted: realOne,
       },
     );
 
