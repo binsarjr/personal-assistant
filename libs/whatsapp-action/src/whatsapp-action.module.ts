@@ -23,6 +23,7 @@ import { GeminiToolsModule } from '@app/gemini-tools';
 import { AiLearnGeminiAction } from './ai/ai-learn-gemini.action';
 import { TiktokDownloaderAction } from './downloader/tiktok-downloader.action';
 import { InstagramDownloaderAction } from './downloader/instagram-downloader.action';
+import { ExtractPhoneNumber } from './group/extract-phoneNumber.action';
 
 @Module({
   providers: [
@@ -40,6 +41,8 @@ import { InstagramDownloaderAction } from './downloader/instagram-downloader.act
     KickMemberAction,
     PromoteMemberAction,
     DemoteMemberAction,
+
+    ExtractPhoneNumber,
 
     AntiViewOnceAction,
     SaveMessageAction,
