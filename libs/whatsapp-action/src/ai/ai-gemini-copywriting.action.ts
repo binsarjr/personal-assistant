@@ -1,7 +1,7 @@
 import { GeminiFunctionService } from '@app/gemini-tools/core/gemini-function.service';
 import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
 import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
-import { withSignRegex } from '@app/whatsapp/supports/flag.support';
+import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support';
 import {
   downloadContentBufferFromMessage,
   getMessageCaption,
@@ -33,7 +33,7 @@ The output should be a polished version of the original text, with improved flow
 systemInstruction = injectRandomHiddenText(systemInstruction);
 
 @WhatsappMessage({
-  flags: [withSignRegex('cw .*')],
+  flags: [withSignRegex('cw .*'), withSign('cw')],
 })
 export class AiGeminiCopywritingAction extends WhatsappMessageAction {
   private readonly gemini = Gemini.make();
