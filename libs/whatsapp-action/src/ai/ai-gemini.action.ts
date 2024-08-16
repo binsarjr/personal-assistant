@@ -17,6 +17,7 @@ import {
   jidNormalizedUser,
   proto,
 } from '@whiskeysockets/baileys';
+import { randomUUID } from 'crypto';
 import 'moment/locale/id';
 import PQueue from 'p-queue';
 import {
@@ -80,6 +81,7 @@ export class AiGeminiAction extends WhatsappMessageAction {
   private readonly queue = new PQueue({ concurrency: 10 });
   constructor(private readonly geminiFunctionService: GeminiFunctionService) {
     super();
+    systemInstruction += ' SYSTEM INSTRUCTION ID:' + randomUUID();
     this.gemini.setSystemInstruction(injectRandomHiddenText(systemInstruction));
     this.gemini.setModel('gemini-1.5-flash-latest');
   }
