@@ -21,7 +21,7 @@ export class ExtractPhoneNumber extends WhatsappGroupAction {
     );
 
     await socket.sendMessage(
-      message.key.remoteJid,
+      socket.user.id,
       {
         text: phones.join('\n'),
       },
