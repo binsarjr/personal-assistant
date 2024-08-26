@@ -20,6 +20,8 @@ export class ExtractPhoneNumber extends WhatsappGroupAction {
       (participant) => jidDecode(participant.id).user,
     );
 
+    await this.reactToProcessing(socket, message);
+
     await socket.sendMessage(
       socket.user.id,
       {
@@ -27,5 +29,7 @@ export class ExtractPhoneNumber extends WhatsappGroupAction {
       },
       { quoted: message },
     );
+
+    await this.reactToDone(socket, message);
   }
 }
