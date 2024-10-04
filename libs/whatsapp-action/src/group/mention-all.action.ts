@@ -1,19 +1,18 @@
 import { PrismaService } from '@app/prisma/prisma.service';
 import { ReadMoreUnicode } from '@app/whatsapp/constants';
+import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
 import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
+import { WhatsappGroupAction } from '@app/whatsapp/interfaces/whatsapp.group.interface';
 import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support';
 import { getJid } from '@app/whatsapp/supports/message.support';
 import { LIMITIED_QUEUE } from '@services/queue';
 import {
   GroupMetadata,
   jidDecode,
-  jidNormalizedUser,
   MiscMessageGenerationOptions,
   WAMessage,
   WASocket,
 } from '@whiskeysockets/baileys';
-import { WhatsappGroupAction } from '@app/whatsapp/interfaces/whatsapp.group.interface';
-import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
 
 @WhatsappMessage({
   flags: [withSign('tagall'), withSignRegex('tagall .*')],
@@ -26,13 +25,6 @@ export class MentionAllAction extends WhatsappGroupAction {
   @IsEligible()
   async canMention(socket: WASocket, message: WAMessage) {
     if (!!message.key.fromMe) return true;
-    const groupStatus = await this.prisma.groupStatus.findFirst({
-      where: {
-        jid: jidNormalizedUser(getJid(message)),
-      },
-    });
-    // TODO: jika tidak ada settingan maka set default sebagai hanya saya
-    if (!groupStatus?.active) return !!message.key.fromMe;
 
     return await this.isAdmin(socket, message);
   }

@@ -2,6 +2,7 @@ import { PrismaService } from '@app/prisma';
 import { ReadMoreUnicode } from '@app/whatsapp/constants';
 import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
 import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
+import { WhatsappGroupAction } from '@app/whatsapp/interfaces/whatsapp.group.interface';
 import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support';
 import { getJid } from '@app/whatsapp/supports/message.support';
 import { LIMITIED_QUEUE } from '@services/queue';
@@ -11,8 +12,7 @@ import type {
   WAMessage,
   WASocket,
 } from '@whiskeysockets/baileys';
-import { jidDecode, jidNormalizedUser } from '@whiskeysockets/baileys';
-import { WhatsappGroupAction } from '@app/whatsapp/interfaces/whatsapp.group.interface';
+import { jidDecode } from '@whiskeysockets/baileys';
 
 @WhatsappMessage({
   flags: [
@@ -29,13 +29,7 @@ export class MentionAdminAction extends WhatsappGroupAction {
 
   @IsEligible()
   async canMention(socket: WASocket, message: WAMessage) {
-    const groupStatus = await this.prisma.groupStatus.findFirst({
-      where: {
-        jid: jidNormalizedUser(getJid(message)),
-      },
-    });
-    // TODO: jika tidak ada settingan maka set default sebagai hanya saya
-    if (!groupStatus?.active) return !!message.key.fromMe;
+    if (message.key.fromMe) return true;
 
     return await this.isAdmin(socket, message);
   }
