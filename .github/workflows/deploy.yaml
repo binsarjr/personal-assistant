@@ -27,7 +27,7 @@ jobs:
           script: |
             cd ${{ secrets.SERVER_CWD }}
             git pull origin main
-            /root/.local/share/pnpm/pnpm i --frozen-lockfil
-            /root/.local/share/pnpm/pnpx prisma db push
-            /root/.local/share/pnpm/pnpm run build
+            /root/.nvm/versions/node/v21.7.1/bin/pnpm i --frozen-lockfil
+            /root/.nvm/versions/node/v21.7.1/bin/pnpx prisma db push
+            /root/.nvm/versions/node/v21.7.1/bin/pnpm run build
             supervisorctl restart personal-whatsapp-bot
