@@ -1,14 +1,14 @@
-import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
-import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
-import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support';
+import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator'
+import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface'
+import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support'
 import {
   downloadContentBufferFromMessage,
   getJid,
   getMessageCaption,
-} from '@app/whatsapp/supports/message.support';
-import type { WAMessage } from '@whiskeysockets/baileys';
-import { Sticker, StickerTypes } from 'wa-sticker-formatter';
-import telegraph from '../../../../src/services/telegraph';
+} from '@app/whatsapp/supports/message.support'
+import telegraph from '@src/services/telegraph'
+import type { WAMessage } from '@whiskeysockets/baileys'
+import { Sticker, StickerTypes } from 'wa-sticker-formatter'
 
 @WhatsappMessage({
   flags: [withSign('s'), withSignRegex('stic?ker')],

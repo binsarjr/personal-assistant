@@ -1,13 +1,13 @@
-import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
+import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface'
+import { getJid } from '@app/whatsapp/supports/message.support'
+import { IsGroup } from '@app/whatsapp/traits/IsGroup.trait'
+import { LIMITIED_QUEUE } from '@services/queue'
+import { TraitEligible } from '@src/decorators/trait.decorator'
 import {
   jidNormalizedUser,
   WAMessage,
   WASocket,
-} from '@whiskeysockets/baileys';
-import { getJid } from '@app/whatsapp/supports/message.support';
-import { LIMITIED_QUEUE } from '@services/queue';
-import { IsGroup } from '@app/whatsapp/traits/IsGroup.trait';
-import { TraitEligible } from '../../../../src/decorators/trait.decorator';
+} from '@whiskeysockets/baileys'
 
 @TraitEligible(IsGroup)
 export abstract class WhatsappGroupAction extends WhatsappMessageAction {
