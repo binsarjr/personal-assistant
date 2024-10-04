@@ -27,7 +27,7 @@ jobs:
           script: |
             cd ${{ secrets.SERVER_CWD }}
             git pull origin main
-            /root/.bun/bin/bun i --no-save
-            /root/.bun/bin/bunx prisma db push
-            /root/.bun/bin/bun run build
+            /root/.local/share/pnpm/pnpm i --frozen-lockfil
+            /root/.local/share/pnpm/pnpx prisma db push
+            /root/.local/share/pnpm/pnpm run build
             supervisorctl restart personal-whatsapp-bot
