@@ -1,3 +1,4 @@
+import { GeminiToolsModule } from '@app/gemini-tools';
 import { AntiDeletedMessageAction } from '@app/whatsapp-action/always-executed/anti-deleted-message.action';
 import { AntiViewOnceAction } from '@app/whatsapp-action/always-executed/anti-view-once.action';
 import { DeleteSavedMessage } from '@app/whatsapp-action/always-executed/delete-saved-message.action';
@@ -16,15 +17,12 @@ import { SendStoryAction } from '@app/whatsapp-action/random/send-story.action';
 import { ScanQrCodeAction } from '@app/whatsapp-action/scan-qr-code.action';
 import { ContactUpsertAction } from '@app/whatsapp-action/wa-event/contact-upsert.action';
 import { Module } from '@nestjs/common';
+import { AiGeminiProofReaderAction } from './ai/ai-gemini-copywriting.action';
+import { AiGeminiAction } from './ai/ai-gemini.action';
+import { AiLearnGeminiAction } from './ai/ai-learn-gemini.action';
+import { ExtractPhoneNumber } from './group/extract-phoneNumber.action';
 import { ImgToStickerAction } from './random/img-to-sticker.action';
 import { StickerToImgAction } from './random/sticker-to-img.action';
-import { AiGeminiAction } from './ai/ai-gemini.action';
-import { GeminiToolsModule } from '@app/gemini-tools';
-import { AiLearnGeminiAction } from './ai/ai-learn-gemini.action';
-import { TiktokDownloaderAction } from './downloader/tiktok-downloader.action';
-import { InstagramDownloaderAction } from './downloader/instagram-downloader.action';
-import { ExtractPhoneNumber } from './group/extract-phoneNumber.action';
-import { AiGeminiProofReaderAction } from './ai/ai-gemini-copywriting.action';
 
 @Module({
   providers: [
@@ -52,8 +50,8 @@ import { AiGeminiProofReaderAction } from './ai/ai-gemini-copywriting.action';
     DeleteSavedMessage,
 
     // downloader
-    InstagramDownloaderAction,
-    TiktokDownloaderAction,
+    // InstagramDownloaderAction,
+    // TiktokDownloaderAction,
     ContactUpsertAction,
     SendStoryAction,
 
