@@ -4,6 +4,7 @@ on:
     paths:
       - 'libs/**'
       - 'src/**'
+      - '.github/workflows/deploy.yml'
     branches:
       - main
 jobs:
