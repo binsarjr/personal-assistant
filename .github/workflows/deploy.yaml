@@ -30,8 +30,7 @@ jobs:
           script: |
             cd ${{ secrets.SERVER_CWD }}
             git pull origin main
-            /root/.nvm/versions/node/v21.7.1/bin/pnpm i --force
-            /root/.nvm/versions/node/v21.7.1/bin/pnpx prisma db push
-            /root/.nvm/versions/node/v21.7.1/bin/pnpm run build
+            /root/.bun/bin/bun i --no-save --frozen-lockfile
+            /root/.bun/bin/bunx prisma db push
+            /root/.bun/bin/bun run build
             supervisorctl restart personal-whatsapp-bot
-            git checkout -- pnpm-lock.yaml
