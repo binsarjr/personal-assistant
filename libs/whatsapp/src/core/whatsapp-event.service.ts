@@ -32,10 +32,14 @@ export class WhatsappEventService {
         handlers[eventName].map((handler: DiscoveredMethodWithMeta<any>) => {
           const classInstance = handler.discoveredMethod.parentClass.instance;
 
-          handler.discoveredMethod.handler.apply(classInstance, [
-            socket,
-            ...args,
-          ]);
+          try {
+            handler.discoveredMethod.handler.apply(classInstance, [
+              socket,
+              ...args,
+            ]);
+          } catch (error) {
+            console.error(error);
+          }
         });
       });
     }
