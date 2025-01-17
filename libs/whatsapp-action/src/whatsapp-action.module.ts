@@ -16,6 +16,7 @@ import { TurnOnAction } from '@app/whatsapp-action/group/turn-on.action';
 import { PingAction } from '@app/whatsapp-action/random/ping.action';
 import { SendStoryAction } from '@app/whatsapp-action/random/send-story.action';
 import { ScanQrCodeAction } from '@app/whatsapp-action/scan-qr-code.action';
+import { DexScreenerAction } from '@app/whatsapp-action/trades/dexscreener.action';
 import { ContactUpsertAction } from '@app/whatsapp-action/wa-event/contact-upsert.action';
 import { Module } from '@nestjs/common';
 import { AiGeminiProofReaderAction } from './ai/ai-gemini-copywriting.action';
@@ -62,6 +63,7 @@ import { StickerToImgAction } from './random/sticker-to-img.action';
     AiGeminiAction,
     AiLearnGeminiAction,
     AiGeminiProofReaderAction,
+    DexScreenerAction,
   ],
   imports: [GeminiToolsModule],
 })

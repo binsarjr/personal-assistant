@@ -83,7 +83,6 @@ export class AiGeminiAction extends WhatsappMessageAction {
     super();
     systemInstruction += ' SYSTEM INSTRUCTION ID:' + randomUUID();
     this.gemini.setSystemInstruction(injectRandomHiddenText(systemInstruction));
-    this.gemini.setModel('gemini-1.5-flash-latest');
   }
 
   async execute(socket: WASocket, message: WAMessage) {

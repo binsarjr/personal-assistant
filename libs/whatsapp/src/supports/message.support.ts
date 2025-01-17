@@ -54,6 +54,11 @@ export const getContextInfo = (
     null
   );
 };
+export const withoutFlag = (text: string) => {
+  const commandSign = process.env.COMMAND_SIGN || '';
+  const regex = new RegExp(`^\\s*\\${commandSign}(.*?)\\s*$`);
+  return text.replace(regex, '$1');
+};
 
 export const getMessageCaption = (message: proto.IMessage) => {
   if (!message) return '';

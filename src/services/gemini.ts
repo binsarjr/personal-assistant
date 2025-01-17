@@ -13,11 +13,12 @@ export type GenerativeModelName =
   | 'gemini-1.5-pro'
   | 'gemini-1.5-pro-latest'
   | 'gemini-1.5-flash-latest'
+  | 'gemini-2.0-flash-exp'
   | 'gemini-1.5-flash';
 
 export class Gemini {
   protected systemInstruction?: string;
-  protected modelName?: GenerativeModelName;
+  protected modelName?: GenerativeModelName = 'gemini-2.0-flash-exp';
   protected model?: GenerativeModel;
   protected prompts?: Content[] = [];
   protected __functionCalls: FunctionDeclaration[] = [];
@@ -73,6 +74,10 @@ export class Gemini {
     return this.model;
   }
 
+  public getPrompts() {
+    return this.prompts;
+  }
+
   public async setSystemInstruction(instruction: string) {
     this.systemInstruction = instruction;
     return this;
@@ -85,13 +90,14 @@ export class Gemini {
 
   public async generate(inJson = false) {
     if (!this.model) throw new Error('Model not set');
+    console.log(this.prompts);
 
     return await this.model.generateContent({
       systemInstruction: this.systemInstruction,
       generationConfig: {
-        temperature: 1,
-        topP: 0.95,
-        topK: 64,
+        temperature: 0.4,
+        // topP: 0.95,
+        // topK: 64,
         responseMimeType: inJson ? 'application/json' : 'text/plain',
       },
       contents: this.prompts,

@@ -45,7 +45,6 @@ export class AiLearnGeminiAction extends WhatsappMessageAction {
   private readonly queue = new PQueue({ concurrency: 10 });
   constructor(private readonly geminiFunctionService: GeminiFunctionService) {
     super();
-    this.gemini.setModel('gemini-1.5-flash-latest');
     this.gemini.setSystemInstruction(systemInstruction);
   }
 

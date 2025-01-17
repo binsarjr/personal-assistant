@@ -24,7 +24,7 @@ import {
   whatsappFormat,
 } from 'src/supports/str.support';
 
-let systemInstruction = `
+const systemInstruction = `
 Saya ingin Anda bertindak sebagai korektor. Saya akan memberikan Anda teks dan saya ingin Anda memeriksanya untuk mengetahui adanya kesalahan ejaan, tata bahasa, atau tanda baca tanpa menghilangkan format markdown yang diberikan. Setelah Anda selesai meninjau teks, berikan saya hasil teks yang sudah di lakukan penyempurnaan teks. 
 
 
@@ -53,7 +53,6 @@ export class AiGeminiProofReaderAction extends WhatsappMessageAction {
   private readonly queue = new PQueue({ concurrency: 10 });
   constructor(private readonly geminiFunctionService: GeminiFunctionService) {
     super();
-    this.gemini.setModel('gemini-1.5-flash-latest');
     this.gemini.setSystemInstruction(systemInstruction);
   }
 
