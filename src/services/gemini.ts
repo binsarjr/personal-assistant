@@ -89,7 +89,9 @@ export class Gemini {
   }
 
   public async generate(inJson = false) {
-    if (!this.model) throw new Error('Model not set');
+    if (!this.model) {
+      this.setModel('gemini-2.0-flash-exp');
+    }
     console.log(this.prompts);
 
     return await this.model.generateContent({
