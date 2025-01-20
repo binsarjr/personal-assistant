@@ -184,13 +184,13 @@ export class AntiDeletedMessageAction extends WhatsappMessageAction {
           fileName: message.message.documentMessage.fileName,
           caption: message.message.documentMessage?.caption || undefined,
         });
-      case 'stickerMessage':
-        return await socket.sendMessage(socket.user.id, {
-          sticker: await downloadContentBufferFromMessage(
-            message.message.stickerMessage,
-            'sticker',
-          ),
-        });
+      // case 'stickerMessage':
+      //   return await socket.sendMessage(socket.user.id, {
+      //     sticker: await downloadContentBufferFromMessage(
+      //       message.message.stickerMessage,
+      //       'sticker',
+      //     ),
+      //   });
     }
   }
 }

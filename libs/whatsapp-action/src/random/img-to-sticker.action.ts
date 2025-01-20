@@ -1,19 +1,31 @@
-import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator'
-import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface'
-import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support'
+import { IsEligible } from '@app/whatsapp/decorators/is-eligible.decorator';
+import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
+import { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
+import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support';
 import {
   downloadContentBufferFromMessage,
   getJid,
   getMessageCaption,
-} from '@app/whatsapp/supports/message.support'
-import telegraph from '@src/services/telegraph'
-import type { WAMessage } from '@whiskeysockets/baileys'
-import { Sticker, StickerTypes } from 'wa-sticker-formatter'
+} from '@app/whatsapp/supports/message.support';
+import telegraph from '@src/services/telegraph';
+import {
+  jidNormalizedUser,
+  type WAMessage,
+  type WASocket,
+} from '@whiskeysockets/baileys';
+import { Sticker, StickerTypes } from 'wa-sticker-formatter';
 
 @WhatsappMessage({
   flags: [withSign('s'), withSignRegex('stic?ker')],
 })
 export class ImgToStickerAction extends WhatsappMessageAction {
+  @IsEligible()
+  async notInMyChat(socket: WASocket, message: WAMessage) {
+    return (
+      jidNormalizedUser(socket.user.id) !==
+      jidNormalizedUser(message.key.remoteJid)
+    );
+  }
   async execute(socket: any, message: any) {
     this.reactToProcessing(socket, message);
 
