@@ -1,6 +1,6 @@
-import { Injectable, type OnModuleInit } from '@nestjs/common'
-import { Prisma, PrismaClient } from '@prisma/client'
-import { Logger } from '@src/services/logger'
+import { Injectable, type OnModuleInit } from '@nestjs/common';
+import { Prisma, PrismaClient } from '@prisma/client';
+import { Logger } from '@src/services/logger';
 
 type PrismaOption = PrismaClient<Prisma.PrismaClientOptions, never>;
 

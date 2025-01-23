@@ -1,17 +1,17 @@
-import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator'
-import { WhatsappGroupAction } from '@app/whatsapp/interfaces/whatsapp.group.interface'
-import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support'
+import { WhatsappMessage } from '@app/whatsapp/decorators/whatsapp-message.decorator';
+import { WhatsappGroupAction } from '@app/whatsapp/interfaces/whatsapp.group.interface';
+import { withSign, withSignRegex } from '@app/whatsapp/supports/flag.support';
 import {
   getContextInfo,
   getJid,
   getMessageCaption,
   getMessageQutoedCaption,
-} from '@app/whatsapp/supports/message.support'
-import { FromMe } from '@app/whatsapp/traits/FromMe.trait'
-import { TraitEligible } from '@src/decorators/trait.decorator'
-import type { WAMessage, WASocket } from '@whiskeysockets/baileys'
-import { jidEncode, jidNormalizedUser } from '@whiskeysockets/baileys'
-import { findPhoneNumbersInText } from 'libphonenumber-js'
+} from '@app/whatsapp/supports/message.support';
+import { FromMe } from '@app/whatsapp/traits/FromMe.trait';
+import { TraitEligible } from '@src/decorators/trait.decorator';
+import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
+import { jidEncode, jidNormalizedUser } from '@whiskeysockets/baileys';
+import { findPhoneNumbersInText } from 'libphonenumber-js';
 
 @TraitEligible(FromMe)
 @WhatsappMessage({

@@ -19,7 +19,7 @@ export class WhatsappAuthService {
         creds: creds,
         keys: {
           get: async (type: any, ids: any) => {
-            // @ts-ignore
+            // @ts-expect-error: type is not in type
             const data: { [_: string]: SignalDataTypeMap[typeof type] } = {};
             await Promise.all(
               ids.map(async (id: string) => {

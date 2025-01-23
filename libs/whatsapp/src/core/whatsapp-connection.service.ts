@@ -35,7 +35,7 @@ export class WhatsappConnectionService {
   async connectToWhatsapp(deviceId: string) {
     const logger = Logger({ name: 'WhatsappConnectionService-' + deviceId });
     const { saveCreds, state } = await this.authService.execute(deviceId);
-    const { version, isLatest } = await fetchLatestBaileysVersion();
+    const { version } = await fetchLatestBaileysVersion();
 
     const socket = makeWASocket({
       version,
@@ -44,7 +44,7 @@ export class WhatsappConnectionService {
         keys: state.keys,
       },
       browser: ['PersonalAsistant', 'Chrome', '0.0.0'],
-      // @ts-ignore
+      // @ts-expect-error: no error
       logger: logger,
       generateHighQualityLinkPreview: true,
       printQRInTerminal: true,

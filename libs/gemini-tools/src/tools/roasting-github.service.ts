@@ -1,7 +1,6 @@
 import {
   FunctionDeclaration,
   FunctionDeclarationSchemaType,
-  Tool,
 } from '@google/generative-ai';
 import { GeminiFunction } from '../decorators/gemini-function.decorator';
 

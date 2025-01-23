@@ -37,7 +37,7 @@ export class InstagramDownloaderAction extends WhatsappMessageAction {
       urls.map(async (url) => {
         const { success, data } = await this.download(url.toString());
         if (success) {
-          for (const { thumb, url, is_video } of data) {
+          for (const { url, is_video } of data) {
             if (is_video) {
               await socket.sendMessage(
                 jid,

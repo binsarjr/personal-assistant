@@ -73,7 +73,7 @@ ${textDisk.join('\n\n')}
   getPing(messageTimestamp: number) {
     const rtf = new Intl.RelativeTimeFormat('id-ID', { numeric: 'auto' });
 
-    let timestamp = messageTimestamp.toString().padEnd(13, '0');
+    const timestamp = messageTimestamp.toString().padEnd(13, '0');
     const ping = Date.now() - (+timestamp || Date.now());
     return `Pong! ${rtf.format(+ping / 1_000, 'seconds')}${ReadMoreUnicode}`;
   }

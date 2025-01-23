@@ -23,8 +23,6 @@ export class ConvertToHDAction extends WhatsappMessageAction {
     let directPath: string | null | undefined;
     let url: string | null | undefined;
 
-    let photoBuffer: Buffer;
-
     if (
       message?.extendedTextMessage?.contextInfo?.quotedMessage?.imageMessage
     ) {
@@ -46,7 +44,7 @@ export class ConvertToHDAction extends WhatsappMessageAction {
       return;
     }
 
-    photoBuffer = await downloadContentBufferFromMessage(
+    const photoBuffer: Buffer = await downloadContentBufferFromMessage(
       { directPath, mediaKey, url },
       'image',
     );
