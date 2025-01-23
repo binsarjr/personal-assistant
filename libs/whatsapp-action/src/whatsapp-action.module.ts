@@ -1,6 +1,7 @@
 import { GeminiToolsModule } from '@app/gemini-tools';
 import { AntiDeletedMessageAction } from '@app/whatsapp-action/always-executed/anti-deleted-message.action';
 import { AntiViewOnceAction } from '@app/whatsapp-action/always-executed/anti-view-once.action';
+import { AutoRevealViewOnceWhenQuotedAction } from '@app/whatsapp-action/always-executed/auto-reveal-viewonce-when-quoted.action';
 import { DeleteSavedMessage } from '@app/whatsapp-action/always-executed/delete-saved-message.action';
 import { SaveMessageAction } from '@app/whatsapp-action/always-executed/save-message.action';
 import { TiktokDownloaderAction } from '@app/whatsapp-action/downloader/tiktok-downloader.action';
@@ -17,6 +18,7 @@ import { PingAction } from '@app/whatsapp-action/random/ping.action';
 import { SendStoryAction } from '@app/whatsapp-action/random/send-story.action';
 import { ScanQrCodeAction } from '@app/whatsapp-action/scan-qr-code.action';
 import { DexScreenerAction } from '@app/whatsapp-action/trades/dexscreener.action';
+import { ViewAction } from '@app/whatsapp-action/view.action';
 import { ContactUpsertAction } from '@app/whatsapp-action/wa-event/contact-upsert.action';
 import { Module } from '@nestjs/common';
 import { AiGeminiProofReaderAction } from './ai/ai-gemini-copywriting.action';
@@ -46,6 +48,8 @@ import { StickerToImgAction } from './random/sticker-to-img.action';
     ExtractPhoneNumber,
 
     AntiViewOnceAction,
+    ViewAction,
+    AutoRevealViewOnceWhenQuotedAction,
     SaveMessageAction,
     AntiDeletedMessageAction,
 
