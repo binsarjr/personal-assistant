@@ -3,18 +3,25 @@ import {
   WhatsappMessageActionMetadataKey,
 } from '@app/whatsapp/constants';
 import type { WhatsappMessageActionOptions } from '@app/whatsapp/decorators/whatsapp-message.decorator';
-import type { WhatsappMessageAction } from '@app/whatsapp/interfaces/whatsapp.interface';
-import { patternsAndTextIsMatch } from '@app/whatsapp/supports/flag.support';
-import { getMessageCaption } from '@app/whatsapp/supports/message.support';
 import {
-  type DiscoveredClassWithMeta,
+  Emoji,
+  type WhatsappMessageAction,
+} from '@app/whatsapp/interfaces/whatsapp.interface';
+import { patternsAndTextIsMatch } from '@app/whatsapp/supports/flag.support';
+import {
+  getMessageCaption,
+  react,
+} from '@app/whatsapp/supports/message.support';
+import {
   DiscoveryService,
+  type DiscoveredClassWithMeta,
 } from '@golevelup/nestjs-discovery';
 import { Injectable } from '@nestjs/common';
-import type {
-  BaileysEventMap,
-  WAMessage,
-  WASocket,
+import {
+  jidNormalizedUser,
+  type BaileysEventMap,
+  type WAMessage,
+  type WASocket,
 } from '@whiskeysockets/baileys';
 
 @Injectable()
@@ -51,7 +58,18 @@ export class WhatsappMessageService {
 
         if (!isEligible) continue;
 
-        instance.execute(socket, message);
+        try {
+          await instance.execute(socket, message);
+        } catch (error) {
+          await react(socket, Emoji.Failed, message);
+          await socket.sendMessage(
+            jidNormalizedUser(socket.user.id),
+            {
+              text: error.toString(),
+            },
+            { quoted: message },
+          );
+        }
       }
     }
   }

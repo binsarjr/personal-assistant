@@ -1,7 +1,7 @@
 import type { WAMessage, WASocket } from '@whiskeysockets/baileys';
 import { react } from '../supports/message.support';
 
-enum Emoji {
+export enum Emoji {
   Processing = '⏳',
   Done = '✅',
   Failed = '❌',
