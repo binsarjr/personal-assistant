@@ -22,12 +22,12 @@ membuat fitur yang sama seperti fitur whatsapp biasa, tetapi dengan fitur yang l
 
 boleh menggunakna `npm`, `yarn`, atau `pnpm`.
 
-disini saya mencontohkan menggunakna `pnpm`.
+disini saya mencontohkan menggunakna `bun`.
 
 ### Install dependencies:
 
 ```bash
-pnpm install
+bun install
 ```
 
 Install nest cli
@@ -49,17 +49,17 @@ Sesuaikan environtment dengan konfigurasi yang anda diinginkan.
 ### Setup database
 
 ```
-pnpx prisma db push
+bunx prisma db push
 ```
 
 ### Menjalankan aplikasi
 
 ```bash
 # development
-pnpm run start
+bun run start
 
 # watch mode
-pnpm run start:dev
+bun run start:dev
 ```
 
 ### Build & Deploy
@@ -67,7 +67,7 @@ pnpm run start:dev
 Lakukan build terlebih dahulu
 
 ```
-pnpm run build
+bun run build
 ```
 
 setelah di build, akan ada folder `dist` yang berisi aplikasi yang dibuat. Lalu copy file `dist` ke server yang ingin di
