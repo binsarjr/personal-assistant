@@ -48,6 +48,7 @@ export class WhatsappConnectionService {
       logger: logger,
       generateHighQualityLinkPreview: true,
       printQRInTerminal: true,
+      markOnlineOnConnect: false,
     });
 
     this.store.set(deviceId, {
