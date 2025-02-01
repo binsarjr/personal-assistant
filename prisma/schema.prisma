@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../.hiddens/personal-asistant.db"
+}
+
+// apabila nanti perlu multiple device. tapi saat ini baru support satu saja dulu
+model Device {
+  id                String             @id @default(cuid())
+  name              String             @unique
+  AuthSessionStores AuthSessionStore[]
+}
+
+model AuthSessionStore {
+  id       String  @id @default(cuid())
+  type     String
+  data     String
+  device   Device? @relation(fields: [deviceId], references: [id])
+  deviceId String
+
+  @@unique([deviceId, type], map: "unique_type_per_device_id")
+}
+
+model WhatsappMessage {
+  jid            String
+  messageId      String
+  messageTimeUtc DateTime
+  meta           String   @default("{}")
+
+  @@id([jid, messageId])
+}
+
+model WhatsappContact {
+  id   String @id
+  name String
+}
+
+model GroupStatus {
+  jid    String  @id
+  active Boolean @default(false)
+}

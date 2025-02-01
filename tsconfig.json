@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    // Enable latest features
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "paths": {
+      "$lib/*": [
+        "./lib/*"
+      ],
+      "$services/*": [
+        "./services/*"
+      ],
+      "$core/*": [
+        "./src/core/*"
+      ],
+      "$modules/*": [
+        "./src/modules/*"
+      ],
+      "$support/*": [
+        "./src/infrastructure/supports/*"
+      ],
+      "$infrastructure/*": [
+        "./src/infrastructure/*"
+      ],
+    },
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    // Bundler mode
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+    // Best practices
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    // Some stricter flags (disabled by default)
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  }
+}
