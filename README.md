@@ -1,4 +1,4 @@
-# Personal Assistant
+# Personal Assistant (v3)
 
 ini adalah project personal assistant yang dibuat dengan typescript dan nestjs. Personal asistant ini dibuat untuk
 memudahkan penggunaan whatsapp dengan menggunakan fitur whatsapp action. Fitur whatsapp action ini dapat digunakan untuk
