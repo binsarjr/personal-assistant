@@ -3,6 +3,8 @@ import './core/di/bootstrap';
 import { prisma } from '$infrastructure/database/db';
 import { logger } from '$infrastructure/logger/console.logger';
 import { WhatsappClient } from '$infrastructure/whatsapp/whatsapp-client';
+import { hidden_path } from '$support/file.support';
+import { makeInMemoryStore } from '@whiskeysockets/baileys';
 import { $ } from 'bun';
 
 await $`'clear`;
@@ -24,7 +26,21 @@ const device = await prisma.device.upsert({
   update: {},
 });
 
-const whatsapp = new WhatsappClient(device.id, 'qrcode');
+const useStore = !process.argv.includes('--store');
+
+logger.info(`Using store: ${useStore}`);
+
+const store = useStore ? makeInMemoryStore({ logger }) : undefined;
+if (store) {
+  const pathlocation = hidden_path(`baileys_store_multi-${device.id}.json`);
+  store?.readFromFile(pathlocation);
+  // save every 10s
+  setInterval(() => {
+    store?.writeToFile(pathlocation);
+  }, 10_000);
+}
+
+const whatsapp = new WhatsappClient(device.id, 'qrcode', store);
 
 await whatsapp.initialize();
 

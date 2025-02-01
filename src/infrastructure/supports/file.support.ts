@@ -6,7 +6,7 @@ export const base_path = (...filepaths: string[]) => {
   return path.join(baseDir, ...filepaths);
 };
 
-export const bunshint_path = (...filepaths: string[]) => {
+export const hidden_path = (...filepaths: string[]) => {
   if (existsSync(base_path('.hiddens')) === false) {
     mkdirSync(base_path('.hiddens'));
   }

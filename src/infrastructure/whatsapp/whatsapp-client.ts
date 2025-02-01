@@ -11,7 +11,10 @@ import makeWASocket, {
   delay,
   DisconnectReason,
   makeCacheableSignalKeyStore,
+  proto,
+  type makeInMemoryStore,
   type WAMessage,
+  type WAMessageKey,
 } from '@whiskeysockets/baileys';
 import NodeCache from 'node-cache';
 import 'reflect-metadata';
@@ -28,6 +31,9 @@ export class WhatsappClient {
   constructor(
     private readonly deviceId: string,
     private readonly connectUsing: 'qrcode' | 'pairing' = 'qrcode',
+    private readonly useStore:
+      | ReturnType<typeof makeInMemoryStore>
+      | undefined = undefined,
   ) {}
 
   async initialize() {
@@ -45,9 +51,20 @@ export class WhatsappClient {
       syncFullHistory: false,
       msgRetryCounterCache: this.msgRetryCounterCache,
       markOnlineOnConnect: false,
+
       cachedGroupMetadata: async (jid) => this.groupCache.get(jid),
+      getMessage: async (key: WAMessageKey) => {
+        if (this.useStore) {
+          const msg = await this.useStore.loadMessage(key.remoteJid!, key.id!);
+          return msg?.message || undefined;
+        }
+
+        // only if store is present
+        return proto.Message.fromObject({});
+      },
     }) as SocketClient;
 
+    this.useStore?.bind(this.client.ev);
     this.setupEventHandlers();
     this.setupCredsSaver(saveCreds);
   }
