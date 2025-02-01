@@ -26,7 +26,7 @@ const device = await prisma.device.upsert({
   update: {},
 });
 
-const useStore = !process.argv.includes('--store');
+const useStore = process.argv.includes('--store');
 
 logger.info(`Using store: ${useStore}`);
 
