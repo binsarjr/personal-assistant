@@ -104,7 +104,7 @@ export class WhatsappClient {
 
   private async processMessage(message: WAMessage) {
     logger.trace('Processing message');
-    this.injectMessageFunction(message);
+    // this.injectMessageFunction(message);
 
     const caption = getMessageCaption(message.message!);
 
@@ -148,59 +148,59 @@ export class WhatsappClient {
     return true;
   }
 
-  private async injectMessageFunction(message: WAMessage) {
-    this.client.reply = async (content, options) => {
-      if (!message) return;
-      const jid = message.key.remoteJid!;
-      await this.client.presenceSubscribe(jid);
-      await delay(500);
+  // private async injectMessageFunction(message: WAMessage) {
+  //   this.client.reply = async (content, options) => {
+  //     if (!message) return;
+  //     const jid = message.key.remoteJid!;
+  //     await this.client.presenceSubscribe(jid);
+  //     await delay(500);
 
-      await this.client.sendPresenceUpdate('composing', jid);
-      await delay(2000);
+  //     await this.client.sendPresenceUpdate('composing', jid);
+  //     await delay(2000);
 
-      const msg = await this.client.sendMessage(jid, content, options);
+  //     const msg = await this.client.sendMessage(jid, content, options);
 
-      await this.client.sendPresenceUpdate('paused', jid);
+  //     await this.client.sendPresenceUpdate('paused', jid);
 
-      return msg;
-    };
+  //     return msg;
+  //   };
 
-    this.client.replyQuote = async (content, options) => {
-      if (!message) return;
-      const jid = message.key.remoteJid!;
-      await this.client.presenceSubscribe(jid);
-      await delay(500);
+  //   this.client.replyQuote = async (content, options) => {
+  //     if (!message) return;
+  //     const jid = message.key.remoteJid!;
+  //     await this.client.presenceSubscribe(jid);
+  //     await delay(500);
 
-      await this.client.sendPresenceUpdate('composing', jid);
-      await delay(2000);
+  //     await this.client.sendPresenceUpdate('composing', jid);
+  //     await delay(2000);
 
-      const msg = await this.client.sendMessage(jid, content, {
-        ...options,
-        quoted: message,
-      });
+  //     const msg = await this.client.sendMessage(jid, content, {
+  //       ...options,
+  //       quoted: message,
+  //     });
 
-      await this.client.sendPresenceUpdate('paused', jid);
-      return msg;
-    };
-    this.client.replyQuoteInPrivate = async (content, options) => {
-      if (!message) return;
-      const jid = message.key.participant || message.key.remoteJid!;
-      await this.client.presenceSubscribe(jid);
-      await delay(500);
+  //     await this.client.sendPresenceUpdate('paused', jid);
+  //     return msg;
+  //   };
+  //   this.client.replyQuoteInPrivate = async (content, options) => {
+  //     if (!message) return;
+  //     const jid = message.key.participant || message.key.remoteJid!;
+  //     await this.client.presenceSubscribe(jid);
+  //     await delay(500);
 
-      await this.client.sendPresenceUpdate('composing', jid);
-      await delay(2000);
+  //     await this.client.sendPresenceUpdate('composing', jid);
+  //     await delay(2000);
 
-      const msg = await this.client.sendMessage(jid, content, {
-        ...options,
-        quoted: message,
-      });
+  //     const msg = await this.client.sendMessage(jid, content, {
+  //       ...options,
+  //       quoted: message,
+  //     });
 
-      await this.client.sendPresenceUpdate('paused', jid);
+  //     await this.client.sendPresenceUpdate('paused', jid);
 
-      return msg;
-    };
-  }
+  //     return msg;
+  //   };
+  // }
 
   private resolveHandlerParameters(
     handler: HandlerCommandEntry,
@@ -225,21 +225,62 @@ export class WhatsappClient {
         };
 
         const reply: SocketClient['reply'] = async (content, options) => {
-          return await this.client.sendMessage(
-            ctx.key.remoteJid!,
-            content,
-            options,
-          );
+          if (!ctx) return;
+          const jid = ctx.key.remoteJid!;
+          await this.client.presenceSubscribe(jid);
+          await delay(500);
+
+          await this.client.sendPresenceUpdate('composing', jid);
+          await delay(2000);
+
+          const msg = await this.client.sendMessage(jid, content, options);
+
+          await this.client.sendPresenceUpdate('paused', jid);
+
+          return msg;
         };
 
         const replyQuote: SocketClient['replyQuote'] = async (
           content,
           options,
         ) => {
-          return await this.client.sendMessage(ctx.key.remoteJid!, content, {
+          if (!ctx) return;
+          const jid = ctx.key.remoteJid!;
+          await this.client.presenceSubscribe(jid);
+          await delay(500);
+
+          await this.client.sendPresenceUpdate('composing', jid);
+          await delay(2000);
+
+          const msg = await this.client.sendMessage(jid, content, {
             ...options,
             quoted: ctx,
           });
+
+          await this.client.sendPresenceUpdate('paused', jid);
+          return msg;
+        };
+
+        const replyQuoteInPrivate: SocketClient['replyQuoteInPrivate'] = async (
+          content,
+          options,
+        ) => {
+          if (!ctx) return;
+          const jid = ctx.key.participant || ctx.key.remoteJid!;
+          await this.client.presenceSubscribe(jid);
+          await delay(500);
+
+          await this.client.sendPresenceUpdate('composing', jid);
+          await delay(2000);
+
+          const msg = await this.client.sendMessage(jid, content, {
+            ...options,
+            quoted: ctx,
+          });
+
+          await this.client.sendPresenceUpdate('paused', jid);
+
+          return msg;
         };
 
         params[i] = {
@@ -251,6 +292,7 @@ export class WhatsappClient {
           reactToFailed: () => react('❌'),
           reply,
           replyQuote,
+          replyQuoteInPrivate,
         } as SocketClient;
       } else {
         params[i] = ctx; // Default ke message context
