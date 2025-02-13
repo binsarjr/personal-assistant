@@ -9,7 +9,6 @@ export const OnEvent = (
   return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
     const method = descriptor.value;
 
-    // Ambil metadata parameter yang didekorasi
     const parameters: { [key: string]: 'socket' | 'baileys-context' } =
       Reflect.getMetadata('parameters', target, propertyKey) || {};
 
@@ -20,7 +19,7 @@ export const OnEvent = (
     eventStore.get(event)?.push({
       method,
       priority: options.priority || 0,
-      parameters, // Simpan informasi parameter yang didekorasi,
+      parameters,
       classRef: target.constructor,
     });
 

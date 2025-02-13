@@ -37,7 +37,7 @@ export class BaileysDecorator {
           event as keyof BaileysEventMap,
         ) || []) {
           const args: { [key: string]: any } = {};
-          const instance = new target(); // Buat instance baru jika berasal dari class
+          const instance = new target();
 
           for (const [parameterName, decoratorType] of Object.entries(
             parameters,
@@ -50,7 +50,7 @@ export class BaileysDecorator {
           }
 
           try {
-            await method.bind(instance)(...Object.values(args)); // Pastikan method terikat ke instance class
+            await method.bind(instance)(...Object.values(args));
           } catch (error) {
             console.error(error);
           }
@@ -75,7 +75,7 @@ export class BaileysDecorator {
               classRef: target,
             } of handlers) {
               let isMatch = false;
-              const instance = new target(); // Pastikan ada instance yang digunakan
+              const instance = new target();
 
               switch (matchType) {
                 case 'equals':
