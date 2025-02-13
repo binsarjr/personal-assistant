@@ -25,6 +25,9 @@
       "$infrastructure/*": [
         "./src/infrastructure/*"
       ],
+      "$baileys-decorators/*": [
+        "./baileys-decorators/*"
+      ]
     },
     "target": "ESNext",
     "module": "ESNext",

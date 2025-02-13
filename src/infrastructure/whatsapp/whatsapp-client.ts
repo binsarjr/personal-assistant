@@ -1,3 +1,4 @@
+import { BaileysDecorator } from '$baileys-decorators/control';
 import { commandMiddlewareMap } from '$core/decorators/command-middleware';
 import {
   HandlerCommandRegistry,
@@ -64,6 +65,7 @@ export class WhatsappClient {
       },
     }) as SocketClient;
 
+    BaileysDecorator.bind(this.client);
     this.useStore?.bind(this.client.ev);
     this.setupEventHandlers();
     this.setupCredsSaver(saveCreds);

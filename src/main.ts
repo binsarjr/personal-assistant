@@ -8,6 +8,7 @@ import { hidden_path } from '$support/file.support';
 import { $ } from 'bun';
 
 await $`'clear`;
+
 setInterval(
   async () => {
     await $`'clear`;
