@@ -4,6 +4,7 @@ import {
   type HandlerCommandEntry,
 } from '$core/di/handler-command.registry';
 import { logger } from '$infrastructure/logger/console.logger';
+import type makeInMemoryStore from '$infrastructure/whatsapp/make-in-memory-store';
 import type { SocketClient } from '$infrastructure/whatsapp/types';
 import { WhatsappAuth } from '$infrastructure/whatsapp/whatsapp-auth';
 import { getMessageCaption } from '$support/whatsapp.support';
@@ -12,7 +13,6 @@ import makeWASocket, {
   DisconnectReason,
   makeCacheableSignalKeyStore,
   proto,
-  type makeInMemoryStore,
   type WAMessage,
   type WAMessageKey,
 } from '@whiskeysockets/baileys';
@@ -267,6 +267,7 @@ export class WhatsappClient {
           reply,
           replyQuote,
           replyQuoteInPrivate,
+          store: this.useStore,
         } as SocketClient;
       } else {
         params[i] = ctx; // Default ke message context

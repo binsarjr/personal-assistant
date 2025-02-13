@@ -2,9 +2,9 @@ import './core/di/bootstrap';
 
 import { prisma } from '$infrastructure/database/db';
 import { logger } from '$infrastructure/logger/console.logger';
+import makeInMemoryStore from '$infrastructure/whatsapp/make-in-memory-store';
 import { WhatsappClient } from '$infrastructure/whatsapp/whatsapp-client';
 import { hidden_path } from '$support/file.support';
-import { makeInMemoryStore } from '@whiskeysockets/baileys';
 import { $ } from 'bun';
 
 await $`'clear`;

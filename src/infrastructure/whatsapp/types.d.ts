@@ -1,3 +1,4 @@
+import type makeInMemoryStore from '$infrastructure/whatsapp/make-in-memory-store';
 import type makeWASocket from '@whiskeysockets/baileys';
 import type {
   AnyMessageContent,
@@ -33,4 +34,5 @@ export type SocketClient = ReturnType<typeof makeWASocket> & {
   reactToDone: () => Promise<WAProto.WebMessageInfo | undefined>;
   reactToFailed: () => Promise<WAProto.WebMessageInfo | undefined>;
   reactToInvalid: () => Promise<WAProto.WebMessageInfo | undefined>;
+  store?: ReturnType<typeof makeInMemoryStore>;
 };
