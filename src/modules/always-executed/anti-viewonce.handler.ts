@@ -1,6 +1,5 @@
-import { Context } from '$baileys-decorators/decorators/event-body.decorator';
+import { Context } from '$baileys-decorators/decorators/context.decorator';
 import { OnEvent } from '$baileys-decorators/decorators/on-event.decorator';
-import { OnText } from '$baileys-decorators/decorators/on-text.decorator';
 
 import { Socket as Socket2 } from '$baileys-decorators/decorators/socket.decorator';
 import { Command, Socket } from '$core/decorators';
@@ -65,13 +64,5 @@ export class AntiViewOnceAction {
     @Context event: BaileysEventMap['messages.upsert'],
   ) {
     event;
-  }
-
-  @OnText(/helLo/)
-  async onText(
-    @Socket2 socket: ReturnType<typeof makeWASocket>,
-    @Context ctx: WAMessage,
-  ) {
-    await socket.sendMessage(ctx.key.remoteJid!, { text: 'apa kabs' });
   }
 }
