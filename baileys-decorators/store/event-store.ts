@@ -3,6 +3,6 @@ export const eventStore = new Map<
   Array<{
     method: Function;
     priority: number;
-    parameters: { [key: string]: 'socket' | 'eventBody' };
+    parameters: { [key: string]: 'socket' | 'baileys-context' };
   }>
 >();

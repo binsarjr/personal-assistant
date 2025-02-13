@@ -10,7 +10,7 @@ export const OnEvent = (
     const method = descriptor.value;
 
     // Ambil metadata parameter yang didekorasi
-    const parameters: { [key: string]: 'socket' | 'eventBody' } =
+    const parameters: { [key: string]: 'socket' | 'baileys-context' } =
       Reflect.getMetadata('parameters', target, propertyKey) || {};
 
     if (!eventStore.has(event)) {
@@ -20,7 +20,7 @@ export const OnEvent = (
     eventStore.get(event)?.push({
       method,
       priority: options.priority || 0,
-      parameters,
+      parameters, // Simpan informasi parameter yang didekorasi
     });
 
     eventStore.get(event)?.sort((a, b) => b.priority - a.priority);

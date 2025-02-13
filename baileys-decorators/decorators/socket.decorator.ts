@@ -5,15 +5,9 @@ export function Socket(
   propertyKey: string,
   parameterIndex: number,
 ) {
-  const parameterNames = Reflect.getMetadata(
-    'design:paramtypes',
-    target,
-    propertyKey,
-  ).map((t: any) => t.name);
-  const parameterName = parameterNames[parameterIndex];
-
-  const existingParameters: { [key: string]: 'socket' | 'eventBody' } =
+  const existingParameters: { [key: number]: 'socket' | 'baileys-context' } =
     Reflect.getMetadata('parameters', target, propertyKey) || {};
-  existingParameters[parameterName] = 'socket';
+
+  existingParameters[parameterIndex] = 'socket';
   Reflect.defineMetadata('parameters', existingParameters, target, propertyKey);
 }
