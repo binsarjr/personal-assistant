@@ -4,12 +4,13 @@ import { OnEvent } from '$baileys-decorators/decorators/on-event.decorator';
 import { Socket as Socket2 } from '$baileys-decorators/decorators/socket.decorator';
 import { Command, Socket } from '$core/decorators';
 import type { SocketClient } from '$infrastructure/whatsapp/types';
-import makeWASocket, {
+import {
   downloadMediaMessage,
   jidNormalizedUser,
   type AnyMessageContent,
   type BaileysEventMap,
   type WAMessage,
+  type WASocket,
 } from '@whiskeysockets/baileys';
 
 export class AntiViewOnceAction {
@@ -60,7 +61,7 @@ export class AntiViewOnceAction {
 
   @OnEvent('messages.upsert')
   async wkwkkw(
-    @Socket2 socket: ReturnType<typeof makeWASocket>,
+    @Socket2 socket: WASocket,
     @Context event: BaileysEventMap['messages.upsert'],
   ) {
     event;

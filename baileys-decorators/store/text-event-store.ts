@@ -12,5 +12,6 @@ export const textEventStore = new Map<
     priority: number;
     parameters: { [key: string]: 'socket' | 'baileys-context' };
     matchType: TextMatchType;
+    classRef: any;
   }>
 >();

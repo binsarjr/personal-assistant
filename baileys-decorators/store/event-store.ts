@@ -4,5 +4,6 @@ export const eventStore = new Map<
     method: Function;
     priority: number;
     parameters: { [key: string]: 'socket' | 'baileys-context' };
+    classRef: any;
   }>
 >();

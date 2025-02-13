@@ -20,7 +20,8 @@ export const OnEvent = (
     eventStore.get(event)?.push({
       method,
       priority: options.priority || 0,
-      parameters, // Simpan informasi parameter yang didekorasi
+      parameters, // Simpan informasi parameter yang didekorasi,
+      classRef: target.constructor,
     });
 
     eventStore.get(event)?.sort((a, b) => b.priority - a.priority);

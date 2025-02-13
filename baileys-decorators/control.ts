@@ -3,16 +3,41 @@ import { textEventStore } from '$baileys-decorators/store/text-event-store';
 import type { BaileysEventMap, makeWASocket } from '@whiskeysockets/baileys';
 
 export class BaileysDecorator {
+  /**
+   * Memuat dekorator dari path yang diberikan dengan pola file yang bisa dikustomisasi.
+   */
+  static async loadDecorators(
+    patterns: string[] = [],
+    loader: (files: Record<string, any>) => void = (files) => {
+      console.log(`✅ Loaded ${Object.keys(files).length} decorators`);
+    },
+  ) {
+    let allDecorators: Record<string, any> = {};
+
+    for (const pattern of patterns) {
+      console.log(pattern);
+      const glob = new Bun.Glob(pattern);
+
+      for await (const filepath of glob.scan()) {
+        const module = await import(filepath);
+        Object.assign(allDecorators, module);
+      }
+    }
+
+    loader(allDecorators);
+  }
+
   static bind(socket: ReturnType<typeof makeWASocket>) {
     socket.ev.process(async (events) => {
       for (const event of Object.keys(events)) {
         const eventData = events[event as keyof BaileysEventMap];
 
         // on-event
-        for (const { method, parameters } of eventStore.get(
+        for (const { method, parameters, classRef: target } of eventStore.get(
           event as keyof BaileysEventMap,
         ) || []) {
           const args: { [key: string]: any } = {};
+          const instance = new target(); // Buat instance baru jika berasal dari class
 
           for (const [parameterName, decoratorType] of Object.entries(
             parameters,
@@ -25,7 +50,7 @@ export class BaileysDecorator {
           }
 
           try {
-            await method(...Object.values(args));
+            await method.bind(instance)(...Object.values(args)); // Pastikan method terikat ke instance class
           } catch (error) {
             console.error(error);
           }
@@ -43,8 +68,14 @@ export class BaileysDecorator {
 
           // on-text
           for (const [key, handlers] of textEventStore.entries()) {
-            for (const { matchType, method, parameters } of handlers) {
+            for (const {
+              matchType,
+              method,
+              parameters,
+              classRef: target,
+            } of handlers) {
               let isMatch = false;
+              const instance = new target(); // Pastikan ada instance yang digunakan
 
               switch (matchType) {
                 case 'equals':
@@ -73,7 +104,7 @@ export class BaileysDecorator {
                 });
 
                 try {
-                  await method(...args);
+                  await method.bind(instance)(...args);
                 } catch (error) {
                   console.error(error);
                 }

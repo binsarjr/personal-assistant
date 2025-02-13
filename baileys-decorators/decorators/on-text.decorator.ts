@@ -52,6 +52,7 @@ export const OnText = (
         priority: options.priority || 0,
         parameters: dynamicParameters,
         matchType,
+        classRef: target.constructor,
       });
 
       textEventStore.set(
