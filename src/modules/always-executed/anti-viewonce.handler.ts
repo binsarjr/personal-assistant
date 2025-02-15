@@ -1,7 +1,3 @@
-import { Context } from '$baileys-decorators/decorators/context.decorator';
-import { OnEvent } from '$baileys-decorators/decorators/on-event.decorator';
-
-import { Socket as Socket2 } from '$baileys-decorators/decorators/socket.decorator';
 import { Command, Socket } from '$core/decorators';
 import type { SocketClient } from '$infrastructure/whatsapp/types';
 import {
@@ -12,6 +8,7 @@ import {
   type WAMessage,
   type WASocket,
 } from '@whiskeysockets/baileys';
+import { Context, OnEvent, Socket as Socket2 } from 'baileys-decorators';
 
 export class AntiViewOnceAction {
   @Command(/.*/)
@@ -65,5 +62,6 @@ export class AntiViewOnceAction {
     @Context event: BaileysEventMap['messages.upsert'],
   ) {
     event;
+    console.log('coab coba');
   }
 }

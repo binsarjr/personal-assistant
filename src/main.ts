@@ -2,16 +2,14 @@ import { $ } from 'bun';
 await $`'clear`;
 
 import './core/di/bootstrap';
-BaileysDecorator.loadDecorators([
-  base_path('./baileys-decorators/example/**/*.action.ts'),
-]);
+BaileysDecorator.loadDecorators([]);
 
-import { BaileysDecorator } from '$baileys-decorators/control';
 import { prisma } from '$infrastructure/database/db';
 import { logger } from '$infrastructure/logger/console.logger';
 import makeInMemoryStore from '$infrastructure/whatsapp/make-in-memory-store';
 import { WhatsappClient } from '$infrastructure/whatsapp/whatsapp-client';
-import { base_path, hidden_path } from '$support/file.support';
+import { hidden_path } from '$support/file.support';
+import { BaileysDecorator } from 'baileys-decorators';
 
 setInterval(
   async () => {

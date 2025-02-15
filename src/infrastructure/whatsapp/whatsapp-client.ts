@@ -1,4 +1,3 @@
-import { BaileysDecorator } from '$baileys-decorators/control';
 import { commandMiddlewareMap } from '$core/decorators/command-middleware';
 import {
   HandlerCommandRegistry,
@@ -17,6 +16,7 @@ import makeWASocket, {
   type WAMessage,
   type WAMessageKey,
 } from '@whiskeysockets/baileys';
+import { BaileysDecorator } from 'baileys-decorators';
 import NodeCache from 'node-cache';
 import 'reflect-metadata';
 
