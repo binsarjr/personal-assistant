@@ -75,6 +75,11 @@ export default (config: BaileysInMemoryStoreConfig) => {
   const chats = new KeyedDB(chatKey, (c: any) => c.id) as KeyedDB<Chat, string>;
   const messages: { [_: string]: ReturnType<typeof makeMessagesDictionary> } =
     {};
+  const deletedMessages: {
+    [_: string]: {
+      [_: string]: proto.IWebMessageInfo;
+    };
+  } = {};
   const contacts: { [_: string]: Contact } = {};
   const groupMetadata: { [_: string]: GroupMetadata } = {};
   const presences: { [id: string]: { [participant: string]: PresenceData } } =
@@ -293,6 +298,8 @@ export default (config: BaileysInMemoryStoreConfig) => {
     ev.on('messages.update', (updates) => {
       for (const { update, key } of updates) {
         const list = assertMessageList(jidNormalizedUser(key.remoteJid!));
+        const jid = jidNormalizedUser(key.remoteJid!);
+
         if (update?.status) {
           const listStatus = list.get(key.id!)?.status;
           if (listStatus && update?.status <= listStatus) {
@@ -303,6 +310,16 @@ export default (config: BaileysInMemoryStoreConfig) => {
             delete update.status;
             logger.debug({ update }, 'new update object');
           }
+        }
+
+        if (proto.WebMessageInfo.StubType.REVOKE == update.messageStubType) {
+          if (!deletedMessages[jid]) {
+            deletedMessages[jid] = {};
+          }
+
+          deletedMessages[jid][key.id!] = structuredClone(list.get(key?.id!)!);
+
+          logger.debug('got revoke message skipped');
         }
 
         const result = list.updateAssign(key.id!, update);
@@ -428,6 +445,15 @@ export default (config: BaileysInMemoryStoreConfig) => {
     labels,
     labelAssociations,
     bind,
+    getDeletedMessage: (jid: string, id: string) => {
+      const data = structuredClone(deletedMessages[jid]?.[id]);
+
+      delete deletedMessages[jid]?.[id];
+      if (Object.keys(deletedMessages[jid]).length == 0) {
+        delete deletedMessages[jid];
+      }
+      return data;
+    },
     /** loads messages from the store, if not found -- uses the legacy connection */
     loadMessages: async (
       jid: string,
