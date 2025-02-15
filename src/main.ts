@@ -48,19 +48,3 @@ const whatsapp = new WhatsappClient(device.id, 'qrcode', store);
 await whatsapp.initialize();
 
 logger.info('WhatsApp client initialized 🚀');
-
-{
-  // // sementara
-  // setInterval(async () => {
-  //   const count = await prisma.whatsappMessage.count();
-  //   const res = await prisma.whatsappMessage.deleteMany({
-  //     where: {
-  //       messageTimeUtc: {
-  //         lt: new Date(Date.now() - 1000 * 60 * 60 * 24),
-  //       },
-  //     },
-  //   });
-  //   logger.info(`total saved message: ${count}`);
-  //   logger.info(`deleted saved message: ${res.count}`);
-  // }, 60 * 1_000);
-}

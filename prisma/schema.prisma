@@ -26,22 +26,3 @@ model AuthSessionStore {
 
   @@unique([deviceId, type], map: "unique_type_per_device_id")
 }
-
-model WhatsappMessage {
-  jid            String
-  messageId      String
-  messageTimeUtc DateTime
-  meta           String   @default("{}")
-
-  @@id([jid, messageId])
-}
-
-model WhatsappContact {
-  id   String @id
-  name String
-}
-
-model GroupStatus {
-  jid    String  @id
-  active Boolean @default(false)
-}
