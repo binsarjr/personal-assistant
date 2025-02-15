@@ -29,11 +29,8 @@ const device = await prisma.device.upsert({
   update: {},
 });
 
-const useStore = process.argv.includes('--store');
+const store = makeInMemoryStore({ logger });
 
-logger.info(`Using store: ${useStore}`);
-
-const store = useStore ? makeInMemoryStore({ logger }) : undefined;
 if (store) {
   const pathlocation = hidden_path(`baileys_store_multi-${device.id}.json`);
   store?.readFromFile(pathlocation);
