@@ -8,17 +8,6 @@ import {
 } from '@whiskeysockets/baileys';
 
 export class AutoRevealViewOnceWhenQuotedAction {
-  haveViewOnce(socket: WASocket, message: WAMessage) {
-    const quoted =
-      message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
-
-    return (
-      quoted?.viewOnceMessage ||
-      quoted?.viewOnceMessageV2 ||
-      quoted?.viewOnceMessageV2Extension
-    );
-  }
-
   @Command(/.*/)
   async execute(@Socket() socket: WASocket, message: WAMessage): Promise<void> {
     if (!message.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
