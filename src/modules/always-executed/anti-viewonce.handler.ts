@@ -4,11 +4,8 @@ import {
   downloadMediaMessage,
   jidNormalizedUser,
   type AnyMessageContent,
-  type BaileysEventMap,
   type WAMessage,
-  type WASocket,
 } from '@whiskeysockets/baileys';
-import { Context, OnEvent, Socket as Socket2 } from 'baileys-decorators';
 
 export class AntiViewOnceAction {
   @Command(/.*/)
@@ -49,19 +46,5 @@ export class AntiViewOnceAction {
           quoted: message,
         });
     }
-  }
-
-  // @OnEvent('messages.upsert')
-  // async onEvent(event: any) {
-  //   console.log('coab coba');
-  // }
-
-  @OnEvent('messages.upsert')
-  async wkwkkw(
-    @Socket2 socket: WASocket,
-    @Context event: BaileysEventMap['messages.upsert'],
-  ) {
-    event;
-    console.log('coab coba');
   }
 }
