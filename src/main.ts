@@ -1,5 +1,5 @@
 import { $ } from 'bun';
-await $`'clear`;
+await $`clear`.nothrow();
 
 BaileysDecorator.loadDecorators([base_path('src/modules/**/*.handler.ts')]);
 
@@ -11,7 +11,7 @@ import { BaileysDecorator } from 'baileys-decorators';
 
 setInterval(
   async () => {
-    await $`'clear`;
+    await $`clear`.nothrow();
   },
   10 * 60 * 1000,
 );
