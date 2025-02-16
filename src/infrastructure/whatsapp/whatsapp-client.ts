@@ -43,7 +43,21 @@ export class WhatsappClient {
     const pathlocation = hidden_path(deviceId, 'baileys_store_multi.json');
     this.useStore?.readFromFile(pathlocation);
     // save every 10s
-    setInterval(() => {
+    setInterval(async () => {
+      const messages = this.useStore?.messages;
+      if (messages) {
+        Object.keys(messages as Object).map((jid) => {
+          const list = messages[jid];
+          list.filter((m) => {
+            const messageTime = +(m.messageTimestamp || 0);
+
+            const oneWeekInSeconds = 7 * 24 * 60 * 60;
+            const currentTime = Math.floor(Date.now() / 1000);
+
+            return currentTime - messageTime <= oneWeekInSeconds;
+          });
+        });
+      }
       this.useStore?.writeToFile(pathlocation);
     }, 10_000);
   }
