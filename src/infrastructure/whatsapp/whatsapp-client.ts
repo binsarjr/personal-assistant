@@ -37,10 +37,6 @@ export class WhatsappClient {
       | ReturnType<typeof makeInMemoryStore>
       | undefined = undefined,
   ) {
-    this.useStore = makeInMemoryStore({
-      logger: logger.child({ module: 'baileys-multi-store' }),
-    });
-
     const pathlocation = hidden_path(deviceId, 'baileys_store_multi.json');
     this.useStore?.readFromFile(pathlocation);
     // save every 10s

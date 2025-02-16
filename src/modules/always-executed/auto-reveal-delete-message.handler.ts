@@ -1,5 +1,6 @@
 import { ReadMoreUnicode } from '$infrastructure/config/consts.config';
 import { logger } from '$infrastructure/logger/console.logger';
+import wa_store from '$infrastructure/whatsapp/whatsapp-store';
 import {
   downloadContentBufferFromMessage,
   getMessageCaption,
@@ -11,7 +12,6 @@ import {
   jidDecode,
   jidNormalizedUser,
   type WAMessage,
-  type WASocket,
 } from '@whiskeysockets/baileys';
 import { Context, OnText, Socket, type SocketClient } from 'baileys-decorators';
 
@@ -40,7 +40,7 @@ export class AntiDeletedMessageHandler {
       return;
     }
 
-    const deleted = await socket.store?.getDeletedMessage(
+    const deleted = wa_store.getDeletedMessage(
       jidNormalizedUser(message.key.remoteJid!),
       message.message?.protocolMessage?.key?.id!,
     );
@@ -97,12 +97,11 @@ export class AntiDeletedMessageHandler {
           },
           { quoted: sended },
         );
-        socket.store?.messages;
       }
     }
   }
   async resolveDeletedMessage(
-    socket: WASocket,
+    socket: SocketClient,
     message: WAMessage,
   ): Promise<any> {
     const caption = getMessageCaption(message.message!);
