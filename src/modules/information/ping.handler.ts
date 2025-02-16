@@ -9,7 +9,6 @@ import os from 'os';
 export class PingHandler {
   @OnText('.ping')
   async ping(@Socket socket: SocketClient, @Context message: WAMessage) {
-    console.log('HALAH');
     const totalMemory = os.totalmem();
 
     // Memori yang digunakan oleh sistem dalam bytes
