@@ -16,7 +16,7 @@ setInterval(
   10 * 60 * 1000,
 );
 
-let name = 'personal-asistant';
+let name = Bun.env.BOT_NAME || 'personal-asistant';
 
 const whatsapp = new WhatsappClient(name, 'qrcode', wa_store);
 
