@@ -1,5 +1,5 @@
 import { logger } from '$infrastructure/logger/console.logger';
-import type { SocketClient } from '$infrastructure/whatsapp/types';
+import wa_store from '$infrastructure/whatsapp/whatsapp-store';
 import { replaceRandomSpacesToUnicode } from '$support/string.support';
 import {
   isJidGroup,
@@ -8,8 +8,9 @@ import {
   proto,
   type MiscMessageGenerationOptions,
   type WAMessage,
+  type WASocket,
 } from '@whiskeysockets/baileys';
-import { Context, OnText, Socket } from 'baileys-decorators';
+import { Context, OnText, Socket, type SocketClient } from 'baileys-decorators';
 
 export class MentionHandler {
   getRandom(type?: 'all' | 'admin' | 'member') {
@@ -37,7 +38,7 @@ export class MentionHandler {
 
       const jids = await this.participants(socket, jid, 'admin');
       if (!jids.includes(jidNormalizedUser(message.key.participant || jid))) {
-        await socket.replyQuoteInPrivate({
+        await socket.replyWithQuoteInPrivate({
           text: 'Maaf saat ini hanya admin saja yang bisa menggunakan perintah ini',
         });
         await socket.reactToFailed();
@@ -138,7 +139,10 @@ export class MentionHandler {
     jid: string,
     userType: 'all' | 'admin' | 'member',
   ) {
-    const participants = await socket.store.fetchGroupMetadata(jid, socket);
+    const participants = await wa_store.fetchGroupMetadata(
+      jid,
+      socket as unknown as WASocket,
+    );
 
     logger.debug(participants, 'participants');
 

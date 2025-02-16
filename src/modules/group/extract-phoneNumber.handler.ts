@@ -1,6 +1,10 @@
-import type { SocketClient } from '$infrastructure/whatsapp/types';
-import { type WAMessage, jidDecode } from '@whiskeysockets/baileys';
-import { Context, OnText, Socket } from 'baileys-decorators';
+import wa_store from '$infrastructure/whatsapp/whatsapp-store';
+import {
+  type WAMessage,
+  type WASocket,
+  jidDecode,
+} from '@whiskeysockets/baileys';
+import { Context, OnText, Socket, type SocketClient } from 'baileys-decorators';
 
 export class ExtractPhoneNumberHandler {
   @OnText('.phones')
@@ -9,9 +13,9 @@ export class ExtractPhoneNumberHandler {
       return;
     }
 
-    const metadata = await socket.store.fetchGroupMetadata(
+    const metadata = await wa_store.fetchGroupMetadata(
       message.key.remoteJid!,
-      socket,
+      socket as unknown as WASocket,
     );
     const participants = metadata.participants;
     const phones = participants
