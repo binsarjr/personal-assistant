@@ -1,7 +1,6 @@
 import { $ } from 'bun';
 await $`'clear`;
 
-import './core/di/bootstrap';
 BaileysDecorator.loadDecorators([base_path('src/modules/**/*.handler.ts')]);
 
 import { logger } from '$infrastructure/logger/console.logger';
