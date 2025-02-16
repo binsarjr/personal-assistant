@@ -17,6 +17,7 @@ import makeWASocket, {
   type WAMessage,
   type WAMessageKey,
 } from '@whiskeysockets/baileys';
+import type { WASocket } from 'baileys';
 import { BaileysDecorator } from 'baileys-decorators';
 import NodeCache from 'node-cache';
 import 'reflect-metadata';
@@ -92,7 +93,7 @@ export class WhatsappClient {
       },
     }) as SocketClient;
 
-    BaileysDecorator.bind(this.client);
+    BaileysDecorator.bind(this.client as unknown as WASocket);
     this.useStore?.bind(this.client.ev);
     this.setupEventHandlers();
     this.setupCredsSaver(saveCreds);

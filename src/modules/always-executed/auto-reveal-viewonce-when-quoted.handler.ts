@@ -1,15 +1,17 @@
-import { Command, Socket } from '$core/decorators';
 import { downloadContentBufferFromMessage } from '$support/whatsapp.support';
 import {
   jidNormalizedUser,
   type AnyMessageContent,
   type WAMessage,
-  type WASocket,
 } from '@whiskeysockets/baileys';
+import { Context, OnText, Socket, type SocketClient } from 'baileys-decorators';
 
 export class AutoRevealViewOnceWhenQuotedAction {
-  @Command(/.*/)
-  async execute(@Socket() socket: WASocket, message: WAMessage): Promise<void> {
+  @OnText(/.*/)
+  async execute(
+    @Socket socket: SocketClient,
+    @Context message: WAMessage,
+  ): Promise<void> {
     if (!message.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
       return;
     }

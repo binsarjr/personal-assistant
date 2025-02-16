@@ -1,13 +1,14 @@
-import { Command, Socket } from '$core/decorators';
-import { CommandMiddleware } from '$core/decorators/command-middleware';
-import { IsOnlyMeMiddleware } from '$infrastructure/whatsapp/middlewares/is-me.middleware';
 import type { SocketClient } from '$infrastructure/whatsapp/types';
 import { type WAMessage, jidDecode } from '@whiskeysockets/baileys';
+import { Context, OnText, Socket } from 'baileys-decorators';
 
 export class ExtractPhoneNumberHandler {
-  @Command(/^.phones$/i)
-  @CommandMiddleware(IsOnlyMeMiddleware)
-  async execute(@Socket() socket: SocketClient, message: WAMessage) {
+  @OnText('.phones')
+  async execute(@Socket socket: SocketClient, @Context message: WAMessage) {
+    if (!message.key.fromMe) {
+      return;
+    }
+
     const metadata = await socket.store.fetchGroupMetadata(
       message.key.remoteJid!,
       socket,

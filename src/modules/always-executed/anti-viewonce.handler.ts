@@ -1,15 +1,14 @@
-import { Command, Socket } from '$core/decorators';
-import type { SocketClient } from '$infrastructure/whatsapp/types';
 import {
   downloadMediaMessage,
   jidNormalizedUser,
   type AnyMessageContent,
   type WAMessage,
 } from '@whiskeysockets/baileys';
+import { Context, OnText, Socket, type SocketClient } from 'baileys-decorators';
 
 export class AntiViewOnceAction {
-  @Command(/.*/)
-  async execute(@Socket() socket: SocketClient, message: WAMessage) {
+  @OnText(/.*/)
+  async execute(@Socket socket: SocketClient, @Context message: WAMessage) {
     const viewOnceMessage =
       message.message?.viewOnceMessage ||
       message.message?.viewOnceMessageV2 ||

@@ -1,7 +1,5 @@
-import { Command, Socket } from '$core/decorators';
 import { ReadMoreUnicode } from '$infrastructure/config/consts.config';
 import { logger } from '$infrastructure/logger/console.logger';
-import type { SocketClient } from '$infrastructure/whatsapp/types';
 import {
   downloadContentBufferFromMessage,
   getMessageCaption,
@@ -15,10 +13,11 @@ import {
   type WAMessage,
   type WASocket,
 } from '@whiskeysockets/baileys';
+import { Context, OnText, Socket, type SocketClient } from 'baileys-decorators';
 
 export class AntiDeletedMessageHandler {
-  @Command(/.*/)
-  async execute(@Socket() socket: SocketClient, message: WAMessage) {
+  @OnText(/.*/)
+  async execute(@Socket socket: SocketClient, @Context message: WAMessage) {
     if (message.key.fromMe) {
       return;
     }

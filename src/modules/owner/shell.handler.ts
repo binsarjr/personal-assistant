@@ -1,15 +1,15 @@
-import { Command, Socket } from '$core/decorators';
-import { CommandMiddleware } from '$core/decorators/command-middleware';
-import { IsOnlyMeMiddleware } from '$infrastructure/whatsapp/middlewares/is-me.middleware';
 import type { SocketClient } from '$infrastructure/whatsapp/types';
 import { getMessageCaption } from '$support/whatsapp.support';
 import type { WAMessage } from '@whiskeysockets/baileys';
+import { Context, OnText, Socket } from 'baileys-decorators';
 import { $ } from 'bun';
 
 export class ShellHandler {
-  @Command(/^\$.*/)
-  @CommandMiddleware(IsOnlyMeMiddleware)
-  async shell(@Socket() socket: SocketClient, message: WAMessage) {
+  @OnText('$', { matchType: 'startsWith' })
+  async shell(@Socket socket: SocketClient, @Context message: WAMessage) {
+    if (!message.key.fromMe) {
+      return;
+    }
     const caption = getMessageCaption(message.message!).replace(
       /^\$(\s+)?/,
       '',

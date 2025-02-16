@@ -1,16 +1,15 @@
-import { Command, Socket } from '$core/decorators';
-import { CommandMiddleware } from '$core/decorators/command-middleware';
 import { logger } from '$infrastructure/logger/console.logger';
-import { IsGroupChatMiddleware } from '$infrastructure/whatsapp/middlewares/is-group-chat.middleware';
 import type { SocketClient } from '$infrastructure/whatsapp/types';
 import { replaceRandomSpacesToUnicode } from '$support/string.support';
 import {
+  isJidGroup,
   jidDecode,
   jidNormalizedUser,
   proto,
   type MiscMessageGenerationOptions,
   type WAMessage,
 } from '@whiskeysockets/baileys';
+import { Context, OnText, Socket } from 'baileys-decorators';
 
 export class MentionHandler {
   getRandom(type?: 'all' | 'admin' | 'member') {
@@ -104,27 +103,33 @@ export class MentionHandler {
     await socket.reactToDone();
   }
 
-  @Command(/^.tagall/)
-  @CommandMiddleware(IsGroupChatMiddleware)
-  async handlerAll(@Socket() socket: SocketClient, message: WAMessage) {
+  @OnText('.tagall')
+  async handlerAll(@Socket socket: SocketClient, @Context message: WAMessage) {
+    if (!isJidGroup(message.key.remoteJid!)) {
+      return;
+    }
     await this.handler(socket, message, 'all');
   }
 
-  @Command(/^.tagadmin/)
-  @CommandMiddleware(IsGroupChatMiddleware)
+  @OnText('.tagadmin')
   async handlerMentionAdmin(
-    @Socket() socket: SocketClient,
-    message: WAMessage,
+    @Socket socket: SocketClient,
+    @Context message: WAMessage,
   ) {
+    if (!isJidGroup(message.key.remoteJid!)) {
+      return;
+    }
     await this.handler(socket, message, 'admin');
   }
 
-  @Command(/^.tagmember/)
-  @CommandMiddleware(IsGroupChatMiddleware)
+  @OnText('.tagmember')
   async handlerMentionMember(
-    @Socket() socket: SocketClient,
-    message: WAMessage,
+    @Socket socket: SocketClient,
+    @Context message: WAMessage,
   ) {
+    if (!isJidGroup(message.key.remoteJid!)) {
+      return;
+    }
     await this.handler(socket, message, 'member');
   }
 
