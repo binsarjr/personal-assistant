@@ -1,3 +1,2 @@
-export * from "./command.decorator";
-export * from "./event.decorator";
-export * from "./socket.decorator";
+export * from './command.decorator';
+export * from './socket.decorator';
