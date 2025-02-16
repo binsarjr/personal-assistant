@@ -1,20 +1,12 @@
-import { commandMiddlewareMap } from '$core/decorators/command-middleware';
-import {
-  HandlerCommandRegistry,
-  type HandlerCommandEntry,
-} from '$core/di/handler-command.registry';
 import { logger } from '$infrastructure/logger/console.logger';
 import makeInMemoryStore from '$infrastructure/whatsapp/make-in-memory-store';
 import type { SocketClient } from '$infrastructure/whatsapp/types';
 import { hidden_path } from '$support/file.support';
-import { getMessageCaption } from '$support/whatsapp.support';
 import makeWASocket, {
-  delay,
   DisconnectReason,
   makeCacheableSignalKeyStore,
   proto,
   useMultiFileAuthState,
-  type WAMessage,
   type WAMessageKey,
 } from '@whiskeysockets/baileys';
 import type { WASocket } from 'baileys';
@@ -131,13 +123,6 @@ export class WhatsappClient {
           this.groupCache.set(event.id, metadata);
         }
       }
-
-      if (events['messages.upsert']) {
-        for (const message of events['messages.upsert'].messages) {
-          if (!message.message) continue;
-          await this, this.processMessage(message);
-        }
-      }
     });
   }
 
@@ -149,163 +134,5 @@ export class WhatsappClient {
 
   private setupCredsSaver(saveCreds: () => Promise<void>) {
     this.client.ev.on('creds.update', saveCreds);
-  }
-
-  private async processMessage(message: WAMessage) {
-    logger.trace('Processing message');
-
-    const caption = getMessageCaption(message.message!);
-
-    const handlers = HandlerCommandRegistry.getHandlers(caption);
-
-    for (const handler of handlers) {
-      if (!(await this.resolveCommandMiddleware(handler, message))) continue;
-      try {
-        const params = this.resolveHandlerParameters(handler, message);
-        logger.debug(params, 'Parameters');
-        logger.info(handler, 'Calling handler');
-        await handler.handler(...params);
-      } catch (error) {
-        // this.client.sendMessage(message.key.remoteJid!, {
-        // 	react: {
-        // 		key: message.key!,
-        // 		text: "❌",
-        // 	},
-        // });
-        logger.error(error, 'Error handling message');
-      }
-    }
-  }
-
-  private async resolveCommandMiddleware(
-    handler: HandlerCommandEntry,
-    message: WAMessage,
-  ) {
-    const middlewares =
-      commandMiddlewareMap.get(handler.className + ':' + handler.methodName) ||
-      [];
-
-    for (const middleware of middlewares) {
-      logger.trace(
-        middleware,
-        'Middleware: ' + handler.className + ':' + handler.methodName,
-      );
-      if (!(await middleware(this.client, message))) return false;
-    }
-
-    return true;
-  }
-
-  private resolveHandlerParameters(
-    handler: HandlerCommandEntry,
-    ctx: WAMessage,
-  ): any[] {
-    logger.trace('Resolving handler parameters');
-    const params = [];
-    const paramCount = handler.handler.length;
-
-    // Cari parameter yang perlu diisi socket
-    for (let i = 0; i < paramCount; i++) {
-      if (handler?.meta?.socketParamIndex === i) {
-        logger.trace('Injecting message.upsert function');
-
-        const react = (emoji: string) => {
-          return this.client.sendMessage(ctx.key.remoteJid!, {
-            react: {
-              key: ctx.key!,
-              text: emoji,
-            },
-          });
-        };
-
-        const reply: SocketClient['reply'] = async (content, options) => {
-          if (!ctx) return;
-          const jid = ctx.key.remoteJid!;
-          if (options?.typing) {
-            await this.client.presenceSubscribe(jid);
-            await delay(500);
-
-            await this.client.sendPresenceUpdate('composing', jid);
-            await delay(2000);
-          }
-
-          const msg = await this.client.sendMessage(jid, content, options);
-
-          if (options?.typing) {
-            await this.client.sendPresenceUpdate('paused', jid);
-          }
-
-          return msg;
-        };
-
-        const replyQuote: SocketClient['replyQuote'] = async (
-          content,
-          options,
-        ) => {
-          if (!ctx) return;
-          const jid = ctx.key.remoteJid!;
-          if (options?.typing) {
-            await this.client.presenceSubscribe(jid);
-            await delay(500);
-
-            await this.client.sendPresenceUpdate('composing', jid);
-            await delay(2000);
-          }
-
-          const msg = await this.client.sendMessage(jid, content, {
-            ...options,
-            quoted: ctx,
-          });
-          if (options?.typing) {
-            await this.client.sendPresenceUpdate('paused', jid);
-          }
-
-          return msg;
-        };
-
-        const replyQuoteInPrivate: SocketClient['replyQuoteInPrivate'] = async (
-          content,
-          options,
-        ) => {
-          if (!ctx) return;
-          const jid = ctx.key.participant || ctx.key.remoteJid!;
-
-          if (options?.typing) {
-            await this.client.presenceSubscribe(jid);
-            await delay(500);
-
-            await this.client.sendPresenceUpdate('composing', jid);
-            await delay(2000);
-          }
-
-          const msg = await this.client.sendMessage(jid, content, {
-            ...options,
-            quoted: ctx,
-          });
-          if (options?.typing) {
-            await this.client.sendPresenceUpdate('paused', jid);
-          }
-
-          return msg;
-        };
-
-        params[i] = {
-          ...this.client,
-          react,
-          reactToProcessing: () => react('⏳'),
-          resetReact: () => react(''),
-          reactToDone: () => react('✅'),
-          reactToFailed: () => react('❌'),
-          reply,
-          replyQuote,
-          replyQuoteInPrivate,
-          store: this.useStore,
-        } as SocketClient;
-      } else {
-        params[i] = ctx; // Default ke message context
-      }
-    }
-
-    return params;
   }
 }

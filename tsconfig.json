@@ -13,9 +13,6 @@
       "$services/*": [
         "./services/*"
       ],
-      "$core/*": [
-        "./src/core/*"
-      ],
       "$modules/*": [
         "./src/modules/*"
       ],
