@@ -115,7 +115,10 @@ export class WhatsappClient {
 
         if (event.id) {
           logger.debug('Caching group metadata');
-          const metadata = await this.client.groupMetadata(event.id!);
+          const metadata = await this.client.store.fetchGroupMetadata(
+            event.id!,
+            this.client,
+          );
           this.groupCache.set(event.id!, metadata);
         }
       }
@@ -124,7 +127,10 @@ export class WhatsappClient {
         {
           logger.debug('Caching group metadata');
           const event = events['group-participants.update'];
-          const metadata = await this.client.groupMetadata(event.id);
+          const metadata = await this.client.store.fetchGroupMetadata(
+            event.id,
+            this.client,
+          );
           this.groupCache.set(event.id, metadata);
         }
       }

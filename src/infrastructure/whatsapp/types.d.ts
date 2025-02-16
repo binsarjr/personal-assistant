@@ -34,5 +34,5 @@ export type SocketClient = ReturnType<typeof makeWASocket> & {
   reactToDone: () => Promise<WAProto.WebMessageInfo | undefined>;
   reactToFailed: () => Promise<WAProto.WebMessageInfo | undefined>;
   reactToInvalid: () => Promise<WAProto.WebMessageInfo | undefined>;
-  store?: ReturnType<typeof makeInMemoryStore>;
+  store: ReturnType<typeof makeInMemoryStore>;
 };
