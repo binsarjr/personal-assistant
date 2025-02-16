@@ -4,19 +4,16 @@
   "type": "module",
   "scripts": {
     "start": "bun run --bun src/main.ts",
-    "dev": "bun run --bun --watch src/main.ts",
-    "db:init": "bunx prisma db push && bunx prisma generate"
+    "dev": "bun run --bun --watch src/main.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest",
-    "prisma": "^6.3.1"
+    "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.7.3"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
-    "@prisma/client": "^6.3.1",
     "@whiskeysockets/baileys": "^6.7.12",
     "baileys-decorators": "^0.0.2",
     "libsignal": "^2.0.1",
@@ -27,10 +24,7 @@
     "sharp": "^0.33.5"
   },
   "trustedDependencies": [
-    "@prisma/client",
-    "@prisma/engines",
     "esbuild",
-    "prisma",
     "protobufjs",
     "sharp"
   ]

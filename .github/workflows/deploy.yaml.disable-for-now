@@ -32,6 +32,5 @@ jobs:
             cd ${{ secrets.SERVER_CWD }}
             git pull origin main
             /root/.bun/bin/bun i --no-save --frozen-lockfile
-            /root/.bun/bin/bunx prisma db push
-            /root/.bun/bin/bun run build
+            /root/.bun/bin/bun start
             supervisorctl restart personal-whatsapp-bot

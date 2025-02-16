@@ -7,3 +7,4 @@ database.json
 dist
 dev.db
 .idea
+.DS_Store

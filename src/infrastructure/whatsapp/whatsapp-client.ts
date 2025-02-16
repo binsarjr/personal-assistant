@@ -4,15 +4,16 @@ import {
   type HandlerCommandEntry,
 } from '$core/di/handler-command.registry';
 import { logger } from '$infrastructure/logger/console.logger';
-import type makeInMemoryStore from '$infrastructure/whatsapp/make-in-memory-store';
+import makeInMemoryStore from '$infrastructure/whatsapp/make-in-memory-store';
 import type { SocketClient } from '$infrastructure/whatsapp/types';
-import { WhatsappAuth } from '$infrastructure/whatsapp/whatsapp-auth';
+import { hidden_path } from '$support/file.support';
 import { getMessageCaption } from '$support/whatsapp.support';
 import makeWASocket, {
   delay,
   DisconnectReason,
   makeCacheableSignalKeyStore,
   proto,
+  useMultiFileAuthState,
   type WAMessage,
   type WAMessageKey,
 } from '@whiskeysockets/baileys';
@@ -26,7 +27,6 @@ export class WhatsappClient {
 
   private groupCache = new NodeCache({ stdTTL: 5 * 60, useClones: false });
 
-  private auth = new WhatsappAuth();
   private msgRetryCounterCache = new NodeCache();
 
   constructor(
@@ -35,10 +35,23 @@ export class WhatsappClient {
     private readonly useStore:
       | ReturnType<typeof makeInMemoryStore>
       | undefined = undefined,
-  ) {}
+  ) {
+    this.useStore = makeInMemoryStore({
+      logger: logger.child({ module: 'baileys-multi-store' }),
+    });
+
+    const pathlocation = hidden_path(deviceId, 'baileys_store_multi.json');
+    this.useStore?.readFromFile(pathlocation);
+    // save every 10s
+    setInterval(() => {
+      this.useStore?.writeToFile(pathlocation);
+    }, 10_000);
+  }
 
   async initialize() {
-    const { state, saveCreds } = await this.auth.execute(this.deviceId);
+    const { state, saveCreds } = await useMultiFileAuthState(
+      hidden_path(this.deviceId, 'auth-store'),
+    );
 
     this.client = makeWASocket({
       auth: {
