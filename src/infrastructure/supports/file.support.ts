@@ -7,8 +7,9 @@ export const base_path = (...filepaths: string[]) => {
 };
 
 export const hidden_path = (...filepaths: string[]) => {
-  if (existsSync(base_path('.hiddens')) === false) {
-    mkdirSync(base_path('.hiddens'));
+  const dirPath = path.dirname(base_path('.hiddens', ...filepaths));
+  if (!existsSync(dirPath)) {
+    mkdirSync(dirPath, { recursive: true });
   }
   return base_path('.hiddens', ...filepaths);
 };
