@@ -1,3 +1,6 @@
+process.env.TZ = 'Asia/Jakarta';
+Bun.env.TZ = 'Asia/Jakarta';
+
 import { $ } from 'bun';
 await $`clear`.nothrow();
 
