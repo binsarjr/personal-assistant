@@ -1,8 +1,10 @@
 # Personal Assistant
 
-ini adalah project personal assistant yang dibuat dengan typescript dan bun. Personal asistant ini dibuat untuk
-memudahkan penggunaan whatsapp dengan menggunakan fitur whatsapp action. Fitur whatsapp action ini dapat digunakan untuk
-membuat fitur yang sama seperti fitur whatsapp biasa, tetapi dengan fitur yang lebih mudah dan lebih efisien.
+ini adalah project personal assistant yang dibuat dengan typescript dan bun.
+Personal asistant ini dibuat untuk memudahkan penggunaan whatsapp dengan
+menggunakan fitur whatsapp action. Fitur whatsapp action ini dapat digunakan
+untuk membuat fitur yang sama seperti fitur whatsapp biasa, tetapi dengan fitur
+yang lebih mudah dan lebih efisien.
 
 ## Fitur
 
@@ -14,19 +16,13 @@ membuat fitur yang sama seperti fitur whatsapp biasa, tetapi dengan fitur yang l
 - Mention semua orang yang ada di grup
 
 ## Instalasi
+
 Install [bun](https://bun.sh/docs/installation) terlebih dahulu.
 
 ### Install dependencies:
 
 ```bash
 bun install
-```
-
-
-### Setup database
-
-```
-bun run db:init
 ```
 
 ### Menjalankan aplikasi
@@ -36,5 +32,5 @@ bun run db:init
 bun run start
 
 # watch mode
-bun run start:dev
+bun run dev
 ```
