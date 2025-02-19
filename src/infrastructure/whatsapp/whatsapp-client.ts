@@ -10,7 +10,6 @@ import makeWASocket, {
   type WAMessageKey,
 } from '@whiskeysockets/baileys';
 import {
-  Browsers,
   fetchLatestBaileysVersion,
   type WAConnectionState,
   type WASocket,
@@ -81,7 +80,7 @@ export class WhatsappClient {
         keys: makeCacheableSignalKeyStore(state.keys, logger),
       },
       version,
-      browser: Browsers.baileys('Personal Assistant'),
+      browser: ['Personal Assistant', 'binsarjr', '0.0.0'],
       printQRInTerminal: this.connectUsing == 'qrcode',
       logger: logger.child({ module: 'baileys' }),
       generateHighQualityLinkPreview: true,
