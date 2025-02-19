@@ -15,7 +15,7 @@
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "@whiskeysockets/baileys": "^6.7.13",
-    "baileys-decorators": "^0.2.0",
+    "baileys-decorators": "^0.3.0",
     "libsignal": "^2.0.1",
     "node-cache": "^5.1.2",
     "pino-pretty": "^13.0.0",
