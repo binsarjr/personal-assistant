@@ -11,6 +11,7 @@ import { WhatsappClient } from '$infrastructure/whatsapp/whatsapp-client';
 import wa_store from '$infrastructure/whatsapp/whatsapp-store';
 import { base_path } from '$support/file.support';
 import { BaileysDecorator } from 'baileys-decorators';
+import { CronJob } from 'cron';
 
 setInterval(
   async () => {
@@ -26,3 +27,16 @@ const whatsapp = new WhatsappClient(name, 'qrcode', wa_store);
 await whatsapp.initialize();
 
 logger.info('WhatsApp client initialized 🚀');
+
+new CronJob(
+  '0 0 7 * * *', // cronTime
+  async function () {
+    const socket = await whatsapp.getClient();
+    socket.sendMessage(socket.user!.id, {
+      text: 'BOT MASIH BERJALAN',
+    });
+  }, // onTick
+  null, // onComplete
+  true, // start
+  'Asia/Jakarta', // timeZone
+);

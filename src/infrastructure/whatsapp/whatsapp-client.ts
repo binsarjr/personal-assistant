@@ -9,7 +9,7 @@ import makeWASocket, {
   useMultiFileAuthState,
   type WAMessageKey,
 } from '@whiskeysockets/baileys';
-import type { WASocket } from 'baileys';
+import type { WAConnectionState, WASocket } from 'baileys';
 import { BaileysDecorator } from 'baileys-decorators';
 import NodeCache from 'node-cache';
 import 'reflect-metadata';
@@ -17,10 +17,20 @@ import 'reflect-metadata';
 export class WhatsappClient {
   // @ts-expect-error: nullable
   private client: SocketClient;
+  private currentConnection: WAConnectionState = 'close';
 
   private groupCache = new NodeCache({ stdTTL: 5 * 60, useClones: false });
 
   private msgRetryCounterCache = new NodeCache();
+
+  async getClient() {
+    while (true) {
+      if (this.client?.ws?.isOpen && this.currentConnection == 'open') {
+        return this.client;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+  }
 
   constructor(
     private readonly deviceId: string,
@@ -93,6 +103,7 @@ export class WhatsappClient {
 
       if (events['connection.update']) {
         const update = events['connection.update'];
+        if (update.connection) this.currentConnection = update.connection;
 
         if (update.connection == 'close') {
           this.handleReconnect(update.lastDisconnect?.error);
