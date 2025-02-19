@@ -9,7 +9,12 @@ import makeWASocket, {
   useMultiFileAuthState,
   type WAMessageKey,
 } from '@whiskeysockets/baileys';
-import type { WAConnectionState, WASocket } from 'baileys';
+import {
+  Browsers,
+  fetchLatestBaileysVersion,
+  type WAConnectionState,
+  type WASocket,
+} from 'baileys';
 import { BaileysDecorator } from 'baileys-decorators';
 import NodeCache from 'node-cache';
 import 'reflect-metadata';
@@ -66,12 +71,17 @@ export class WhatsappClient {
       hidden_path(this.deviceId, 'auth-store'),
     );
 
+    const { version, isLatest } = await fetchLatestBaileysVersion();
+    console.log(`using WA v${version.join('.')}, isLatest: ${isLatest}`);
+
     this.client = makeWASocket({
       auth: {
         creds: state.creds,
         /** caching makes the store faster to send/recv messages */
         keys: makeCacheableSignalKeyStore(state.keys, logger),
       },
+      version,
+      browser: Browsers.baileys('Personal Assistant'),
       printQRInTerminal: this.connectUsing == 'qrcode',
       logger: logger.child({ module: 'baileys' }),
       generateHighQualityLinkPreview: true,
