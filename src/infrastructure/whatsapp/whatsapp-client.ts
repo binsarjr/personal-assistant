@@ -16,7 +16,7 @@ import {
 } from 'baileys';
 import { BaileysDecorator } from 'baileys-decorators';
 import NodeCache from 'node-cache';
-import { unlink } from 'node:fs/promises';
+import { rm } from 'node:fs/promises';
 import 'reflect-metadata';
 
 export class WhatsappClient {
@@ -151,7 +151,10 @@ export class WhatsappClient {
     if (error?.output?.statusCode !== DisconnectReason.loggedOut) {
       this.initialize();
     } else {
-      unlink(hidden_path(this.deviceId, 'auth-store')).then(() => {
+      rm(hidden_path(this.deviceId, 'auth-store'), {
+        recursive: true,
+        force: true,
+      }).then(() => {
         this.initialize();
       });
     }
