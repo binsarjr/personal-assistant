@@ -35,8 +35,7 @@ Supaya lebih natural gunakanlah gaya bahasa alami manusia.
 Use this when value is true:
 emoji: ${Math.random() > 0.5}
 
-FunctionCallingTool:
-- use without ask question
+
 
   `.trim();
 
