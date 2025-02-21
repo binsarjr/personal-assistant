@@ -1,24 +1,74 @@
 #!/bin/bash
 
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.bun/bin
+# RUN with crontab
 
-# ================== Konfigurasi ==================
-APP_DIR="/root/punyaku"        # Direktori tempat program berjalan
-SCREEN_NAME="bun_session"      # Nama sesi screen
-PROCESS_NAME="bun"             # Nama proses yang akan dicek
+# ================== KONFIGURASI ==================
+PROJECT_NAME="PersonalAssistant"
+PROJECT_DIR="/root/personal-assistant"
+BRANCH="main"
+LOG_FILE="/var/log/deploy_personal_assistant.log"
+DEPLOY_LOCK="/tmp/deploy_personal_assistant.lock"
+SCREEN_NAME="PersonalAssistant"
+BUN_PATH="/root/.bun/bin"
+ENV_FILE=".env"
+# ================================================
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.bun/bin
+export PATH=$PATH:$BUN_PATH
 
-# ================== Cek Status Screen ==================
-# Periksa apakah screen dengan nama yang sama sudah berjalan
-if screen -list | grep -q "$SCREEN_NAME"; then
-    # Cek apakah proses dalam screen masih berjalan
-    if ! screen -S "$SCREEN_NAME" -X select . > /dev/null 2>&1; then
-        # Screen ditemukan tetapi mengalami error atau mati, jalankan ulang
-        screen -X -S "$SCREEN_NAME" quit 2>/dev/null  # Hapus screen jika ada error
-        cd "$APP_DIR" || exit
-        screen -dmS "$SCREEN_NAME" bun start
-    fi
+# Log waktu pemanggilan deploy
+echo "$(date) - Checking for updates..." >> "$LOG_FILE"
+
+# Masuk ke direktori proyek
+cd "$PROJECT_DIR" || exit
+
+# Pastikan di branch yang benar
+git checkout "$BRANCH"
+
+# Cek apakah proses deploy sedang berjalan
+cleanup() {
+    rm -f "$DEPLOY_LOCK"
+}
+
+if [[ -f "$DEPLOY_LOCK" ]]; then
+    echo "$(date) - Deployment is already in progress. Skipping new deployment." >> "$LOG_FILE"
+    exit 0
+fi
+
+touch "$DEPLOY_LOCK"
+trap cleanup EXIT  # Pastikan lock file dihapus setelah selesai
+
+# Ambil argumen untuk opsi --force
+FORCE_DEPLOY=false
+if [[ "$1" == "--force" ]]; then
+    FORCE_DEPLOY=true
+fi
+
+# Simpan hash commit sebelum pull
+PREV_COMMIT=$(git rev-parse HEAD)
+
+# Cek perubahan dari git pull
+GIT_OUTPUT=$(git pull)
+NEW_COMMIT=$(git rev-parse HEAD)
+
+if [[ "$GIT_OUTPUT" == *"Already up to date."* && "$FORCE_DEPLOY" == false && "$PREV_COMMIT" == "$NEW_COMMIT" ]]; then
+    echo "$(date) - No updates found. Skipping restart." >> "$LOG_FILE"
+    exit 0
 else
-    # Screen tidak ditemukan, jalankan program dalam screen baru
-    cd "$APP_DIR" || exit
+    echo "$(date) - Updates detected or forced deployment triggered. Running Bun install..." >> "$LOG_FILE"
+
+    # Install dependensi
+    bun install
+
+    # Restart aplikasi
+    echo "$(date) - Restarting application..." >> "$LOG_FILE"
+
+    screen -S "$SCREEN_NAME" -X quit
+    pkill -f "bun start"
+    screen -wipe
+
+    # Jalankan aplikasi di dalam screen baru
+    export $(cat "$ENV_FILE" | xargs)
     screen -dmS "$SCREEN_NAME" bun start
+
+    echo "$(date) - Deployment finished successfully!" >> "$LOG_FILE"
 fi
