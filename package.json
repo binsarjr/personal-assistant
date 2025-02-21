@@ -16,6 +16,7 @@
     "@google/generative-ai": "^0.21.0",
     "@whiskeysockets/baileys": "^6.7.13",
     "baileys-decorators": "^0.3.0",
+    "cheerio": "^1.0.0",
     "cron": "^4.0.0",
     "libsignal": "^2.0.1",
     "node-cache": "^5.1.2",
