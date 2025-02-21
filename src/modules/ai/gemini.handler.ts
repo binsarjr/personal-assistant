@@ -165,7 +165,8 @@ emoji: ${Math.random() > 0.5}
 
     const model = gemini.getGenerativeModel({
       // model: 'gemini-2.0-flash-exp',
-      model: 'gemini-2.0-flash-lite-preview-02-05',
+      model: 'gemini-2.0-flash',
+      // model: 'gemini-2.0-flash-lite-preview-02-05',
       systemInstruction: this.systemInstruction,
       safetySettings: [
         {
