@@ -1,8 +1,13 @@
-import type { SocketClient } from '$infrastructure/whatsapp/types';
 import { isShellOn } from '$support/boolean.support';
 import { getMessageCaption } from '$support/whatsapp.support';
 import type { WAMessage } from '@whiskeysockets/baileys';
-import { Context, createGuard, OnText, Socket } from 'baileys-decorators';
+import {
+  Context,
+  createGuard,
+  OnText,
+  Socket,
+  type SocketClient,
+} from 'baileys-decorators';
 import { $ } from 'bun';
 
 const OnlyMe = createGuard((socket, message) => {
@@ -33,13 +38,13 @@ export class ShellHandler {
     const stdoutStr = stdout ? stdout.toString().trim() : '';
 
     if (stderrStr) {
-      await socket.replyQuote({
+      await socket.replyWithQuote({
         text: stderrStr,
       });
     }
 
     if (stdoutStr) {
-      await socket.replyQuote({
+      await socket.replyWithQuote({
         text: stdoutStr,
       });
     }
