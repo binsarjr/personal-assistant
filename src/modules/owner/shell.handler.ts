@@ -10,7 +10,7 @@ const OnlyMe = createGuard((socket, message) => {
 });
 
 const OnlyShellOn = createGuard((socket, message) => {
-  return isShellOn;
+  return isShellOn();
 });
 
 export class ShellHandler {
