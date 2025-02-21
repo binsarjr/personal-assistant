@@ -29,7 +29,7 @@ await whatsapp.initialize();
 logger.info('WhatsApp client initialized 🚀');
 
 new CronJob(
-  '0 0 7 * * *', // cronTime
+  '0 0 7,13,18,21 * * *', // cronTime
   async function () {
     const socket = await whatsapp.getClient();
     socket.sendMessage(socket.user!.id, {
