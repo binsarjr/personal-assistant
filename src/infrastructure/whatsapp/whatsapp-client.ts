@@ -1,6 +1,5 @@
 import { logger } from '$infrastructure/logger/console.logger';
 import makeInMemoryStore from '$infrastructure/whatsapp/make-in-memory-store';
-import type { SocketClient } from '$infrastructure/whatsapp/types';
 import { hidden_path } from '$support/file.support';
 import makeWASocket, {
   DisconnectReason,
@@ -14,7 +13,7 @@ import {
   type WAConnectionState,
   type WASocket,
 } from 'baileys';
-import { BaileysDecorator } from 'baileys-decorators';
+import { BaileysDecorator, type SocketClient } from 'baileys-decorators';
 import NodeCache from 'node-cache';
 import { rm } from 'node:fs/promises';
 import 'reflect-metadata';
@@ -99,7 +98,7 @@ export class WhatsappClient {
         // only if store is present
         return proto.Message.fromObject({});
       },
-    }) as SocketClient;
+    }) as unknown as SocketClient;
 
     BaileysDecorator.bind(this.client as unknown as WASocket);
     this.useStore?.bind(this.client.ev);
@@ -125,11 +124,9 @@ export class WhatsappClient {
 
         if (event.id) {
           logger.debug('Caching group metadata');
-          const metadata = await (
-            this.client.store
-              ? this.client.store.fetchGroupMetadata
-              : this.client.groupMetadata
-          )(event.id!, this.client);
+          const metadata = await (this.useStore
+            ? this.useStore.fetchGroupMetadata(event.id!, this.client! as any)
+            : this.client.groupMetadata(event.id!));
           this.groupCache.set(event.id!, metadata);
         }
       }
@@ -138,11 +135,9 @@ export class WhatsappClient {
         {
           logger.debug('Caching group metadata');
           const event = events['group-participants.update'];
-          const metadata = await (
-            this.client.store
-              ? this.client.store.fetchGroupMetadata
-              : this.client.groupMetadata
-          )(event.id, this.client);
+          const metadata = await (this.useStore
+            ? this.useStore.fetchGroupMetadata(event.id!, this.client! as any)
+            : this.client.groupMetadata(event.id!));
           this.groupCache.set(event.id, metadata);
         }
       }
