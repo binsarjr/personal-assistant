@@ -9,7 +9,7 @@ import {
   type SocketClient,
 } from 'baileys-decorators';
 
-export default class {
+export class TikTokDlHandler {
   @OnText('.tt', { matchType: 'startsWith' })
   async tt(@Socket socket: SocketClient, @Context message: WAMessage) {
     await socket.reactToProcessing();

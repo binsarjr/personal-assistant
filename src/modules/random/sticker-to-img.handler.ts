@@ -2,7 +2,7 @@ import { downloadContentBufferFromMessage } from '$support/whatsapp.support';
 import type { WAMessage } from '@whiskeysockets/baileys';
 import { Context, OnText, Socket, type SocketClient } from 'baileys-decorators';
 
-export default class {
+export class SticketToImage {
   @OnText(['.toimg', '.img'])
   async execute(@Socket socket: SocketClient, @Context message: WAMessage) {
     socket.reactToProcessing();
