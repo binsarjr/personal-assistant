@@ -1,3 +1,4 @@
+import { PREFIX_COMMAND } from '$infrastructure/config/consts.config';
 import { tiktokdl } from '$services/downloader/tiktok';
 import { firstValidData } from '$support/promise.support';
 import type { WAMessage } from '@whiskeysockets/baileys';
@@ -10,7 +11,7 @@ import {
 } from 'baileys-decorators';
 
 export class TikTokDlHandler {
-  @OnText('.tt', { matchType: 'startsWith' })
+  @OnText(PREFIX_COMMAND + 'tt', { matchType: 'startsWith' })
   async tt(@Socket socket: SocketClient, @Context message: WAMessage) {
     await socket.reactToProcessing();
     const captions = getMessageCaption(message.message!);

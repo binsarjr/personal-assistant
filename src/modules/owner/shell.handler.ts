@@ -1,3 +1,4 @@
+import { SHELL_COMMAND } from '$infrastructure/config/consts.config';
 import { isShellOn } from '$support/boolean.support';
 import { getMessageCaption } from '$support/whatsapp.support';
 import type { WAMessage } from '@whiskeysockets/baileys';
@@ -19,7 +20,7 @@ const OnlyShellOn = createGuard((socket, message) => {
 });
 
 export class ShellHandler {
-  @OnText('$', {
+  @OnText(SHELL_COMMAND, {
     matchType: 'startsWith',
 
     guard: [OnlyMe, OnlyShellOn],

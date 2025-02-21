@@ -1,3 +1,4 @@
+import { PREFIX_COMMAND } from '$infrastructure/config/consts.config';
 import { downloadContentBufferFromMessage } from '$support/whatsapp.support';
 import { jidNormalizedUser, type WAMessage } from '@whiskeysockets/baileys';
 import {
@@ -10,16 +11,23 @@ import {
 import Sticker, { StickerTypes } from 'wa-sticker-formatter';
 
 export class ImgToStickerHandler {
-  @OnText(['.s', '.sticker', '.stiker'], {
-    guard: [
-      createGuard((socket, message) => {
-        return (
-          jidNormalizedUser(socket.user!.id) !==
-          jidNormalizedUser(message.key.remoteJid!)
-        );
-      }),
+  @OnText(
+    [
+      PREFIX_COMMAND + 's',
+      PREFIX_COMMAND + 'sticker',
+      PREFIX_COMMAND + 'stiker',
     ],
-  })
+    {
+      guard: [
+        createGuard((socket, message) => {
+          return (
+            jidNormalizedUser(socket.user!.id) !==
+            jidNormalizedUser(message.key.remoteJid!)
+          );
+        }),
+      ],
+    },
+  )
   async execute(@Socket socket: SocketClient, @Context message: WAMessage) {
     socket.reactToProcessing();
 

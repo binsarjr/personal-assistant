@@ -1,4 +1,7 @@
-import { ReadMoreUnicode } from '$infrastructure/config/consts.config';
+import {
+  PREFIX_COMMAND,
+  ReadMoreUnicode,
+} from '$infrastructure/config/consts.config';
 import { replaceRandomSpacesToUnicode } from '$support/string.support';
 import type { WAMessage } from '@whiskeysockets/baileys';
 import type { SocketClient } from 'baileys-decorators';
@@ -7,7 +10,7 @@ import { $ } from 'bun';
 import os from 'os';
 
 export class PingHandler {
-  @OnText('.ping')
+  @OnText(PREFIX_COMMAND + 'ping')
   async ping(@Socket socket: SocketClient, @Context message: WAMessage) {
     const totalMemory = os.totalmem();
 

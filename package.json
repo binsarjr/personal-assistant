@@ -15,7 +15,7 @@
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "@whiskeysockets/baileys": "^6.7.13",
-    "baileys-decorators": "^0.3.0",
+    "baileys-decorators": "https://github.com/binsarjr/baileys-decorators",
     "cheerio": "^1.0.0",
     "cron": "^4.0.0",
     "libsignal": "^2.0.1",
@@ -27,6 +27,7 @@
     "wa-sticker-formatter": "^4.4.4"
   },
   "trustedDependencies": [
+    "baileys-decorators",
     "esbuild",
     "protobufjs",
     "sharp"

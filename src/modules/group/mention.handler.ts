@@ -1,3 +1,4 @@
+import { PREFIX_COMMAND } from '$infrastructure/config/consts.config';
 import { logger } from '$infrastructure/logger/console.logger';
 import wa_store from '$infrastructure/whatsapp/whatsapp-store';
 import { replaceRandomSpacesToUnicode } from '$support/string.support';
@@ -104,7 +105,7 @@ export class MentionHandler {
     await socket.reactToDone();
   }
 
-  @OnText('.tagall')
+  @OnText(PREFIX_COMMAND + 'tagall')
   async handlerAll(@Socket socket: SocketClient, @Context message: WAMessage) {
     if (!isJidGroup(message.key.remoteJid!)) {
       return;
@@ -112,7 +113,7 @@ export class MentionHandler {
     await this.handler(socket, message, 'all');
   }
 
-  @OnText('.tagadmin')
+  @OnText(PREFIX_COMMAND + 'tagadmin')
   async handlerMentionAdmin(
     @Socket socket: SocketClient,
     @Context message: WAMessage,
@@ -123,7 +124,7 @@ export class MentionHandler {
     await this.handler(socket, message, 'admin');
   }
 
-  @OnText('.tagmember')
+  @OnText(PREFIX_COMMAND + 'tagmember')
   async handlerMentionMember(
     @Socket socket: SocketClient,
     @Context message: WAMessage,

@@ -1,3 +1,4 @@
+import { PREFIX_COMMAND } from '$infrastructure/config/consts.config';
 import wa_store from '$infrastructure/whatsapp/whatsapp-store';
 import {
   type WAMessage,
@@ -7,7 +8,7 @@ import {
 import { Context, OnText, Socket, type SocketClient } from 'baileys-decorators';
 
 export class ExtractPhoneNumberHandler {
-  @OnText('.phones')
+  @OnText(PREFIX_COMMAND + 'phones')
   async execute(@Socket socket: SocketClient, @Context message: WAMessage) {
     if (!message.key.fromMe) {
       return;
