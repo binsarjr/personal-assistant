@@ -4,10 +4,13 @@ import {
   getMessageQutoedCaption,
 } from '$support/whatsapp.support';
 import {
+  FunctionCallingMode,
   GoogleGenerativeAI,
   HarmBlockThreshold,
   HarmCategory,
+  SchemaType,
   type Content,
+  type GenerateContentCandidate,
   type Part,
 } from '@google/generative-ai';
 import { jidNormalizedUser, type WAMessage } from '@whiskeysockets/baileys';
@@ -20,6 +23,10 @@ import {
   type SocketClient,
 } from 'baileys-decorators';
 
+enum FunctionCallingName {
+  NULIS = 'nulis',
+}
+
 export class GeminiHandler {
   systemInstruction = `
 Jawab dengan singkat dengan gaya bahasa gaul indonesia, namamu sendiri adalah Nierma.
@@ -27,7 +34,13 @@ Supaya lebih natural gunakanlah gaya bahasa alami manusia.
 
 Use this when value is true:
 emoji: ${Math.random() > 0.5}
+
+FunctionCallingTool:
+- use without ask question
+
   `.trim();
+
+  socket: SocketClient | undefined;
 
   @OnText(PREFIX_COMMAND + 'ai', {
     matchType: 'startsWith',
@@ -43,11 +56,98 @@ emoji: ${Math.random() > 0.5}
     ],
   })
   async gemini(@Socket socket: SocketClient, @Context msg: WAMessage) {
+    this.socket = socket;
+    const response = await this.model().generateContent({
+      contents: await this.resolveUserRequest(socket, msg),
+    });
+
+    const responseText = response.response.text().trim();
+    if (responseText.length > 0) {
+      socket.replyWithQuote({
+        text: responseText,
+      });
+    }
+
+    await this.resolveCondidatesFunction(response.response.candidates || []);
+  }
+
+  async nulis(
+    args: { text: string } & Partial<{
+      name: string;
+      date: string;
+      subject: string;
+      class: string;
+    }>,
+  ) {
+    const url = new URL('https://fastrestapis.fasturl.cloud/tool/texttonote?');
+    url.searchParams.append('format', 'png');
+    url.searchParams.append('content', args.text);
+    url.searchParams.append('name', args?.name || ' ');
+    url.searchParams.append('date', args?.date || ' ');
+    url.searchParams.append('subject', args?.subject || ' ');
+    url.searchParams.append('classroom', args?.class || ' ');
+    url.searchParams.append('font', 'MyHandsareHoldingYou.ttf');
+    await this.socket?.replyWithQuote({
+      image: {
+        url: url.toString(),
+      },
+    });
+  }
+
+  async resolveCondidatesFunction(candidates: GenerateContentCandidate[] = []) {
+    for (const candidate of candidates || []) {
+      for (const part of candidate.content.parts) {
+        if (part.functionCall) {
+          // @ts-ignore
+          await this[part.functionCall.name](part.functionCall.args);
+        }
+      }
+    }
+  }
+
+  async resolveUserRequest(socket: SocketClient, msg: WAMessage) {
     const caption = getMessageCaption(msg.message!)
       .replace(/^.ai\s+/, '')
       .trim();
+    const contents = await this.resolveContents(socket, msg);
 
+    const image = msg?.message?.imageMessage;
+    const anyImage = !!image;
+
+    const lastPart: Part[] = [];
+    if (anyImage) {
+      const media = (await downloadContentBufferFromMessage(
+        {
+          directPath: image.directPath,
+          mediaKey: image.mediaKey,
+          url: image.url,
+        },
+        'image',
+      )) as Buffer;
+      lastPart.push({
+        inlineData: {
+          data: Buffer.from(media).toString('base64'),
+          mimeType: 'image/jpeg',
+        },
+      });
+    }
+
+    if (caption)
+      lastPart.push({
+        text: caption,
+      });
+
+    contents.push({
+      role: 'user',
+      parts: lastPart,
+    });
+
+    return contents;
+  }
+
+  async resolveContents(socket: SocketClient, msg: WAMessage) {
     const contents: Content[] = [];
+
     const quoted = msg?.message?.extendedTextMessage?.contextInfo;
 
     if (quoted?.quotedMessage) {
@@ -117,45 +217,7 @@ emoji: ${Math.random() > 0.5}
         }
       }
     }
-
-    const image = msg?.message?.imageMessage;
-    const anyImage = !!image;
-
-    const lastPart: Part[] = [];
-    if (anyImage) {
-      const media = (await downloadContentBufferFromMessage(
-        {
-          directPath: image.directPath,
-          mediaKey: image.mediaKey,
-          url: image.url,
-        },
-        'image',
-      )) as Buffer;
-      lastPart.push({
-        inlineData: {
-          data: Buffer.from(media).toString('base64'),
-          mimeType: 'image/jpeg',
-        },
-      });
-    }
-
-    if (caption)
-      lastPart.push({
-        text: caption,
-      });
-
-    contents.push({
-      role: 'user',
-      parts: lastPart,
-    });
-
-    const resptext = await this.model().generateContent({
-      contents,
-    });
-
-    socket.replyWithQuote({
-      text: await resptext.response.text().trim(),
-    });
+    return contents;
   }
 
   model() {
@@ -186,6 +248,39 @@ emoji: ${Math.random() > 0.5}
           threshold: HarmBlockThreshold.BLOCK_NONE,
         },
       ],
+      tools: [
+        {
+          functionDeclarations: [
+            {
+              name: FunctionCallingName.NULIS,
+              description: 'untuk menulis di kertas',
+              parameters: {
+                type: SchemaType.OBJECT,
+                properties: {
+                  name: {
+                    type: SchemaType.STRING,
+                  },
+                  text: {
+                    type: SchemaType.STRING,
+                  },
+                  date: {
+                    type: SchemaType.STRING,
+                  },
+                  subject: {
+                    type: SchemaType.STRING,
+                  },
+                  class: {
+                    type: SchemaType.STRING,
+                  },
+                },
+                required: ['text'],
+              },
+            },
+          ],
+        },
+      ],
+      toolConfig: { functionCallingConfig: { mode: FunctionCallingMode.AUTO } },
+
       // generationConfig: {
       //   temperature: 1,
       //   topP: 0.95,
