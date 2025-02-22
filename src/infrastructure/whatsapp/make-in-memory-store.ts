@@ -80,6 +80,11 @@ export default (config: BaileysInMemoryStoreConfig) => {
       [_: string]: proto.IWebMessageInfo;
     };
   } = {};
+  const editedMessages: {
+    [_: string]: {
+      [_: string]: proto.IWebMessageInfo;
+    };
+  } = {};
   const contacts: { [_: string]: Contact } = {};
   const groupMetadata: { [_: string]: GroupMetadata } = {};
   const presences: { [id: string]: { [participant: string]: PresenceData } } =
@@ -319,7 +324,12 @@ export default (config: BaileysInMemoryStoreConfig) => {
 
           deletedMessages[jid][key.id!] = structuredClone(list.get(key?.id!)!);
 
-          logger.debug('got revoke message skipped');
+          logger.debug('got revoke message');
+        } else if (update.message?.editedMessage) {
+          editedMessages[jid] = editedMessages[jid] || {};
+          editedMessages[jid][key.id!] = structuredClone(list.get(key?.id!)!);
+
+          logger.debug('got edited message');
         }
 
         const result = list.updateAssign(key.id!, update);
@@ -451,6 +461,15 @@ export default (config: BaileysInMemoryStoreConfig) => {
       delete deletedMessages[jid]?.[id];
       if (Object.keys(deletedMessages[jid]).length == 0) {
         delete deletedMessages[jid];
+      }
+      return data;
+    },
+    getEditedMessage: (jid: string, id: string) => {
+      const data = structuredClone(editedMessages[jid]?.[id]);
+
+      delete editedMessages[jid]?.[id];
+      if (Object.keys(editedMessages[jid]).length == 0) {
+        delete editedMessages[jid];
       }
       return data;
     },

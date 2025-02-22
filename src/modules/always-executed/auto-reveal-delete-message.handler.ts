@@ -84,7 +84,7 @@ export class AntiDeletedMessageHandler {
         );
         response.push('Waktu Dihapus: ' + formatterDate.format(new Date()));
 
-        const sended = await this.resolveDeletedMessage(socket, message);
+        const sended = await this.resolveSendMessage(socket, message);
         if (sended) {
           await socket.sendMessage(
             socket.user!.id,
@@ -98,7 +98,7 @@ export class AntiDeletedMessageHandler {
     }
   }
 
-  async resolveDeletedMessage(
+  async resolveSendMessage(
     socket: SocketClient,
     message: WAMessage,
   ): Promise<any> {
@@ -106,27 +106,27 @@ export class AntiDeletedMessageHandler {
 
     switch (getContentType(message.message!)) {
       case 'ephemeralMessage':
-        return this.resolveDeletedMessage(
+        return this.resolveSendMessage(
           socket,
           message.message?.ephemeralMessage as WAMessage,
         );
       case 'viewOnceMessage':
-        return this.resolveDeletedMessage(
+        return this.resolveSendMessage(
           socket,
           message.message?.viewOnceMessage as WAMessage,
         );
       case 'viewOnceMessageV2':
-        return this.resolveDeletedMessage(
+        return this.resolveSendMessage(
           socket,
           message.message?.viewOnceMessageV2 as WAMessage,
         );
       case 'viewOnceMessageV2Extension':
-        return this.resolveDeletedMessage(
+        return this.resolveSendMessage(
           socket,
           message.message?.viewOnceMessageV2Extension as WAMessage,
         );
       case 'documentWithCaptionMessage':
-        return this.resolveDeletedMessage(
+        return this.resolveSendMessage(
           socket,
           message.message?.documentWithCaptionMessage as WAMessage,
         );
