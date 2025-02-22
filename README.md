@@ -27,3 +27,15 @@ more efficient functionality.
 First, install [Bun](https://bun.sh/docs/installation).
 
 ### Install dependencies:
+```bash
+bun install
+```
+
+### Running the application
+```bash
+# development
+bun run start
+
+# watch mode
+bun run dev
+```
