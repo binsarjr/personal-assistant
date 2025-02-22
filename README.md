@@ -14,7 +14,7 @@ more efficient functionality.
 - Mention all group admins
 - Mention all group members
 - Mention everyone in the group
-- Auto-reavela and Track edited messages, allowing visibility of messages before they were edited
+- Auto-Reveal and Track edited messages, allowing visibility of messages before they were edited
 
 
 ## Random Features
