@@ -1,36 +1,29 @@
 # Personal Assistant
 
-ini adalah project personal assistant yang dibuat dengan typescript dan bun.
-Personal asistant ini dibuat untuk memudahkan penggunaan whatsapp dengan
-menggunakan fitur whatsapp action. Fitur whatsapp action ini dapat digunakan
-untuk membuat fitur yang sama seperti fitur whatsapp biasa, tetapi dengan fitur
-yang lebih mudah dan lebih efisien.
+This is a personal assistant project created with TypeScript and Bun.
+This personal assistant is designed to facilitate the use of WhatsApp by
+utilizing the WhatsApp action feature. This WhatsApp action feature can be used
+to create features similar to regular WhatsApp features, but with easier and
+more efficient functionality.
 
-## Fitur
+## Features
 
-- Anti pesan sekali lihat
-- Anti pesan yang dihapus
-- Anti story yang dihapus
-- Mention semua admin grup
-- Mention semua member grup
-- Mention semua orang yang ada di grup
+- Auto-Reveal view-once messages
+- Auto-Reveal Deleted Message
+- Auto-Reveal deleted stories
+- Mention all group admins
+- Mention all group members
+- Mention everyone in the group
+- Auto-reavela and Track edited messages, allowing visibility of messages before they were edited
 
-## Instalasi
 
-Install [bun](https://bun.sh/docs/installation) terlebih dahulu.
+## Random Features
+- Tiktok Downloader
+- Simple Sticker Maker
+- Gemini
+
+## Installation
+
+First, install [Bun](https://bun.sh/docs/installation).
 
 ### Install dependencies:
-
-```bash
-bun install
-```
-
-### Menjalankan aplikasi
-
-```bash
-# development
-bun run start
-
-# watch mode
-bun run dev
-```
