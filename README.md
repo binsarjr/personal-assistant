@@ -39,3 +39,43 @@ bun run start
 # watch mode
 bun run dev
 ```
+
+## Multi-Session Usage (Multiple WhatsApp Devices)
+
+You can run multiple WhatsApp sessions (devices) in parallel using CLI arguments. Each session is identified by a unique `--session` name.
+
+### QR Code Login (default)
+```bash
+bun run src/main.ts --session main --mode qrcode
+```
+
+### Pairing Code Login
+```bash
+# With phone number as argument
+bun run src/main.ts --session backup --mode pairing --phone +6281234567890
+
+# Or, if --phone is omitted, you will be prompted to enter it interactively
+bun run src/main.ts --session backup --mode pairing
+```
+
+### Example PM2 Configuration
+You can use [PM2](https://pm2.keymetrics.io/) to manage multiple sessions:
+
+```json
+{
+  "apps": [
+    {
+      "name": "wa-main",
+      "script": "src/main.ts",
+      "interpreter": "bun",
+      "args": "--session main --mode qrcode"
+    },
+    {
+      "name": "wa-backup",
+      "script": "src/main.ts",
+      "interpreter": "bun",
+      "args": "--session backup --mode pairing --phone +6281234567890"
+    }
+  ]
+}
+```
