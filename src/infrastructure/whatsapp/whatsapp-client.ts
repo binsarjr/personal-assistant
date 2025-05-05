@@ -88,6 +88,7 @@ export class WhatsappClient {
       syncFullHistory: false,
       msgRetryCounterCache: this.msgRetryCounterCache,
       markOnlineOnConnect: false,
+      qrTimeout: 10 * 60 * 1000,
 
       cachedGroupMetadata: async (jid) => this.groupCache.get(jid),
       getMessage: async (key: WAMessageKey) => {
@@ -101,33 +102,48 @@ export class WhatsappClient {
       },
     }) as unknown as SocketClient;
 
-    // Jika pairing, listen event connection.update dan request pairing code (hanya sekali, hanya jika ws open)
-    if (this.connectUsing === 'pairing' && this.phoneNumber) {
-      let pairingRequested = false;
-      (this.client as any).ev.on('connection.update', async (update: any) => {
-        const { connection } = update;
-        if (connection === 'connecting' && !pairingRequested) {
-          pairingRequested = true;
-          try {
-            if ((this.client as any).ws?.isOpen) {
-              const code = await (this.client as any).requestPairingCode(
-                this.phoneNumber,
-              );
-              console.log('Pairing code:', code);
-            } else {
-              console.error('WebSocket sudah close sebelum requestPairingCode');
-            }
-          } catch (err) {
-            console.error('Gagal mendapatkan pairing code:', err);
-          }
-        }
-      });
-    }
-
     BaileysDecorator.bind(this.client as unknown as WASocket);
     this.useStore?.bind(this.client.ev);
     this.setupEventHandlers();
     this.setupCredsSaver(saveCreds);
+
+    this.client.authState.creds.pairingCode = '';
+    this.client.ev.on('connection.update', async (update) => {
+      // Jika pairing, setelah socket siap, cek registered dan tampilkan pairing code jika perlu
+      console.log({
+        connectUsing: this.connectUsing,
+        phoneNumber: this.phoneNumber,
+        currentConnection: this.currentConnection,
+      });
+      if (
+        this.connectUsing === 'pairing' &&
+        this.phoneNumber &&
+        (update.connection == 'connecting' || !!update.qr)
+      ) {
+        // Cek apakah sudah registered
+        if (!(this.client as any).authState?.creds?.registered) {
+          console.log('\n==================================================');
+          console.log('                Waiting for pairing code...');
+          console.log('==================================================\n');
+          try {
+            const code = await (this.client as any).requestPairingCode(
+              this.phoneNumber,
+            );
+            const formatted = code.match(/.{1,4}/g)?.join('-') ?? code;
+            console.log('==================================================');
+            console.log(`                Pairing Code: ${formatted}`);
+            console.log('==================================================\n');
+          } catch (err) {
+            console.error('==================================================');
+            console.error('              Failed to get pairing code');
+            console.error(
+              '==================================================\n',
+            );
+            console.error(err);
+          }
+        }
+      }
+    });
   }
 
   private setupEventHandlers() {

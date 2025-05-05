@@ -1,8 +1,7 @@
 process.env.TZ = 'Asia/Jakarta';
 Bun.env.TZ = 'Asia/Jakarta';
 
-import { $ } from 'bun';
-await $`clear`.nothrow();
+// await $`clear`.nothrow();
 
 BaileysDecorator.loadDecorators([base_path('src/modules/**/*.handler.ts')]);
 
@@ -15,12 +14,12 @@ import { Cron } from 'croner';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import minimist from 'minimist';
 
-setInterval(
-  async () => {
-    await $`clear`.nothrow();
-  },
-  10 * 60 * 1000,
-);
+// setInterval(
+//   async () => {
+//     await $`clear`.nothrow();
+//   },
+//   10 * 60 * 1000,
+// );
 
 let name = Bun.env.BOT_NAME || 'personal-asistant';
 // Parse CLI args
