@@ -42,6 +42,7 @@ export class WhatsappClient {
     private readonly useStore:
       | ReturnType<typeof makeInMemoryStore>
       | undefined = undefined,
+    private readonly phoneNumber?: string,
   ) {
     const pathlocation = hidden_path(deviceId, 'baileys_store_multi.json');
     this.useStore?.readFromFile(pathlocation);
@@ -99,6 +100,23 @@ export class WhatsappClient {
         return proto.Message.fromObject({});
       },
     }) as unknown as SocketClient;
+
+    // Jika pairing, listen event connection.update dan request pairing code
+    if (this.connectUsing === 'pairing' && this.phoneNumber) {
+      (this.client as any).ev.on('connection.update', async (update: any) => {
+        const { connection, qr } = update;
+        if (connection === 'connecting' || !!qr) {
+          try {
+            const code = await (this.client as any).requestPairingCode(
+              this.phoneNumber,
+            );
+            console.log('Pairing code:', code);
+          } catch (err) {
+            console.error('Gagal mendapatkan pairing code:', err);
+          }
+        }
+      });
+    }
 
     BaileysDecorator.bind(this.client as unknown as WASocket);
     this.useStore?.bind(this.client.ev);

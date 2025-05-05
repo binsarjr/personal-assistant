@@ -4,24 +4,25 @@
     "": {
       "name": "bunshint-agent",
       "dependencies": {
-        "@google/generative-ai": "latest",
-        "@whiskeysockets/baileys": "latest",
+        "@google/generative-ai": "^0.24.1",
+        "@whiskeysockets/baileys": "^6.7.16",
         "baileys-decorators": "https://github.com/binsarjr/baileys-decorators",
-        "cheerio": "latest",
-        "croner": "latest",
-        "libsignal": "latest",
-        "node-cache": "latest",
-        "pino-pretty": "latest",
-        "qrcode-terminal": "latest",
-        "reflect-metadata": "latest",
-        "sharp": "latest",
-        "wa-sticker-formatter": "latest",
+        "cheerio": "^1.0.0",
+        "croner": "^9.0.0",
+        "libphonenumber-js": "^1.12.7",
+        "libsignal": "^2.0.1",
+        "node-cache": "^5.1.2",
+        "pino-pretty": "^13.0.0",
+        "qrcode-terminal": "^0.12.0",
+        "reflect-metadata": "^0.2.2",
+        "sharp": "^0.34.1",
+        "wa-sticker-formatter": "^4.4.4",
       },
       "devDependencies": {
-        "@types/bun": "latest",
+        "@types/bun": "^1.2.12",
       },
       "peerDependencies": {
-        "typescript": "latest",
+        "typescript": "^5.8.3",
       },
     },
   },
@@ -429,7 +430,7 @@
 
     "levn": ["levn@0.4.1", "", { "dependencies": { "prelude-ls": "^1.2.1", "type-check": "~0.4.0" } }, "sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ=="],
 
-    "libphonenumber-js": ["libphonenumber-js@1.11.18", "", {}, "sha512-okMm/MCoFrm1vByeVFLBdkFIXLSHy/AIK2AEGgY3eoicfWZeOZqv3GfhtQgICkzs/tqorAMm3a4GBg5qNCrqzg=="],
+    "libphonenumber-js": ["libphonenumber-js@1.12.7", "", {}, "sha512-0nYZSNj/QEikyhcM5RZFXGlCB/mr4PVamnT1C2sKBnDDTYndrvbybYjvg+PMqAndQHlLbwQ3socolnL3WWTUFA=="],
 
     "libsignal": ["libsignal@2.0.1", "", { "dependencies": { "protobufjs": "6.8.8" } }, "sha512-kqdl/BK5i0WCa4NxhtiBsjSzztB/FtUp3mVVLKBFicWH8rDsq95tEIqNcCaVlflLxOm6T/HRb/zv8IsCe7aopA=="],
 
@@ -665,7 +666,11 @@
 
     "@typescript-eslint/visitor-keys/eslint-visitor-keys": ["eslint-visitor-keys@3.4.3", "", {}, "sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag=="],
 
+    "@whiskeysockets/baileys/libphonenumber-js": ["libphonenumber-js@1.11.18", "", {}, "sha512-okMm/MCoFrm1vByeVFLBdkFIXLSHy/AIK2AEGgY3eoicfWZeOZqv3GfhtQgICkzs/tqorAMm3a4GBg5qNCrqzg=="],
+
     "@whiskeysockets/baileys/libsignal": ["@whiskeysockets/libsignal-node@github:WhiskeySockets/libsignal-node#d13b662", { "dependencies": { "curve25519-js": "^0.0.4", "protobufjs": "6.8.8" } }, "WhiskeySockets-libsignal-node-d13b662"],
+
+    "baileys/libphonenumber-js": ["libphonenumber-js@1.11.18", "", {}, "sha512-okMm/MCoFrm1vByeVFLBdkFIXLSHy/AIK2AEGgY3eoicfWZeOZqv3GfhtQgICkzs/tqorAMm3a4GBg5qNCrqzg=="],
 
     "baileys/libsignal": ["@whiskeysockets/libsignal-node@github:WhiskeySockets/libsignal-node#1bd9275", { "dependencies": { "curve25519-js": "^0.0.4", "protobufjs": "6.8.8" } }, "WhiskeySockets-libsignal-node-1bd9275"],
 
