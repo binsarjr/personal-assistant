@@ -7,26 +7,25 @@ export class HelpHandler {
   @OnText(PREFIX_COMMAND + 'help')
   async help(@Socket socket: SocketClient, @Context message: WAMessage) {
     const helpText = `
-*Personal Assistant WhatsApp Bot*
+*🤖 Personal Assistant WhatsApp Bot*
 
-*Fitur Utama:*
-• .help — Menampilkan menu ini
-• .ping — Info server & status bot
-• .ai <teks> — Tanya Gemini AI
-• .s / .sticker / .stiker — Gambar ke stiker
-• .tagall / .tagadmin / .tagmember — Mention grup
-• .phones — List nomor grup
+_Halo! Berikut beberapa fitur utama yang bisa kamu gunakan:_
 
-*Fitur Otomatis:*
-• Auto-reveal view once & deleted message
-• Anti edit message
-• Downloader TikTok
+*📋 Menu Perintah:*
+• *.help* — Tampilkan menu bantuan ini
+• *.ping* — Info status bot & server
+• *.ai <teks>* — Tanya Gemini AI (jawaban cerdas)
+• *.s* / *.sticker* / *.stiker* — Ubah gambar jadi stiker
+• *.tagall* — Mention semua anggota grup
+• *.tagadmin* — Mention admin grup
+• *.tagmember* — Mention member non-admin
+• *.phones* — Lihat daftar nomor anggota grup
+• *.stimg* — Ubah stiker jadi gambar
 
-*Mode Multi-Session & Pairing*
-• Jalankan banyak sesi WhatsApp sekaligus
-• Mendukung login QR & pairing code
-
-_Bot by binsarjr_
+*✨ Fitur Otomatis:*
+• Auto-reveal pesan view once & pesan terhapus
+• Anti edit message (lihat pesan sebelum diedit)
+• Downloader TikTok (download video TikTok)
 `;
     socket.replyWithQuote({ text: helpText });
   }
