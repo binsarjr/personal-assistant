@@ -80,6 +80,28 @@ You can use [PM2](https://pm2.keymetrics.io/) to manage multiple sessions:
 }
 ```
 
+### Running with PM2 (Without Config File)
+
+You can also start sessions directly from the command line without a config file:
+
+#### QR Code Session
+```sh
+pm2 start src/main.ts --interpreter bun --name wa-main -- --session main --mode qrcode
+```
+
+#### Pairing Code Session
+```sh
+pm2 start src/main.ts --interpreter bun --name wa-backup -- --session backup --mode pairing --phone +6281234567890
+```
+
+You can repeat the command above with different `--name`, `--session`, and arguments for as many sessions as you need.
+
+#### Useful PM2 Commands
+- `pm2 ls` — List all running sessions
+- `pm2 logs wa-main` — Show logs for a session
+- `pm2 restart wa-main` — Restart a session
+- `pm2 delete wa-main` — Remove a session
+
 ## Release Notes
 
 ### v4.1.0
