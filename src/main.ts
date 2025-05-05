@@ -13,6 +13,7 @@ import { base_path } from '$support/file.support';
 import { BaileysDecorator } from 'baileys-decorators';
 import { Cron } from 'croner';
 import { parsePhoneNumber } from 'libphonenumber-js';
+import minimist from 'minimist';
 
 setInterval(
   async () => {
@@ -22,18 +23,27 @@ setInterval(
 );
 
 let name = Bun.env.BOT_NAME || 'personal-asistant';
-// Cek argumen CLI
-const usePairingCode = process.argv.includes('--pairing-code');
-const connectUsing = usePairingCode ? 'pairing' : 'qrcode';
-let phoneNumber: string | undefined = undefined;
+// Parse CLI args
+const args = minimist(process.argv.slice(2));
+const deviceId = args.session || args.s;
+const mode = args.mode || args.m;
+let phoneNumber: string | undefined = args.phone || args.p;
 
-if (usePairingCode) {
+if (!deviceId) {
+  console.error('Argumen --session wajib diisi!');
+  process.exit(1);
+}
+if (!mode || (mode !== 'qrcode' && mode !== 'pairing')) {
+  console.error('Argumen --mode wajib diisi (qrcode|pairing)!');
+  process.exit(1);
+}
+if (mode === 'pairing' && !phoneNumber) {
+  // Prompt jika --phone tidak ada
   const readline = require('readline');
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
   });
-
   function askPhoneNumber(): Promise<string> {
     return new Promise((resolve) => {
       rl.question(
@@ -44,7 +54,6 @@ if (usePairingCode) {
       );
     });
   }
-
   let valid = false;
   while (!valid) {
     // eslint-disable-next-line no-await-in-loop
@@ -63,8 +72,17 @@ if (usePairingCode) {
   }
   rl.close();
 }
+if (mode === 'pairing' && !phoneNumber) {
+  console.error('Argumen --phone wajib diisi untuk mode pairing!');
+  process.exit(1);
+}
 
-const whatsapp = new WhatsappClient(name, connectUsing, wa_store, phoneNumber);
+console.log(`[${deviceId}] Starting WhatsApp client in mode: ${mode}`);
+if (mode === 'pairing') {
+  console.log(`[${deviceId}] Menggunakan nomor: ${phoneNumber}`);
+}
+
+const whatsapp = new WhatsappClient(deviceId, mode, wa_store, phoneNumber);
 await whatsapp.initialize();
 
 logger.info('WhatsApp client initialized 🚀');
