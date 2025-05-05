@@ -89,9 +89,3 @@ You can use [PM2](https://pm2.keymetrics.io/) to manage multiple sessions:
 - Pairing code login dengan validasi nomor telepon (libphonenumber-js)
 - Dokumentasi penggunaan multi-sesi dan integrasi PM2
 - Perbaikan dan update dependensi
-
----
-
-## Documentation
-
-Lihat seluruh instruksi penggunaan, fitur, dan setup di README ini. Untuk pertanyaan lebih lanjut atau kontribusi, silakan buka issue atau pull request di repository ini.
