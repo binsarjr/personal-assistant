@@ -1,5 +1,6 @@
 {
   "name": "bunshint-agent",
+  "version": "4.1.0",
   "module": "index.ts",
   "type": "module",
   "scripts": {
