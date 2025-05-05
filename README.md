@@ -79,3 +79,19 @@ You can use [PM2](https://pm2.keymetrics.io/) to manage multiple sessions:
   ]
 }
 ```
+
+## Release Notes
+
+### v4.1.0
+- Multi-session WhatsApp client: jalankan beberapa device sekaligus dengan argumen CLI (`--session`, `--mode`, `--phone`)
+- Migrasi cronjob ke library croner (lebih efisien dan modern)
+- CLI argument parsing dengan minimist
+- Pairing code login dengan validasi nomor telepon (libphonenumber-js)
+- Dokumentasi penggunaan multi-sesi dan integrasi PM2
+- Perbaikan dan update dependensi
+
+---
+
+## Documentation
+
+Lihat seluruh instruksi penggunaan, fitur, dan setup di README ini. Untuk pertanyaan lebih lanjut atau kontribusi, silakan buka issue atau pull request di repository ini.
