@@ -5,10 +5,11 @@
       "name": "bunshint-agent",
       "dependencies": {
         "@google/generative-ai": "^0.21.0",
-        "@whiskeysockets/baileys": "^6.7.13",
+        "@whiskeysockets/baileys": "^6.7.16",
         "baileys-decorators": "https://github.com/binsarjr/baileys-decorators",
         "cheerio": "^1.0.0",
-        "cron": "^4.0.0",
+        "cron": "^4.3.0",
+        "croner": "^9.0.0",
         "libsignal": "^2.0.1",
         "node-cache": "^5.1.2",
         "pino-pretty": "^13.0.0",
@@ -262,6 +263,8 @@
     "content-type": ["content-type@1.0.5", "", {}, "sha512-nTjqfcBFEipKdXCv4YDQWCfmcLZKm81ldF0pAopTvyrFGVbcR6P/VAAd5G7N+0tTr8QqiU0tFadD6FK4NtJwOA=="],
 
     "cron": ["cron@4.3.0", "", { "dependencies": { "@types/luxon": "~3.6.0", "luxon": "~3.6.0" } }, "sha512-ciiYNLfSlF9MrDqnbMdRWFiA6oizSF7kA1osPP9lRzNu0Uu+AWog1UKy7SkckiDY2irrNjeO6qLyKnXC8oxmrw=="],
+
+    "croner": ["croner@9.0.0", "", {}, "sha512-onMB0OkDjkXunhdW9htFjEhqrD54+M94i6ackoUkjHKbRnXdyEyKRelp4nJ1kAz32+s27jP1FsebpJCVl0BsvA=="],
 
     "cross-spawn": ["cross-spawn@7.0.6", "", { "dependencies": { "path-key": "^3.1.0", "shebang-command": "^2.0.0", "which": "^2.0.1" } }, "sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA=="],
 
@@ -666,8 +669,6 @@
     "@typescript-eslint/visitor-keys/eslint-visitor-keys": ["eslint-visitor-keys@3.4.3", "", {}, "sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag=="],
 
     "@whiskeysockets/baileys/libsignal": ["@whiskeysockets/libsignal-node@github:WhiskeySockets/libsignal-node#d13b662", { "dependencies": { "curve25519-js": "^0.0.4", "protobufjs": "6.8.8" } }, "WhiskeySockets-libsignal-node-d13b662"],
-
-    "baileys/@whiskeysockets/eslint-config": ["@whiskeysockets/eslint-config@github:whiskeysockets/eslint-config#326b55f", { "dependencies": { "@typescript-eslint/eslint-plugin": "^7.15.0", "@typescript-eslint/parser": "^7.15.0", "eslint-plugin-simple-import-sort": "^12.1.1" }, "peerDependencies": { "eslint": "*", "typescript": ">=4" } }, "WhiskeySockets-eslint-config-326b55f"],
 
     "baileys/libsignal": ["@whiskeysockets/libsignal-node@github:WhiskeySockets/libsignal-node#1bd9275", { "dependencies": { "curve25519-js": "^0.0.4", "protobufjs": "6.8.8" } }, "WhiskeySockets-libsignal-node-1bd9275"],
 
