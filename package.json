@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "start": "bun run --bun src/main.ts",
-    "dev": "bun run --bun --watch src/main.ts"
+    "dev": "bun run --bun --watch src/main.ts",
+    "wa:logout": "rm -rf .hiddens/personal-assistant"
   },
   "devDependencies": {
     "@types/bun": "latest"
