@@ -101,16 +101,22 @@ export class WhatsappClient {
       },
     }) as unknown as SocketClient;
 
-    // Jika pairing, listen event connection.update dan request pairing code
+    // Jika pairing, listen event connection.update dan request pairing code (hanya sekali, hanya jika ws open)
     if (this.connectUsing === 'pairing' && this.phoneNumber) {
+      let pairingRequested = false;
       (this.client as any).ev.on('connection.update', async (update: any) => {
-        const { connection, qr } = update;
-        if (connection === 'connecting' || !!qr) {
+        const { connection } = update;
+        if (connection === 'connecting' && !pairingRequested) {
+          pairingRequested = true;
           try {
-            const code = await (this.client as any).requestPairingCode(
-              this.phoneNumber,
-            );
-            console.log('Pairing code:', code);
+            if ((this.client as any).ws?.isOpen) {
+              const code = await (this.client as any).requestPairingCode(
+                this.phoneNumber,
+              );
+              console.log('Pairing code:', code);
+            } else {
+              console.error('WebSocket sudah close sebelum requestPairingCode');
+            }
           } catch (err) {
             console.error('Gagal mendapatkan pairing code:', err);
           }
