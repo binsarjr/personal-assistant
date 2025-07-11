@@ -15,6 +15,9 @@ import {
 import { BaileysDecorator, type SocketClient } from 'baileys-decorators'
 import NodeCache from 'node-cache'
 import { rm } from 'node:fs/promises'
+// Tambahkan deklarasi module jika belum ada types
+// @ts-expect-error: no types for qrcode-terminal
+import qrcode from 'qrcode-terminal'
 import 'reflect-metadata'
 
 export class WhatsappClient {
@@ -63,7 +66,6 @@ export class WhatsappClient {
       },
       version,
       browser: ['Personal Assistant', 'binsarjr', '0.0.0'],
-      printQRInTerminal: this.connectUsing == 'qrcode',
       logger: logger.child({ module: 'baileys' }),
       generateHighQualityLinkPreview: true,
       syncFullHistory: false,
@@ -84,6 +86,14 @@ export class WhatsappClient {
 
     this.client.authState.creds.pairingCode = '';
     this.client.ev.on('connection.update', async (update) => {
+      // Jika mode qrcode, tampilkan QR code manual pakai qrcode-terminal
+      if (this.connectUsing === 'qrcode' && update.qr) {
+        console.log('\n==================================================');
+        console.log('                Scan this QR code:');
+        console.log('==================================================\n');
+        qrcode.generate(update.qr, { small: true });
+        console.log('\n==================================================\n');
+      }
       // Jika pairing, setelah socket siap, cek registered dan tampilkan pairing code jika perlu
       console.log({
         connectUsing: this.connectUsing,
