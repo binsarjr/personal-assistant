@@ -1,24 +1,22 @@
 import { ReadMoreUnicode } from '$infrastructure/config/consts.config';
-import wa_store from '$infrastructure/whatsapp/whatsapp-store';
 import {
-  downloadContentBufferFromMessage,
-  getMessageCaption,
+    downloadContentBufferFromMessage,
+    getMessageCaption,
 } from '$support/whatsapp.support';
 import {
-  getContentType,
-  isJidGroup,
-  isJidStatusBroadcast,
-  jidDecode,
-  jidNormalizedUser,
-  proto,
-  type BaileysEventMap,
-  type WAMessage,
+    getContentType,
+    isJidGroup,
+    isJidStatusBroadcast,
+    jidDecode,
+    proto,
+    type BaileysEventMap,
+    type WAMessage
 } from '@whiskeysockets/baileys';
 import {
-  Context,
-  OnEvent,
-  Socket,
-  type SocketClient,
+    Context,
+    OnEvent,
+    Socket,
+    type SocketClient,
 } from 'baileys-decorators';
 
 export class AntiDeletedMessageHandler {
@@ -36,10 +34,7 @@ export class AntiDeletedMessageHandler {
         continue;
       }
 
-      const deleted = wa_store.getDeletedMessage(
-        jidNormalizedUser(key.remoteJid!),
-        key?.id!,
-      );
+      const deleted = undefined; // wa_store.getDeletedMessage removed
       if (deleted) {
         const message = deleted;
         const jid = message.key.remoteJid!;

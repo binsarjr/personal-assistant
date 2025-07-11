@@ -1,7 +1,7 @@
-import makeOrderedDictionary from '$infrastructure/whatsapp/make-ordered-dictionary';
-import type KeyedDB from '@adiwajshing/keyed-db';
-import type { Comparable } from '@adiwajshing/keyed-db/lib/Types';
-import type makeWASocket from '@whiskeysockets/baileys';
+import makeOrderedDictionary from '$infrastructure/whatsapp/make-ordered-dictionary'
+import type KeyedDB from '@adiwajshing/keyed-db'
+import type { Comparable } from '@adiwajshing/keyed-db/lib/Types'
+import type makeWASocket from '@whiskeysockets/baileys'
 import {
   DEFAULT_CONNECTION_CONFIG,
   jidDecode,
@@ -20,15 +20,15 @@ import {
   type WAMessage,
   type WAMessageCursor,
   type WAMessageKey,
-} from '@whiskeysockets/baileys';
-import { ObjectRepository } from '@whiskeysockets/baileys/lib/Store/object-repository';
-import type { Label } from '@whiskeysockets/baileys/lib/Types/Label';
+} from '@whiskeysockets/baileys'
+import { ObjectRepository } from '@whiskeysockets/baileys/lib/Store/object-repository'
+import type { Label } from '@whiskeysockets/baileys/lib/Types/Label'
 import {
   LabelAssociationType,
   type LabelAssociation,
   type MessageLabelAssociation,
-} from '@whiskeysockets/baileys/lib/Types/LabelAssociation';
-import type { Logger } from 'pino';
+} from '@whiskeysockets/baileys/lib/Types/LabelAssociation'
+import type { Logger } from 'pino'
 
 type WASocket = ReturnType<typeof makeWASocket>;
 

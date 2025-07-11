@@ -7,7 +7,6 @@ BaileysDecorator.loadDecorators([base_path('src/modules/**/*.handler.ts')]);
 
 import { logger } from '$infrastructure/logger/console.logger';
 import { WhatsappClient } from '$infrastructure/whatsapp/whatsapp-client';
-import wa_store from '$infrastructure/whatsapp/whatsapp-store';
 import { base_path } from '$support/file.support';
 import { BaileysDecorator } from 'baileys-decorators';
 import { Cron } from 'croner';
@@ -81,7 +80,7 @@ if (mode === 'pairing') {
   console.log(`[${deviceId}] Menggunakan nomor: ${phoneNumber}`);
 }
 
-const whatsapp = new WhatsappClient(deviceId, mode, wa_store, phoneNumber);
+const whatsapp = new WhatsappClient(deviceId, mode, phoneNumber);
 await whatsapp.initialize();
 
 logger.info('WhatsApp client initialized 🚀');

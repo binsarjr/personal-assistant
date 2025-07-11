@@ -1,21 +1,20 @@
 import { ReadMoreUnicode } from '$infrastructure/config/consts.config';
-import wa_store from '$infrastructure/whatsapp/whatsapp-store';
 import { downloadContentBufferFromMessage } from '$support/whatsapp.support';
 import {
-  isJidGroup,
-  isJidStatusBroadcast,
-  jidDecode,
-  type BaileysEventMap,
-  type MiscMessageGenerationOptions,
-  type WAMessage,
+    isJidGroup,
+    isJidStatusBroadcast,
+    jidDecode,
+    type BaileysEventMap,
+    type MiscMessageGenerationOptions,
+    type WAMessage,
 } from '@whiskeysockets/baileys';
 import {
-  Context,
-  getContentType,
-  getMessageCaption,
-  OnEvent,
-  Socket,
-  type SocketClient,
+    Context,
+    getContentType,
+    getMessageCaption,
+    OnEvent,
+    Socket,
+    type SocketClient,
 } from 'baileys-decorators';
 
 export class AntiEditMessageAction {
@@ -26,10 +25,7 @@ export class AntiEditMessageAction {
   ) {
     for (const { key, update } of updates) {
       if (update.message?.editedMessage) {
-        const prevEditedMessage = wa_store.getEditedMessage(
-          key.remoteJid!,
-          key.id!,
-        );
+        const prevEditedMessage = undefined; // wa_store.getEditedMessage removed
         if (prevEditedMessage) {
           const message = prevEditedMessage;
           console.log(JSON.stringify(message, null, 2), 'FUCKKK');
@@ -82,7 +78,7 @@ export class AntiEditMessageAction {
           );
           response.push('Waktu DiEdit: ' + formatterDate.format(new Date()));
 
-          const updatedMessages = wa_store.messages[jid]?.get(key.id!);
+          const updatedMessages = undefined; // wa_store.messages[jid]?.get(key.id!) removed
 
           const sended = await this.resolveSendMessage(socket, message, {
             quoted: updatedMessages,

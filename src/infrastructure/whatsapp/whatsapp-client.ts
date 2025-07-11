@@ -1,22 +1,21 @@
-import { logger } from '$infrastructure/logger/console.logger';
-import makeInMemoryStore from '$infrastructure/whatsapp/make-in-memory-store';
-import { hidden_path } from '$support/file.support';
+import { logger } from '$infrastructure/logger/console.logger'
+import { hidden_path } from '$support/file.support'
 import makeWASocket, {
   DisconnectReason,
   makeCacheableSignalKeyStore,
   proto,
   useMultiFileAuthState,
   type WAMessageKey,
-} from '@whiskeysockets/baileys';
+} from '@whiskeysockets/baileys'
 import {
   fetchLatestBaileysVersion,
   type WAConnectionState,
   type WASocket,
-} from 'baileys';
-import { BaileysDecorator, type SocketClient } from 'baileys-decorators';
-import NodeCache from 'node-cache';
-import { rm } from 'node:fs/promises';
-import 'reflect-metadata';
+} from 'baileys'
+import { BaileysDecorator, type SocketClient } from 'baileys-decorators'
+import NodeCache from 'node-cache'
+import { rm } from 'node:fs/promises'
+import 'reflect-metadata'
 
 export class WhatsappClient {
   // @ts-expect-error: nullable
@@ -39,30 +38,12 @@ export class WhatsappClient {
   constructor(
     private readonly deviceId: string,
     private readonly connectUsing: 'qrcode' | 'pairing' = 'qrcode',
-    private readonly useStore:
-      | ReturnType<typeof makeInMemoryStore>
-      | undefined = undefined,
     private readonly phoneNumber?: string,
   ) {
-    const pathlocation = hidden_path(deviceId, 'baileys_store_multi.json');
-    this.useStore?.readFromFile(pathlocation);
-    // save every 10s
+    // Removed useStore and pathlocation logic
+    // save every 10s (no-op, since useStore is removed)
     setInterval(async () => {
-      const messages = this.useStore?.messages;
-      if (messages) {
-        Object.keys(messages as Object).map((jid) => {
-          const list = messages[jid];
-          list.filter((m) => {
-            const messageTime = +(m.messageTimestamp || 0);
-
-            const oneWeekInSeconds = 7 * 24 * 60 * 60;
-            const currentTime = Math.floor(Date.now() / 1000);
-
-            return currentTime - messageTime <= oneWeekInSeconds;
-          });
-        });
-      }
-      this.useStore?.writeToFile(pathlocation);
+      // No operation needed
     }, 10_000);
   }
 
@@ -88,22 +69,16 @@ export class WhatsappClient {
       syncFullHistory: false,
       msgRetryCounterCache: this.msgRetryCounterCache,
       markOnlineOnConnect: false,
-      qrTimeout: 10 * 60 * 1000,
 
       cachedGroupMetadata: async (jid) => this.groupCache.get(jid),
       getMessage: async (key: WAMessageKey) => {
-        if (this.useStore) {
-          const msg = await this.useStore.loadMessage(key.remoteJid!, key.id!);
-          return msg?.message || undefined;
-        }
-
-        // only if store is present
+        // Removed useStore logic
         return proto.Message.fromObject({});
       },
     }) as unknown as SocketClient;
 
     BaileysDecorator.bind(this.client as unknown as WASocket);
-    this.useStore?.bind(this.client.ev);
+    // Removed useStore?.bind(this.client.ev as any);
     this.setupEventHandlers();
     this.setupCredsSaver(saveCreds);
 
@@ -164,22 +139,16 @@ export class WhatsappClient {
 
         if (event.id) {
           logger.debug('Caching group metadata');
-          const metadata = await (this.useStore
-            ? this.useStore.fetchGroupMetadata(event.id!, this.client! as any)
-            : this.client.groupMetadata(event.id!));
+          const metadata = await this.client.groupMetadata(event.id!);
           this.groupCache.set(event.id!, metadata);
         }
       }
 
       if (events['group-participants.update']) {
-        {
-          logger.debug('Caching group metadata');
-          const event = events['group-participants.update'];
-          const metadata = await (this.useStore
-            ? this.useStore.fetchGroupMetadata(event.id!, this.client! as any)
-            : this.client.groupMetadata(event.id!));
-          this.groupCache.set(event.id, metadata);
-        }
+        logger.debug('Caching group metadata');
+        const event = events['group-participants.update'];
+        const metadata = await this.client.groupMetadata(event.id!);
+        this.groupCache.set(event.id, metadata);
       }
     });
   }

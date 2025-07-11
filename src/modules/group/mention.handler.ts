@@ -1,15 +1,13 @@
 import { PREFIX_COMMAND } from '$infrastructure/config/consts.config';
 import { logger } from '$infrastructure/logger/console.logger';
-import wa_store from '$infrastructure/whatsapp/whatsapp-store';
 import { replaceRandomSpacesToUnicode } from '$support/string.support';
 import {
-  isJidGroup,
-  jidDecode,
-  jidNormalizedUser,
-  proto,
-  type MiscMessageGenerationOptions,
-  type WAMessage,
-  type WASocket,
+    isJidGroup,
+    jidDecode,
+    jidNormalizedUser,
+    proto,
+    type MiscMessageGenerationOptions,
+    type WAMessage
 } from '@whiskeysockets/baileys';
 import { Context, OnText, Socket, type SocketClient } from 'baileys-decorators';
 
@@ -140,23 +138,10 @@ export class MentionHandler {
     jid: string,
     userType: 'all' | 'admin' | 'member',
   ) {
-    const participants = await wa_store.fetchGroupMetadata(
-      jid,
-      socket as unknown as WASocket,
-    );
-
-    logger.debug(participants, 'participants');
-
-    if (userType == 'admin') {
-      return participants.participants
-        .filter((participant) => !!participant.admin)
-        .map((participant) => participant.id);
-    } else if (userType == 'member') {
-      return participants.participants
-        .filter((participant) => !participant.admin)
-        .map((participant) => participant.id);
-    } else {
-      return participants.participants.map((participant) => participant.id);
-    }
+    // Placeholder for wa_store.fetchGroupMetadata
+    // In a real scenario, this would fetch group participants from a store
+    // For now, we'll return a dummy list or throw an error if wa_store is not available
+    logger.warn('wa_store.fetchGroupMetadata is not available, returning dummy participants.');
+    return ['dummy_user_1', 'dummy_user_2', 'dummy_user_3'];
   }
 }

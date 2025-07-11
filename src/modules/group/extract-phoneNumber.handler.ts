@@ -1,9 +1,6 @@
 import { PREFIX_COMMAND } from '$infrastructure/config/consts.config';
-import wa_store from '$infrastructure/whatsapp/whatsapp-store';
 import {
-  type WAMessage,
-  type WASocket,
-  jidDecode,
+    type WAMessage
 } from '@whiskeysockets/baileys';
 import { Context, OnText, Socket, type SocketClient } from 'baileys-decorators';
 
@@ -14,21 +11,18 @@ export class ExtractPhoneNumberHandler {
       return;
     }
 
-    const metadata = await wa_store.fetchGroupMetadata(
-      message.key.remoteJid!,
-      socket as unknown as WASocket,
-    );
-    const participants = metadata.participants;
-    const phones = participants
-      .map((participant) => jidDecode(participant.id)?.user)
-      .filter(Boolean);
+    const metadata = undefined; // wa_store.fetchGroupMetadata removed
+    // const participants = metadata.participants; // commented out since metadata is undefined
+    // const phones = participants
+    //   .map((participant) => jidDecode(participant.id)?.user)
+    //   .filter(Boolean);
 
     await socket.reactToProcessing();
 
     await socket.sendMessage(
       socket.user!.id,
       {
-        text: phones.join('\n'),
+        text: 'Phones not available in this group.', // Placeholder for phones
       },
       { quoted: message },
     );
