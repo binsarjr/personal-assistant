@@ -114,7 +114,9 @@ export class CLI {
     }
 
     // Prompt untuk jalankan di PM2
-    await this.promptRunInPM2(options);
+    if (options.interactive) {
+      await this.promptRunInPM2(options);
+    }
 
     return options;
   }
@@ -218,16 +220,22 @@ PM2 Usage:
   }
 
   private runInPM2(options: CLIOptions): void {
-    let cmd = `pm2 start \'bun run start -s ${options.session} -m ${options.mode}`;
+    let cmd = `pm2 start 'bun run start -s ${options.session} -m ${options.mode}`;
     if (options.mode === 'pairing' && options.phone) {
       cmd += ` -p ${options.phone}`;
     }
-    cmd += `\' --name \'wa-assitant-${options.session}\'`;
+    cmd += `' --name 'wa-assitant-${options.session}'`;
     exec(cmd, (err, stdout, stderr) => {
       if (err) {
         console.error('❌ Gagal menjalankan di PM2:', stderr);
       } else {
         console.log('✅ Berhasil dijalankan di PM2:\n', stdout);
+        // Langsung tampilkan log PM2 untuk session ini
+        const { spawn } = require('child_process');
+        const logProc = spawn('pm2', ['logs', `wa-assitant-${options.session}`], { stdio: 'inherit' });
+        logProc.on('close', (code: number) => {
+          process.exit(code);
+        });
       }
     });
   }
