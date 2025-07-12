@@ -8,3 +8,13 @@ dist
 dev.db
 .idea
 .DS_Store
+
+# Session storage
+.hiddens/
+
+# Logs
+logs/
+*.log
+
+# PM2
+.pm2/

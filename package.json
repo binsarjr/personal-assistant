@@ -6,7 +6,11 @@
   "scripts": {
     "start": "bun run --bun src/main.ts",
     "dev": "bun run --bun --watch src/main.ts",
-    "wa:logout": "rm -rf .hiddens/personal-assistant"
+    "wa:logout": "rm -rf .hiddens/personal-assistant",
+    "sessions": "bun run --bun src/main.ts --list",
+    "interactive": "bun run --bun src/main.ts --interactive",
+    "create": "bun run --bun src/main.ts --interactive",
+    "delete": "bun run --bun src/main.ts --interactive"
   },
   "devDependencies": {
     "@types/bun": "^1.2.18",

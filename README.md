@@ -1,113 +1,273 @@
-# Personal Assistant
+# Personal Assistant - WhatsApp Bot
 
-This is a personal assistant project created with TypeScript and Bun.
-This personal assistant is designed to facilitate the use of WhatsApp by
-utilizing the WhatsApp action feature. This WhatsApp action feature can be used
-to create features similar to regular WhatsApp features, but with easier and
-more efficient functionality.
+Personal Assistant adalah bot WhatsApp yang dibangun dengan TypeScript dan Bun,
+menggunakan library Baileys untuk koneksi WhatsApp Web.
 
-## Features
+## 🚀 Fitur
 
-- Auto-Reveal view-once messages
-- Auto-Reveal Deleted Message
-- Auto-Reveal deleted stories
-- Mention all group admins
-- Mention all group members
-- Mention everyone in the group
-- Auto-Reveal and Track edited messages, allowing visibility of messages before they were edited
+- **Multi-Session Support**: Kelola beberapa session WhatsApp sekaligus
+- **Interactive CLI**: Setup mudah dengan antarmuka CLI yang user-friendly
+- **Session Management**: Tampilkan, pilih, dan kelola session dengan detail
+- **Auto Keep-Alive**: Bot tetap aktif dengan sistem monitoring otomatis
+- **PM2 Ready**: Siap dijalankan dengan PM2 untuk production
 
+## 📋 Persyaratan
 
-## Random Features
-- Tiktok Downloader
-- Simple Sticker Maker
-- Gemini
+- Node.js 17+ atau Bun
+- WhatsApp account untuk linking
 
-## Installation
+## 🛠️ Instalasi
 
-First, install [Bun](https://bun.sh/docs/installation).
-
-### Install dependencies:
 ```bash
+# Clone repository
+git clone <repository-url>
+cd personal-assistant
+
+# Install dependencies
 bun install
+
+# Atau dengan npm
+npm install
 ```
 
-### Running the application
+## 🎯 Penggunaan
+
+### Mode Interactive (Recommended)
+
+Mode ini memberikan pengalaman setup yang mudah dengan GUI CLI dan menu utama:
+
 ```bash
-# development
-bun run start
+# Jalankan mode interactive
+bun run interactive
 
-# watch mode
-bun run dev
+# Atau
+bun run start --interactive
 ```
 
-## Multi-Session Usage (Multiple WhatsApp Devices)
+Mode interactive akan menampilkan **Menu Utama** dengan pilihan:
 
-You can run multiple WhatsApp sessions (devices) in parallel using CLI arguments. Each session is identified by a unique `--session` name.
+1. **🔍 Pilih Session yang Ada** - Memilih dari session yang sudah ada
+2. **🆕 Buat Session Baru** - Membuat session baru dengan nama custom
+3. **🗑️ Hapus Session** - Menghapus session yang tidak diperlukan
+4. **❌ Keluar** - Keluar dari aplikasi
 
-### QR Code Login (default)
+Setelah memilih action, sistem akan:
+
+- Menampilkan semua session yang tersedia dengan detail
+- Memungkinkan pemilihan session
+- Meminta detail koneksi jika diperlukan
+- Menjalankan bot dengan konfigurasi yang dipilih
+
+### Mode Direct
+
+Untuk penggunaan langsung dengan parameter:
+
 ```bash
-bun run src/main.ts --session main --mode qrcode
+# QR Code mode
+bun run start --session mybot --mode qrcode
+
+# Pairing Code mode
+bun run start --session mybot --mode pairing --phone +6281234567890
 ```
 
-### Pairing Code Login
+### Manajemen Session
+
 ```bash
-# With phone number as argument
-bun run src/main.ts --session backup --mode pairing --phone +6281234567890
+# Lihat semua session
+bun run sessions
 
-# Or, if --phone is omitted, you will be prompted to enter it interactively
-bun run src/main.ts --session backup --mode pairing
+# Atau
+bun run start --list
+
+# Mode interactive (dengan menu utama)
+bun run interactive
+
+# Lihat bantuan
+bun run start --help
 ```
 
-### Example PM2 Configuration
-You can use [PM2](https://pm2.keymetrics.io/) to manage multiple sessions:
+## 📊 Session Management
 
-```json
-{
-  "apps": [
-    {
-      "name": "wa-main",
-      "script": "src/main.ts",
-      "interpreter": "bun",
-      "args": "--session main --mode qrcode"
+### Melihat Daftar Session
+
+```bash
+bun run sessions
+```
+
+Output akan menampilkan:
+
+- 🟢 **Active**: Session siap digunakan
+- 🔴 **Inactive**: Belum ada kredensial
+- 🟡 **Corrupted**: Auth store tidak lengkap
+
+### Detail Session
+
+Setiap session menampilkan:
+
+- **Path**: Lokasi penyimpanan session
+- **Last Modified**: Waktu terakhir digunakan
+- **Size**: Ukuran data session
+- **Auth Store**: Status auth store
+- **Credentials**: Status kredensial
+- **Status**: Status keseluruhan session
+
+## 🔧 Production dengan PM2
+
+### Setup PM2
+
+```bash
+# Install PM2 globally
+npm install -g pm2
+
+# Jalankan dengan PM2
+pm2 start "bun run start -s mybot -m qrcode" --name "whatsapp-bot"
+
+# Atau dengan config file
+pm2 start ecosystem.config.js
+```
+
+### Ecosystem Config
+
+Buat file `ecosystem.config.js`:
+
+```javascript
+module.exports = {
+  apps: [{
+    name: "whatsapp-bot",
+    script: "bun",
+    args: "run start -s mybot -m qrcode",
+    instances: 1,
+    autorestart: true,
+    watch: false,
+    max_memory_restart: "1G",
+    env: {
+      NODE_ENV: "production",
     },
-    {
-      "name": "wa-backup",
-      "script": "src/main.ts",
-      "interpreter": "bun",
-      "args": "--session backup --mode pairing --phone +6281234567890"
-    }
-  ]
-}
+  }],
+};
 ```
 
-### Running with PM2 (Without Config File)
+## 🎮 CLI Commands
 
-You can also start sessions directly from the command line without a config file:
+| Command                | Description                                         |
+| ---------------------- | --------------------------------------------------- |
+| `bun run start`        | Jalankan bot (interactive mode jika tidak ada args) |
+| `bun run interactive`  | Mode interactive dengan menu utama                  |
+| `bun run sessions`     | Lihat semua session                                 |
+| `bun run start --help` | Bantuan lengkap                                     |
+| `bun run wa:logout`    | Hapus session default                               |
 
-#### QR Code Session
-```sh
-pm2 start src/main.ts --interpreter bun --name wa-main -- --session main --mode qrcode
+## 📝 CLI Options
+
+| Option             | Short | Description                  |
+| ------------------ | ----- | ---------------------------- |
+| `--session <name>` | `-s`  | Nama session                 |
+| `--mode <mode>`    | `-m`  | Mode koneksi: qrcode/pairing |
+| `--phone <number>` | `-p`  | Nomor telepon untuk pairing  |
+| `--interactive`    | `-i`  | Mode interactive             |
+| `--list`           | `-l`  | Tampilkan daftar session     |
+| `--help`           | `-h`  | Bantuan                      |
+
+## 🔍 Contoh Penggunaan
+
+### Setup Session Baru
+
+```bash
+# Interactive mode (recommended) - dengan menu utama
+bun run interactive
+
+# Pilih menu "2. 🆕 Buat Session Baru"
+# Masukkan nama session: "bot-customer-service"
+# Pilih mode koneksi (QR Code/Pairing)
+
+# Direct mode
+bun run start -s "bot-customer-service" -m qrcode
 ```
 
-#### Pairing Code Session
-```sh
-pm2 start src/main.ts --interpreter bun --name wa-backup -- --session backup --mode pairing --phone +6281234567890
+### Menjalankan Session yang Ada
+
+```bash
+# Interactive mode - pilih dari menu utama
+bun run interactive
+
+# Pilih menu "1. 🔍 Pilih Session yang Ada"
+# Pilih session dari daftar
+
+# Langsung jalankan session tertentu
+bun run start -s "bot-customer-service" -m qrcode
 ```
 
-You can repeat the command above with different `--name`, `--session`, and arguments for as many sessions as you need.
+### Menghapus Session
 
-#### Useful PM2 Commands
-- `pm2 ls` — List all running sessions
-- `pm2 logs wa-main` — Show logs for a session
-- `pm2 restart wa-main` — Restart a session
-- `pm2 delete wa-main` — Remove a session
+```bash
+# Interactive mode - menu utama
+bun run interactive
 
-## Release Notes
+# Pilih menu "3. 🗑️ Hapus Session"
+# Pilih session yang ingin dihapus dari daftar
 
-### v4.1.0
-- Multi-session WhatsApp client: jalankan beberapa device sekaligus dengan argumen CLI (`--session`, `--mode`, `--phone`)
-- Migrasi cronjob ke library croner (lebih efisien dan modern)
-- CLI argument parsing dengan minimist
-- Pairing code login dengan validasi nomor telepon (libphonenumber-js)
-- Dokumentasi penggunaan multi-sesi dan integrasi PM2
-- Perbaikan dan update dependensi
+# Manual delete (hati-hati!)
+rm -rf .hiddens/session-name
+```
+
+### Monitoring Session
+
+```bash
+# Lihat semua session
+bun run sessions
+
+# Output contoh:
+# 📱 Daftar Session WhatsApp:
+# ================================================================================
+# 1. 🟢 bot-customer-service
+#    📁 Path: .hiddens/bot-customer-service
+#    📅 Last Modified: 15/01/2024 10:30:45
+#    💾 Size: 2.5 MB
+#    🔐 Auth Store: ✅
+#    🔑 Credentials: ✅
+#    📊 Status: 🟢 Active (Ready to use)
+```
+
+## 🚨 Troubleshooting
+
+### Session Corrupted
+
+Jika session menunjukkan status 🟡 Corrupted:
+
+```bash
+# Hapus session yang bermasalah
+rm -rf .hiddens/session-name
+
+# Buat ulang session
+bun run start -s session-name -m qrcode
+```
+
+### Bot Tidak Merespons
+
+1. Periksa status session dengan `bun run sessions`
+2. Pastikan WhatsApp Web tidak login di browser lain
+3. Restart bot dengan PM2: `pm2 restart whatsapp-bot`
+
+### Koneksi Gagal
+
+1. Pastikan internet stabil
+2. Coba mode pairing jika QR code gagal
+3. Periksa log untuk error detail
+
+## 🤝 Contributing
+
+1. Fork repository
+2. Buat branch feature (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push ke branch (`git push origin feature/amazing-feature`)
+5. Buat Pull Request
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## 🙏 Acknowledgments
+
+- [Baileys](https://github.com/WhiskeySockets/Baileys) - WhatsApp Web API
+- [Bun](https://bun.sh/) - Fast JavaScript runtime
+- [PM2](https://pm2.keymetrics.io/) - Process manager
