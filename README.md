@@ -113,13 +113,17 @@ Setiap session menampilkan:
 
 ## 🔧 Production dengan PM2
 
+> **Catatan:** Mulai versi terbaru, CLI _tidak lagi menjalankan atau mengelola
+> PM2 secara otomatis_. Semua perintah PM2 harus dijalankan manual oleh user.
+> Ini demi keamanan, transparansi, dan best practice production.
+
 ### Setup PM2
 
 ```bash
 # Install PM2 globally
 npm install -g pm2
 
-# Jalankan dengan PM2
+# Jalankan dengan PM2 (manual, sesuai session yang diinginkan)
 pm2 start "bun run start -s mybot -m qrcode" --name "whatsapp-bot"
 
 # Atau dengan config file
@@ -146,6 +150,8 @@ module.exports = {
   }],
 };
 ```
+
+> **Untuk melihat log:** Jalankan manual: `pm2 logs whatsapp-bot`
 
 ## 🎮 CLI Commands
 

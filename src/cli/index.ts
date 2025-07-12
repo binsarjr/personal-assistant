@@ -1,4 +1,3 @@
-import { exec } from 'child_process'
 import minimist from 'minimist'
 import { SessionManager } from './session-manager'
 
@@ -113,11 +112,6 @@ export class CLI {
       return null;
     }
 
-    // Prompt untuk jalankan di PM2
-    if (options.interactive) {
-      await this.promptRunInPM2(options);
-    }
-
     return options;
   }
 
@@ -201,72 +195,6 @@ Interactive Mode:
 PM2 Usage:
   pm2 start "bun run start -s mybot -m qrcode" --name "whatsapp-bot"
     `);
-  }
-
-  private async promptRunInPM2(options: CLIOptions): Promise<void> {
-    const readline = require('readline');
-    const { exec, spawn } = require('child_process');
-    const pm2Name = `wa-assitant-${options.session}`;
-
-    // Cek apakah sudah ada di pm2 list
-    const isRegistered = await new Promise<boolean>((resolve) => {
-      exec(`pm2 list --no-color`, (err: any, stdout: string) => {
-        if (err) return resolve(false);
-        resolve(stdout.includes(pm2Name));
-      });
-    });
-
-    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-    if (isRegistered) {
-      rl.question(`\n♻️  Session '${options.session}' sudah terdaftar di PM2. Restart process ini? (y/n): `, (answer: string) => {
-        rl.close();
-        if (answer.trim().toLowerCase() === 'y') {
-          exec(`pm2 restart ${pm2Name}`, (err: any, stdout: string, stderr: string) => {
-            if (err) {
-              console.error('❌ Gagal restart di PM2:', stderr);
-            } else {
-              console.log('✅ Berhasil di-restart di PM2:\n', stdout);
-              // Tampilkan log
-              const logProc = spawn('pm2', ['logs', pm2Name], { stdio: 'inherit' });
-              logProc.on('close', (code: number) => {
-                process.exit(code);
-              });
-            }
-          });
-          setTimeout(() => process.exit(0), 1000);
-        }
-      });
-    } else {
-      rl.question(`\n🚦 Jalankan session '${options.session}' di PM2? (y/n): `, (answer: string) => {
-        rl.close();
-        if (answer.trim().toLowerCase() === 'y') {
-          this.runInPM2(options);
-          // Exit CLI setelah menjalankan di PM2
-          setTimeout(() => process.exit(0), 1000);
-        }
-      });
-    }
-  }
-
-  private runInPM2(options: CLIOptions): void {
-    let cmd = `pm2 start 'bun run start -s ${options.session} -m ${options.mode}`;
-    if (options.mode === 'pairing' && options.phone) {
-      cmd += ` -p ${options.phone}`;
-    }
-    cmd += `' --name 'wa-assitant-${options.session}'`;
-    exec(cmd, (err, stdout, stderr) => {
-      if (err) {
-        console.error('❌ Gagal menjalankan di PM2:', stderr);
-      } else {
-        console.log('✅ Berhasil dijalankan di PM2:\n', stdout);
-        // Langsung tampilkan log PM2 untuk session ini
-        const { spawn } = require('child_process');
-        const logProc = spawn('pm2', ['logs', `wa-assitant-${options.session}`], { stdio: 'inherit' });
-        logProc.on('close', (code: number) => {
-          process.exit(code);
-        });
-      }
-    });
   }
 }
 
