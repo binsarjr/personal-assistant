@@ -63,13 +63,31 @@ async function main() {
   );
 
   // Graceful shutdown
+  function timeoutPromise<T>(promise: Promise<T>, ms: number): Promise<T | null> {
+    return new Promise((resolve) => {
+      const timer = setTimeout(() => resolve(null), ms);
+      promise.then((val) => {
+        clearTimeout(timer);
+        resolve(val);
+      }).catch(() => {
+        clearTimeout(timer);
+        resolve(null);
+      });
+    });
+  }
+
   process.on('SIGINT', async () => {
     console.log('\n🛑 Shutting down gracefully...');
     try {
-      const socket = await whatsapp.getClient();
-      await socket.sendMessage(socket.user!.id, {
-        text: `🔴 BOT SHUTTING DOWN\n📅 ${new Date().toLocaleString('id-ID')}\n🔧 Session: ${deviceId}`,
-      });
+      // Tunggu max 5 detik untuk dapat client
+      const socket = await timeoutPromise<any>(whatsapp.getClient(), 5000);
+      if (socket) {
+        await (socket as any).sendMessage((socket as any).user!.id, {
+          text: `🔴 BOT SHUTTING DOWN\n📅 ${new Date().toLocaleString('id-ID')}\n🔧 Session: ${deviceId}`,
+        });
+      } else {
+        logger.warn('Timeout waiting for WhatsApp client, skipping shutdown message.');
+      }
     } catch (error) {
       logger.error('Failed to send shutdown message:', error);
     }
