@@ -1,5 +1,6 @@
-import minimist from 'minimist';
-import { SessionManager } from './session-manager';
+import { exec } from 'child_process'
+import minimist from 'minimist'
+import { SessionManager } from './session-manager'
 
 export interface CLIOptions {
   session?: string;
@@ -112,6 +113,9 @@ export class CLI {
       return null;
     }
 
+    // Prompt untuk jalankan di PM2
+    await this.promptRunInPM2(options);
+
     return options;
   }
 
@@ -195,6 +199,37 @@ Interactive Mode:
 PM2 Usage:
   pm2 start "bun run start -s mybot -m qrcode" --name "whatsapp-bot"
     `);
+  }
+
+  private async promptRunInPM2(options: CLIOptions): Promise<void> {
+    const readline = require('readline');
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+    return new Promise((resolve) => {
+      rl.question(`\n🚦 Jalankan session '${options.session}' di PM2? (y/n): `, (answer: string) => {
+        rl.close();
+        if (answer.trim().toLowerCase() === 'y') {
+          this.runInPM2(options);
+          // Exit CLI setelah menjalankan di PM2
+          setTimeout(() => process.exit(0), 1000);
+        }
+        resolve();
+      });
+    });
+  }
+
+  private runInPM2(options: CLIOptions): void {
+    let cmd = `pm2 start \'bun run start -s ${options.session} -m ${options.mode}`;
+    if (options.mode === 'pairing' && options.phone) {
+      cmd += ` -p ${options.phone}`;
+    }
+    cmd += `\' --name \'wa-assitant-${options.session}\'`;
+    exec(cmd, (err, stdout, stderr) => {
+      if (err) {
+        console.error('❌ Gagal menjalankan di PM2:', stderr);
+      } else {
+        console.log('✅ Berhasil dijalankan di PM2:\n', stdout);
+      }
+    });
   }
 }
 
