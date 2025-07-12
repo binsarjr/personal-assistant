@@ -205,8 +205,38 @@ PM2 Usage:
 
   private async promptRunInPM2(options: CLIOptions): Promise<void> {
     const readline = require('readline');
+    const { exec, spawn } = require('child_process');
+    const pm2Name = `wa-assitant-${options.session}`;
+
+    // Cek apakah sudah ada di pm2 list
+    const isRegistered = await new Promise<boolean>((resolve) => {
+      exec(`pm2 list --no-color`, (err: any, stdout: string) => {
+        if (err) return resolve(false);
+        resolve(stdout.includes(pm2Name));
+      });
+    });
+
     const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-    return new Promise((resolve) => {
+    if (isRegistered) {
+      rl.question(`\n♻️  Session '${options.session}' sudah terdaftar di PM2. Restart process ini? (y/n): `, (answer: string) => {
+        rl.close();
+        if (answer.trim().toLowerCase() === 'y') {
+          exec(`pm2 restart ${pm2Name}`, (err: any, stdout: string, stderr: string) => {
+            if (err) {
+              console.error('❌ Gagal restart di PM2:', stderr);
+            } else {
+              console.log('✅ Berhasil di-restart di PM2:\n', stdout);
+              // Tampilkan log
+              const logProc = spawn('pm2', ['logs', pm2Name], { stdio: 'inherit' });
+              logProc.on('close', (code: number) => {
+                process.exit(code);
+              });
+            }
+          });
+          setTimeout(() => process.exit(0), 1000);
+        }
+      });
+    } else {
       rl.question(`\n🚦 Jalankan session '${options.session}' di PM2? (y/n): `, (answer: string) => {
         rl.close();
         if (answer.trim().toLowerCase() === 'y') {
@@ -214,9 +244,8 @@ PM2 Usage:
           // Exit CLI setelah menjalankan di PM2
           setTimeout(() => process.exit(0), 1000);
         }
-        resolve();
       });
-    });
+    }
   }
 
   private runInPM2(options: CLIOptions): void {
